@@ -1,0 +1,678 @@
+--Create Table
+CREATE TABLE if not exists MONTH_WISE_STOCK_AGG
+(
+  MCODE                           numeric(3),
+  ADMSITE_CODE                    numeric(12,0),
+  LOCCODE                         numeric(12),
+  LOCTYPE                         character(1),
+  PSITE_STOCKPOINT_CODE           varchar(50),
+  POS_LOCTYPE                     character(1),
+  ICODE                           VARCHAR(9),
+  GOODS_RECEIVE_QUANTITY          numeric(20),
+  GOODS_RECEIVE_AMOUNT            numeric(20),
+  GOODS_RETURN_QUANTITY           numeric(20),
+  GOODS_RETURN_AMOUNT             numeric(20),
+  SITE_TRANSFER_IN_QUANTITY       numeric(20),
+  SITE_TRANSFER_IN_AMOUNT         numeric(20),
+  SITE_TRANSFER_OUT_QUANTITY      numeric(20),
+  SITE_TRANSFER_OUT_AMOUNT        numeric(20),
+  PRODUCTION_RECEIVE_QUANTITY     numeric(20),
+  PRODUCTION_RECEIVE_AMOUNT       numeric(20),
+  PRODUCTION_RETURN_QUANTITY      numeric(20),
+  PRODUCTION_RETURN_AMOUNT        numeric(20),
+  PRODUCTION_ISSUE_QUANTITY       numeric(20),
+  PRODUCTION_ISSUE_AMOUNT         numeric(20),
+  CONVERSION_ISSUE_QUANTITY       numeric(20),
+  CONVERSION_ISSUE_AMOUNT         numeric(20),
+  CONVERSION_RECEIVE_QUANTITY     numeric(20),
+  CONVERSION_RECEIVE_AMOUNT       numeric(20),
+  HO_SALE_QUANTITY                numeric(20),
+  HO_SALE_AMOUNT                  numeric(20),
+  HO_SALE_RETURN_QUANTITY         numeric(20),
+  HO_SALE_RETURN_AMOUNT           numeric(20),
+  NET_HO_SALE_QUANTITY            numeric(20),
+  NET_HO_SALE_AMOUNT              numeric(20),
+  NET_HO_SALE_COGS_AMOUNT         numeric(20),
+  RETAIL_SALE_QUANTITY            numeric(20),
+  RETAIL_SALE_AMOUNT              numeric(20),
+  RETAIL_SALE_RETURN_QUANTITY     numeric(20),
+  RETAIL_SALE_RETURN_AMOUNT       numeric(20),
+  NET_RETAIL_SALE_QUANTITY        numeric(20),
+  NET_RETAIL_SALE_AMOUNT          numeric(20),
+  NET_RETAIL_SALE_COGS_AMOUNT     numeric(20),
+  NET_SALE_QUANTITY               numeric(20),
+  NET_SALE_AMOUNT                 numeric(20),
+  NET_SALE_COGS_AMOUNT            numeric(20),
+  ADJUSTMENT_QUANTITY             numeric(20),
+  ADJUSTMENT_AMOUNT               numeric(20),
+  MISC_ISSUE_QUANTITY             numeric(20),
+  MISC_ISSUE_AMOUNT               numeric(20),
+  SALE_TAX_AMOUNT                 numeric(20),
+  SALE_PROMO_AMOUNT               numeric(20),
+  SALE_DISCOUNT_AMOUNT            numeric(20),
+  WAREHOUSE_TRANSFER_IN_QUANTITY  numeric(20),
+  WAREHOUSE_TRANSFER_IN_AMOUNT    numeric(20),
+  WH_TRANSFER_OUT_QUANTITY        numeric(20),
+  WH_TRANSFER_OUT_AMOUNT          numeric(20),
+  GP_AMOUNT                       numeric(20),
+  POS_PACKET_IN                   numeric(20),
+  POS_PACKET_OUT                  numeric(20),
+  POS_STF_IN                      numeric(20),
+  POS_STF_OUT                     numeric(20),
+  IN_QUANTITY                     numeric(20),
+  OUT_QUANTITY                    numeric(20),
+  COSTAMOUNT                      numeric(20),
+  DIRTY                           numeric(20)
+);
+
+CREATE INDEX I_MONTH_WISE_STOCK_AGG_01
+    ON MONTH_WISE_STOCK_AGG USING btree
+    (DIRTY ASC NULLS LAST);
+    
+--Migration from Invstock
+INSERT INTO MONTH_WISE_STOCK_AGG
+SELECT mon.mcode
+        ,k.admsite_code
+        ,k.loccode
+        ,loctype
+        ,k.psite_stockpoint_code
+        ,pt.type
+        ,k.icode
+        ,sum(case when enttype = 'GRC' AND loctype IN ('W', 'S') THEN qty else 0 end) goods_receive_quantity
+        ,sum(case when enttype = 'GRC' AND loctype IN ('W', 'S') THEN costamount else 0 end) goods_receive_amount
+        ,sum(case when enttype = 'GRT' AND loctype IN ('W', 'S') THEN qty else 0 end) goods_return_quantity
+        ,sum(case when enttype = 'GRT' AND loctype IN ('W', 'S') THEN costamount else 0 end) goods_return_amount
+        ,sum(case when enttype = 'STI' AND loctype IN ('W', 'S') THEN qty else 0 end) site_transfer_in_quantity
+        ,sum(case when enttype = 'STI' AND loctype IN ('W', 'S') THEN costamount else 0 end) site_transfer_in_amount
+        ,sum(case when enttype = 'STO' AND loctype IN ('L', 'S') THEN qty else 0 end) site_transfer_out_quantity
+        ,sum(case when enttype = 'STO' AND loctype IN ('L', 'S') THEN costamount else 0 end) site_transfer_out_amount
+        ,sum(case when enttype = 'PRR' AND loctype IN ('W', 'S') THEN qty else 0 end) production_receive_quantity
+        ,sum(case when enttype = 'PRR' AND loctype IN ('W', 'S') THEN costamount else 0 end) production_receive_amount
+        ,sum(case when enttype = 'PRT' AND loctype IN ('W', 'S') THEN qty else 0 end) production_return_quantity
+        ,sum(case when enttype = 'PRT' AND loctype IN ('W', 'S') THEN costamount else 0 end) production_return_amount
+        ,sum(case when enttype = 'PRI' AND loctype IN ('W', 'S') THEN qty else 0 end) production_issue_quantity
+        ,sum(case when enttype = 'PRI' AND loctype IN ('W', 'S') THEN costamount else 0 end) production_issue_amount
+        ,sum(case when enttype = 'PIS' AND loctype IN ('W', 'S') THEN qty else 0 end) conversion_issue_quantity
+        ,sum(case when enttype = 'PIS' AND loctype IN ('W', 'S') THEN costamount else 0 end) conversion_issue_amount
+        ,sum(case when enttype = 'PRC' AND loctype IN ('W', 'S') THEN qty else 0 end) conversion_receive_quantity
+        ,sum(case when enttype = 'PRC' AND loctype IN ('W', 'S') THEN costamount else 0 end) conversion_receive_amount
+        ,sum(case when enttype = 'SAL' AND loctype IN ('W', 'L') THEN qty else 0 end) ho_sale_quantity
+        ,sum(case when enttype = 'SAL' AND loctype IN ('W', 'L') THEN amount else 0 end) ho_sale_amount 
+        ,sum(case when enttype = 'SRT' AND loctype = 'W' THEN qty else 0 end) ho_sale_return_quantity
+        ,sum(case when enttype = 'SRT' AND loctype = 'W' THEN amount else 0 end) ho_sale_return_amount
+        ,sum(case when enttype IN ('SAL', 'SRT') AND loctype IN ('W', 'L') THEN qty else 0 end) net_ho_sale_quantity
+        ,sum(case when enttype IN ('SAL', 'SRT') AND loctype IN ('W', 'L') THEN amount else 0 end) net_ho_sale_amount
+        ,sum(case when enttype IN ('SAL', 'SRT') AND loctype IN ('W', 'L') THEN costamount else 0 end) net_ho_sale_cogs_amount
+        ,sum(case when enttype = 'SAL' AND loctype = 'S' THEN qty else 0 end) retail_sale_quantity
+        ,sum(case when enttype = 'SAL' AND loctype = 'S' THEN amount else 0 end) retail_sale_amount
+        ,sum(case when enttype = 'SRT' AND loctype = 'S' THEN qty else 0 end) retail_sale_return_quantity
+        ,sum(case when enttype = 'SRT' AND loctype = 'S' THEN amount else 0 end) retail_sale_return_amount
+        ,sum(case when enttype IN ('SAL', 'SRT') AND loctype = 'S' THEN qty else 0 end) net_retail_sale_quantity
+        ,sum(case when enttype IN ('SAL', 'SRT') AND loctype = 'S' THEN amount else 0 end) net_retail_sale_amount
+        ,sum(case when enttype IN ('SAL', 'SRT') AND loctype = 'S' THEN costamount else 0 end) net_retail_sale_cogs_amount
+        ,sum(case when enttype IN ('SAL', 'SRT') AND loctype IN ('W', 'S', 'L') THEN qty else 0 end) net_sale_quantity
+        ,sum(case when enttype IN ('SAL', 'SRT') AND loctype IN ('W', 'S', 'L') THEN amount else 0 end) net_sale_amount
+        ,sum(case when enttype IN ('SAL', 'SRT') AND loctype IN ('W', 'S', 'L') THEN costamount else 0 end) net_sale_cogs_amount
+        ,sum(case when enttype = 'ADJ' AND loctype IN ('W', 'S') THEN qty else 0 end) adjustment_quantity
+        ,sum(case when enttype = 'ADJ' AND loctype IN ('W', 'S') THEN costamount else 0 end) adjustment_amount
+        ,sum(case when enttype = 'MIS' AND loctype IN ('W', 'S') THEN qty else 0 end) misc_issue_quantity
+        ,sum(case when enttype = 'MIS' AND loctype IN ('W', 'S') THEN costamount else 0 end) misc_issue_amount
+        ,sum(case when enttype = 'SAL' AND loctype IN ('L', 'S') THEN taxamt else 0 end) sale_tax_amount
+        ,sum(case when enttype = 'SAL' AND loctype IN ('L', 'S') THEN promoamt else 0 end) sale_promo_amount
+        ,sum(case when enttype = 'SAL' AND loctype IN ('L', 'S') THEN discountamt else 0 end) sale_discount_amount
+        ,sum(case when enttype = 'WTI' AND loctype = 'S' THEN qty else 0 end) warehouse_transfer_in_quantity
+        ,sum(case when enttype = 'WTI' AND loctype = 'S' THEN costamount else 0 end) warehouse_transfer_in_amount
+        ,sum(case when enttype = 'WTO' AND loctype = 'S' THEN qty else 0 end) wh_transfer_out_quantity
+        ,sum(case when enttype = 'WTO' AND loctype = 'S' THEN costamount else 0 end) wh_transfer_out_amount
+		,SUM (CASE WHEN LOCTYPE = 'T'  AND K.QTY > 0 AND K.ENTTYPE <> 'ADJ' THEN K.QTY ELSE  0 END) TRANSIT_INWARD_QUANTITY
+		,SUM (CASE WHEN LOCTYPE = 'T'  AND K.QTY > 0 AND K.ENTTYPE <> 'ADJ' THEN K.costamount ELSE  0 END) TRANSIT_INWARD_amount
+		,SUM (CASE WHEN LOCTYPE = 'T'  AND K.QTY < 0 AND K.ENTTYPE <> 'ADJ' THEN -1 * K.QTY ELSE  0 END) TRANSIT_OUTWARD_QUANTITY
+		,SUM (CASE WHEN LOCTYPE = 'T'  AND K.QTY < 0 AND K.ENTTYPE <> 'ADJ' THEN K.costamount ELSE  0 END) TRANSIT_OUTWARD_amount
+		,SUM (CASE WHEN K.ENTTYPE = 'ADJ' AND LOCTYPE = 'T' THEN K.QTY ELSE 0 END) TRANSIT_ADJUSTMENT_QUANTITY
+        ,SUM (CASE WHEN K.ENTTYPE = 'ADJ' AND LOCTYPE = 'T' THEN K.COSTAMOUNT  ELSE 0 END) TRANSIT_ADJUSTMENT_AMOUNT
+        ,0  POS_PACKET_IN
+        ,0  POS_PACKET_OUT
+        ,0  POS_STF_IN
+        ,0  POS_STF_OUT
+        ,sum(CASE WHEN qty > 0 THEN qty ELSE 0 END) in_quantity
+        ,sum(CASE WHEN qty < 0 THEN qty ELSE 0 END) out_quantity
+        ,sum(costamount) costamount
+        ,0 dirty
+FROM invstock k left join psite_stockpoint pt on k.psite_stockpoint_code = pt.code
+     ,invloc l
+     ,admmonth mon
+WHERE   k.loccode = l.loccode
+and k.entdt between mon.dtfr and mon.dtto
+GROUP BY 
+        mon.mcode
+        ,k.admsite_code
+        ,k.loccode
+        ,loctype
+        ,k.icode
+        ,k.psite_stockpoint_code
+        ,pt.type;
+
+--Migration from Invstock_Intra
+INSERT INTO MONTH_WISE_STOCK_AGG
+SELECT mon.mcode
+        ,k.admsite_code
+        ,k.loccode
+        ,loctype
+        ,k.psite_stockpoint_code
+        ,pt.type
+        ,k.icode
+        ,0 goods_receive_quantity
+        ,0 goods_receive_amount
+        ,0 goods_return_quantity
+        ,0 goods_return_amount
+        ,0 site_transfer_in_quantity
+        ,0 site_transfer_in_amount
+        ,0 site_transfer_out_quantity
+        ,0 site_transfer_out_amount
+        ,0 production_receive_quantity
+        ,0 production_receive_amount
+        ,0 production_return_quantity
+        ,0 production_return_amount
+        ,0 production_issue_quantity
+        ,0 production_issue_amount
+        ,0 conversion_issue_quantity
+        ,0 conversion_issue_amount
+        ,0 conversion_receive_quantity
+        ,0 conversion_receive_amount
+        ,0 ho_sale_quantity
+        ,0 ho_sale_amount 
+        ,0 ho_sale_return_quantity
+        ,0 ho_sale_return_amount
+        ,0 net_ho_sale_quantity
+        ,0 net_ho_sale_amount
+        ,0 net_ho_sale_cogs_amount
+        ,0 retail_sale_quantity
+        ,0 retail_sale_amount
+        ,0 retail_sale_return_quantity
+        ,0 retail_sale_return_amount
+        ,0 net_retail_sale_quantity
+        ,0 net_retail_sale_amount
+        ,0 net_retail_sale_cogs_amount
+        ,0 net_sale_quantity
+        ,0 net_sale_amount
+        ,0 net_sale_cogs_amount
+        ,0 adjustment_quantity
+        ,0 adjustment_amount
+        ,0 misc_issue_quantity
+        ,0 misc_issue_amount
+        ,0 sale_tax_amount
+        ,0 sale_promo_amount
+        ,0 sale_discount_amount
+        ,0 warehouse_transfer_in_quantity
+        ,0 warehouse_transfer_in_amount
+        ,0 wh_transfer_out_quantity
+        ,0 wh_transfer_out_amount
+        ,0 gp_amount
+        ,SUM(case when enttype = 'PKT' AND subenttype = 'PKI' THEN qty else 0 end) POS_PACKET_IN
+        ,SUM(case when enttype = 'PKT' AND subenttype = 'PKO' THEN qty else 0 end) POS_PACKET_OUT
+        ,SUM(case when enttype = 'STF' AND subenttype = 'ISI' THEN qty else 0 end) POS_STF_IN
+        ,SUM(case when enttype = 'STF' AND subenttype = 'ISO' THEN qty else 0 end) POS_STF_OUT
+        ,sum(CASE WHEN qty > 0 THEN qty ELSE 0 END) in_quantity
+        ,sum(CASE WHEN qty < 0 THEN qty ELSE 0 END) out_quantity
+        ,0 costamount
+        ,0 dirty
+FROM invstock_INTRA k left join psite_stockpoint pt on (k.psite_stockpoint_code = pt.code)
+     ,invloc l
+     ,admmonth mon
+WHERE   k.loccode = l.loccode
+and k.entdt between mon.dtfr and mon.dtto
+GROUP BY 
+        mon.mcode
+        ,k.admsite_code
+        ,k.loccode
+        ,loctype
+        ,k.icode
+        ,k.psite_stockpoint_code
+        ,pt.type;
+
+--Query of Stock Movement Report
+SELECT NULL ::TEXT datasetid , 
+        GINVIEW.fnc_uk() uk ,
+        admsite_code ,
+        icode ,
+        SUM(opening_quantity) opening_quantity ,
+        SUM(opening_amount) opening_amount ,
+        SUM(goods_receive_quantity) goods_receive_quantity ,
+        SUM(goods_receive_amount) goods_receive_amount ,
+        SUM(goods_return_quantity) goods_return_quantity ,
+        SUM(goods_return_amount) goods_return_amount ,
+        SUM(site_transfer_in_quantity) site_transfer_in_quantity ,
+        SUM(site_transfer_in_amount) site_transfer_in_amount ,
+        SUM(site_transfer_out_quantity) site_transfer_out_quantity ,
+        SUM(site_transfer_out_amount) site_transfer_out_amount ,
+        SUM(production_receive_quantity) production_receive_quantity ,
+        SUM(production_receive_amount) production_receive_amount ,
+        SUM(production_return_quantity) production_return_quantity ,
+        SUM(production_return_amount) production_return_amount ,
+        SUM(production_issue_quantity) production_issue_quantity ,
+        SUM(production_issue_amount) production_issue_amount ,
+        SUM(conversion_issue_quantity) conversion_issue_quantity ,
+        SUM(conversion_issue_amount) conversion_issue_amount ,
+        SUM(conversion_receive_quantity) conversion_receive_quantity ,
+        SUM(conversion_receive_amount) conversion_receive_amount ,
+        SUM(ho_sale_quantity) ho_sale_quantity ,
+        SUM(ho_sale_amount) ho_sale_amount ,
+        SUM(ho_sale_return_quantity) ho_sale_return_quantity ,
+        SUM(ho_sale_return_amount) ho_sale_return_amount ,
+        SUM(net_ho_sale_quantity) net_ho_sale_quantity ,
+        SUM(net_ho_sale_amount) net_ho_sale_amount ,
+        SUM(net_ho_sale_cogs_amount) net_ho_sale_cogs_amount ,
+        SUM(retail_sale_quantity) retail_sale_quantity ,
+        SUM(retail_sale_amount) retail_sale_amount ,
+        SUM(retail_sale_return_quantity) retail_sale_return_quantity ,
+        SUM(retail_sale_return_amount) retail_sale_return_amount ,
+        SUM(net_retail_sale_quantity) net_retail_sale_quantity ,
+        SUM(net_retail_sale_amount) net_retail_sale_amount ,
+        SUM(net_retail_sale_cogs_amount) net_retail_sale_cogs_amount ,
+        SUM(net_sale_quantity) net_sale_quantity ,
+        SUM(net_sale_amount) net_sale_amount ,
+        SUM(net_sale_cogs_amount) net_sale_cogs_amount ,
+        SUM(adjustment_quantity) adjustment_quantity ,
+        SUM(adjustment_amount) adjustment_amount ,
+        SUM(misc_issue_receive_quantity) misc_issue_receive_quantity ,
+        SUM(misc_issue_receive_amount) misc_issue_receive_amount ,
+        SUM(sale_tax_amount) sale_tax_amount ,
+        SUM(sale_promo_amount) sale_promo_amount ,
+        SUM(sale_discount_amount) sale_discount_amount ,
+        SUM(warehouse_transfer_in_quantity) warehouse_transfer_in_quantity ,
+        SUM(warehouse_transfer_in_amount) warehouse_transfer_in_amount ,
+        SUM(wh_transfer_out_quantity) wh_transfer_out_quantity ,
+        SUM(wh_transfer_out_amount) wh_transfer_out_amount ,
+        SUM(opening_quantity) + SUM(closing_stock_quantity) closing_stock_quantity ,
+        SUM(opening_amount + closing_stock_amount) closing_stock_amount ,
+        SUM(opening_transit_quantity) opening_transit_quantity ,
+        SUM(opening_transit_amount) opening_transit_amount ,
+        sum(transit_inward_quantity) transit_inward_quantity ,
+        sum(transit_inward_amount) transit_inward_amount ,
+        sum(transit_outward_quantity) transit_outward_quantity 
+        sum(transit_outward_amount) transit_outward_amount ,
+        sum(transit_adjustment_quantity) transit_adjustment_quantity ,
+        sum(transit_adjustment_amount) transit_adjustment_amount ,
+        SUM(opening_store_qty) opening_store_qty ,
+        SUM(opening_store_qty) + SUM(closing_store_qty) closing_store_qty ,
+        SUM(opening_package_qty) opening_package_qty ,
+        SUM(opening_package_qty) + SUM(closing_package_qty) closing_package_qty ,
+        SUM(opening_transit_quantity) + SUM(closing_transit_quantity) closing_transit_quantity ,
+        SUM(opening_transit_amount) + SUM(closing_transit_amount) closing_transit_amount ,
+        SUM(MRP_ON_PRICE_CONTROL) MRP_ON_PRICE_CONTROL ,
+        SUM(RSP_ON_PRICE_CONTROL) RSP_ON_PRICE_CONTROL ,
+        SUM(PENDING_TRANFER_SALES_ORDER) PENDING_TRANFER_SALES_ORDER ,
+        SUM(GP_AMOUNT) GP_AMOUNT ,
+        SUM(ADJUSTED_GP_AMOUNT) ADJUSTED_GP_AMOUNT ,
+        SUM(TRANSIT_DIFFERENCE_QUANTITY) TRANSIT_DIFFERENCE_QUANTITY ,
+        SUM(TRANSIT_DIFFERENCE_AMOUNT) TRANSIT_DIFFERENCE_AMOUNT ,
+        SUM(COST_DIFFERENCE_AMOUNT) COST_DIFFERENCE_AMOUNT ,
+        SUM(UNSETTLED_QTY) UNSETTLED_QTY ,
+        SUM(UNSETTLED_SALE_AMOUNT) UNSETTLED_SALE_AMOUNT ,
+        SUM(UNSETTLED_TAX_AMOUNT) UNSETTLED_TAX_AMOUNT ,
+        SUM(UNSETTLED_PROMO_AMOUNT) UNSETTLED_PROMO_AMOUNT ,
+        SUM(UNSETTLED_DISCOUNT_AMOUNT) UNSETTLED_DISCOUNT_AMOUNT ,
+        SUM(PENDING_PO_QUANTITY) PENDING_PO_QUANTITY ,
+        SUM(ASON_WMS_RESERV_QTY_PKG_DUE) ASON_WMS_RESERV_QTY_PKG_DUE ,
+        SUM(PENDING_PKGIN_QTY_INV_DUE) PENDING_PKGIN_QTY_INV_DUE 
+FROM 
+    ( 
+        SELECT  admsite_code ,
+                icode ,
+                SUM(CASE WHEN loctype <> 'T' THEN COALESCE(in_quantity, 0) + COALESCE(out_quantity, 0) ELSE 0 END)  opening_quantity ,
+                SUM(CASE WHEN loctype <> 'T' THEN COALESCE(costamount, 0) ELSE 0 END) opening_amount ,
+                0 goods_receive_quantity ,
+                0 goods_receive_amount ,
+                0 goods_return_quantity ,
+                0 goods_return_amount ,
+                0 site_transfer_in_quantity ,
+                0 site_transfer_in_amount ,
+                0 site_transfer_out_quantity ,
+                0 site_transfer_out_amount ,
+                0 production_receive_quantity ,
+                0 production_receive_amount ,
+                0 production_return_quantity ,
+                0 production_return_amount ,
+                0 production_issue_quantity ,
+                0 production_issue_amount ,
+                0 conversion_issue_quantity ,
+                0 conversion_issue_amount ,
+                0 conversion_receive_quantity ,
+                0 conversion_receive_amount ,
+                0 ho_sale_quantity ,
+                0 ho_sale_amount ,
+                0 ho_sale_return_quantity ,
+                0 ho_sale_return_amount ,
+                0 net_ho_sale_quantity ,
+                0 net_ho_sale_amount ,
+                0 net_ho_sale_cogs_amount ,
+                0 retail_sale_quantity ,
+                0 retail_sale_amount ,
+                0 retail_sale_return_quantity ,
+                0 retail_sale_return_amount ,
+                0 net_retail_sale_quantity ,
+                0 net_retail_sale_amount ,
+                0 net_retail_sale_cogs_amount ,
+                0 net_sale_quantity ,
+                0 net_sale_amount ,
+                0 net_sale_cogs_amount ,
+                0 adjustment_quantity ,
+                0 adjustment_amount ,
+                0 misc_issue_receive_quantity ,
+                0 misc_issue_receive_amount ,
+                0 sale_tax_amount ,
+                0 sale_promo_amount ,
+                0 sale_discount_amount ,
+                0 warehouse_transfer_in_quantity ,
+                0 warehouse_transfer_in_amount 
+                0 wh_transfer_out_quantity ,
+                0 wh_transfer_out_amount ,
+                0 closing_stock_quantity ,
+                0 closing_stock_amount ,
+                SUM(CASE WHEN loctype = 'T' THEN COALESCE(in_quantity, 0) + COALESCE(out_quantity, 0) ELSE 0 END)  opening_transit_quantity ,
+                SUM(CASE WHEN loctype = 'T' THEN COALESCE(costamount, 0) ELSE 0 END) opening_transit_amount ,
+                0 transit_inward_quantity ,
+                0 transit_inward_amount ,
+                0 transit_outward_quantity ,
+                0 transit_outward_amount ,
+                0 transit_adjustment_quantity ,
+                0 transit_adjustment_amount ,
+                0 closing_transit_quantity ,
+                0 closing_transit_amount ,
+                SUM(CASE WHEN loctype = 'S' THEN COALESCE(in_quantity, 0) + COALESCE(out_quantity, 0) ELSE 0 END)  opening_store_qty ,
+                0 closing_store_qty ,
+                SUM(CASE WHEN loctype = 'L' THEN COALESCE(in_quantity, 0) + COALESCE(out_quantity, 0) ELSE 0 END)  opening_package_qty 
+                0 closing_package_qty ,
+                0  MRP_ON_PRICE_CONTROL ,
+                0 RSP_ON_PRICE_CONTROL ,
+                0 PENDING_TRANFER_SALES_ORDER ,
+                0 GP_AMOUNT ,
+                0 ADJUSTED_GP_AMOUNT ,
+                0 TRANSIT_DIFFERENCE_QUANTITY ,
+                0 TRANSIT_DIFFERENCE_AMOUNT ,
+                0 COST_DIFFERENCE_AMOUNT ,
+                0 UNSETTLED_QTY ,
+                0 UNSETTLED_SALE_AMOUNT ,
+                0 UNSETTLED_TAX_AMOUNT ,
+                0 UNSETTLED_PROMO_AMOUNT ,
+                0 UNSETTLED_DISCOUNT_AMOUNT ,
+                0 PENDING_PO_QUANTITY ,
+                0 ASON_WMS_RESERV_QTY_PKG_DUE ,
+                0 PENDING_PKGIN_QTY_INV_DUE 
+        FROM    MONTH_WISE_STOCK_AGG INNER JOIN LV_SITE ON MONTH_WISE_STOCK_AGG.admsite_code = LV_SITE.SITECODE 
+        WHERE   mcode < (SELECT mcode FROM admmonth WHERE dtfr = TO_DATE('2021-04-01','YYYY-MM-DD'))
+        and (array_length(string_to_array('',','), 1) is null or LV_SITE.display_name_shortcode = any(string_to_array('',','))) 
+        GROUP BY admsite_code ,icode 
+        UNION ALL 
+        SELECT  admsite_code ,
+                icode ,
+                0  opening_quantity ,
+                0  opening_amount ,
+                SUM(goods_receive_quantity) ,
+                SUM(goods_receive_amount) ,
+                SUM(goods_return_quantity) ,
+                SUM(goods_return_amount) ,
+                SUM(site_transfer_in_quantity) ,
+                SUM(site_transfer_in_amount) ,
+                SUM(site_transfer_out_quantity) ,
+                SUM(site_transfer_out_amount) ,
+                SUM(production_receive_quantity) ,
+                SUM(production_receive_amount) ,
+                SUM(production_return_quantity) ,
+                SUM(production_return_amount) ,
+                SUM(production_issue_quantity) ,
+                SUM(production_issue_amount) ,
+                SUM(conversion_issue_quantity) ,
+                SUM(conversion_issue_amount) ,
+                SUM(conversion_receive_quantity) ,
+                SUM(conversion_receive_amount) ,
+                SUM(ho_sale_quantity) ,
+                SUM(ho_sale_amount) ,
+                SUM(ho_sale_return_quantity) ,
+                SUM(ho_sale_return_amount) ,
+                SUM(net_ho_sale_quantity) ,
+                SUM(net_ho_sale_amount) ,
+                SUM(net_ho_sale_cogs_amount) ,
+                SUM(retail_sale_quantity) ,
+                SUM(retail_sale_amount) ,
+                SUM(retail_sale_return_quantity) ,
+                SUM(retail_sale_return_amount) ,
+                SUM(net_retail_sale_quantity) ,
+                SUM(net_retail_sale_amount) ,
+                SUM(net_retail_sale_cogs_amount) ,
+                SUM(net_sale_quantity) ,
+                SUM(net_sale_amount) ,
+                SUM(net_sale_cogs_amount) ,
+                SUM(adjustment_quantity) ,
+                SUM(adjustment_amount) ,
+                SUM(misc_issue_quantity) misc_issue_receive_quantity ,
+                SUM(misc_issue_amount)   misc_issue_receive_amount ,
+                SUM(sale_tax_amount) ,
+                SUM(sale_promo_amount) ,
+                SUM(sale_discount_amount) ,
+                SUM(warehouse_transfer_in_quantity) ,
+                SUM(warehouse_transfer_in_amount) ,
+                SUM(wh_transfer_out_quantity) ,
+                SUM(wh_transfer_out_amount) ,
+                SUM(CASE WHEN loctype <> 'T' THEN COALESCE(in_quantity, 0) + COALESCE(out_quantity, 0) ELSE 0 END)  closing_stock_quantity ,
+                SUM(CASE WHEN loctype <> 'T' THEN COALESCE(costamount, 0) ELSE 0 END) closing_stock_amount ,
+                0 opening_transit_quantity ,
+                0 opening_transit_amount ,
+                sum(TRANSIT_INWARD_QUANTITY) ,
+                sum(transit_inward_amount) ,
+                sum(transit_outward_quantity) ,
+                sum(transit_outward_amount) ,
+                sum(transit_adjustment_quantity) ,
+                SUM(transit_adjustment_amount) ,
+                SUM(CASE WHEN loctype = 'T' THEN COALESCE(in_quantity, 0) + COALESCE(out_quantity, 0) ELSE 0 END)  closing_transit_quantity ,
+                SUM(CASE WHEN loctype = 'T' THEN COALESCE(costamount, 0) ELSE 0 END)  closing_transit_amount ,
+                0 opening_store_qty ,
+                SUM(CASE WHEN loctype = 'S' THEN COALESCE(in_quantity, 0) + COALESCE(out_quantity, 0) ELSE 0 END)  closing_store_qty ,
+                0 opening_package_qty ,
+                SUM(CASE WHEN loctype = 'L' THEN COALESCE(in_quantity, 0) + COALESCE(out_quantity, 0) ELSE 0 END)  closing_package_qty ,
+                0  MRP_ON_PRICE_CONTROL ,
+                0 RSP_ON_PRICE_CONTROL ,
+                0 PENDING_TRANFER_SALES_ORDER ,
+                -1*SUM(net_sale_amount)-(-1*SUM(net_sale_cogs_amount)) GP_AMOUNT ,
+                -1*SUM(net_sale_amount)-(-1*SUM(net_sale_cogs_amount))  ADJUSTED_GP_AMOUNT ,
+                0 TRANSIT_DIFFERENCE_QUANTITY ,
+                0 TRANSIT_DIFFERENCE_AMOUNT ,
+                0 COST_DIFFERENCE_AMOUNT ,
+                0 UNSETTLED_QTY ,
+                0 UNSETTLED_SALE_AMOUNT ,
+                0 UNSETTLED_TAX_AMOUNT ,
+                0 UNSETTLED_PROMO_AMOUNT ,
+                0 UNSETTLED_DISCOUNT_AMOUNT ,
+                0 PENDING_PO_QUANTITY ,
+                0 ASON_WMS_RESERV_QTY_PKG_DUE ,
+                0 PENDING_PKGIN_QTY_INV_DUE 
+        FROM    MONTH_WISE_STOCK_AGG INNER JOIN LV_SITE ON MONTH_WISE_STOCK_AGG.admsite_code = LV_SITE.SITECODE 
+        WHERE   mcode BETWEEN (SELECT mcode FROM admmonth WHERE dtfr = TO_DATE('2021-04-01','YYYY-MM-DD')) 
+        AND (SELECT mcode FROM admmonth WHERE dtto = TO_DATE('2021-11-26','YYYY-MM-DD')) 
+        AND (array_length(string_to_array('',','), 1) is null or LV_SITE.display_name_shortcode = any(string_to_array('',','))) 
+        GROUP BY 
+                admsite_code 
+                ,icode 
+        UNION ALL 
+        SELECT  admsite_code ,
+                icode ,
+                0 opening_quantity ,
+                SUM ( CASE WHEN K.LOCCODE IS NULL AND K.ADJDT < TO_DATE('2021-04-01','YYYY-MM-DD')  THEN K.DIFF_COST_AMT ELSE 0 END) opening_amount ,
+                0 goods_receive_quantity ,
+                0 goods_receive_amount ,
+                0 goods_return_quantity ,
+                0 goods_return_amount ,
+                0 site_transfer_in_quantity ,
+                0 site_transfer_in_amount ,
+                0 site_transfer_out_quantity ,
+                0 site_transfer_out_amount ,
+                0 production_receive_quantity ,
+                0 production_receive_amount ,
+                0 production_return_quantity ,
+                0 production_return_amount ,
+                0 production_issue_quantity ,
+                0 production_issue_amount ,
+                0 conversion_issue_quantity ,
+                0 conversion_issue_amount ,
+                0 conversion_receive_quantity ,
+                0 conversion_receive_amount ,
+                0 ho_sale_quantity ,
+                0 ho_sale_amount ,
+                0 ho_sale_return_quantity ,
+                0 ho_sale_return_amount ,
+                0 net_ho_sale_quantity ,
+                0 net_ho_sale_amount ,
+                0 net_ho_sale_cogs_amount ,
+                0 retail_sale_quantity ,
+                0 retail_sale_amount ,
+                0 retail_sale_return_quantity ,
+                0 retail_sale_return_amount ,
+                0 net_retail_sale_quantity ,
+                0 net_retail_sale_amount ,
+                0 net_retail_sale_cogs_amount ,
+                0 net_sale_quantity ,
+                0 net_sale_amount ,
+                0 net_sale_cogs_amount ,
+                0 adjustment_quantity ,
+                0 adjustment_amount ,
+                0 misc_issue_receive_quantity ,
+                0 misc_issue_receive_amount ,
+                0 sale_tax_amount ,
+                0 sale_promo_amount ,
+                0 sale_discount_amount ,
+                0 warehouse_transfer_in_quantity ,
+                0 warehouse_transfer_in_amount ,
+                0 wh_transfer_out_quantity ,
+                0 wh_transfer_out_amount ,
+                0 closing_stock_quantity ,
+                SUM (CASE WHEN K.LOCCODE IS NULL and K.ADJDT between TO_DATE('2021-04-01','YYYY-MM-DD') and TO_DATE('2021-11-26','YYYY-MM-DD') THEN K.DIFF_COST_AMT ELSE 0 END) closing_stock_amount ,
+                0 opening_transit_quantity ,
+                SUM (CASE WHEN ( K.LOCCODE IS NOT NULL AND K.ADJDT < TO_DATE('2021-04-01','YYYY-MM-DD'))  THEN  K.DIFF_COST_AMT ELSE 0 END) opening_transit_amount ,
+                0 transit_inward_quantity ,
+                0 transit_inward_amount ,
+                0 transit_outward_quantity ,
+                0 transit_outward_amount ,
+                0 transit_adjustment_quantity ,
+                0 transit_adjustment_amount ,
+                0 closing_transit_quantity ,
+                SUM(CASE WHEN(K.LOCCODE IS NOT NULL AND K.ADJDT <= TO_DATE('2021-11-26','YYYY-MM-DD')) THEN K.DIFF_COST_AMT ELSE 0 END) closing_transit_amount ,
+                0 opening_store_qty ,
+                0 closing_store_qty ,
+                0 opening_package_qty ,
+                0 closing_package_qty ,
+                0 MRP_ON_PRICE_CONTROL ,
+                0 RSP_ON_PRICE_CONTROL ,
+                0 PENDING_TRANFER_SALES_ORDER ,
+                0 GP_AMOUNT ,
+                0 - SUM ( CASE WHEN ( K.LOCCODE IS NULL AND K.ADJDT BETWEEN TO_DATE('2021-04-01','YYYY-MM-DD') AND TO_DATE('2021-11-26','YYYY-MM-DD')) THEN K.DIFF_COST_AMT  ELSE 0 END) ADJUSTED_GP_AMOUNT ,
+                0 TRANSIT_DIFFERENCE_QUANTITY ,
+                SUM ( CASE WHEN ( K.LOCCODE IS NOT NULL AND K.ADJDT BETWEEN TO_DATE('2021-04-01','YYYY-MM-DD') AND TO_DATE('2021-11-26','YYYY-MM-DD')) THEN K.DIFF_COST_AMT  ELSE 0 END) TRANSIT_DIFFERENCE_AMOUNT ,
+                SUM ( CASE WHEN ( K.LOCCODE IS NULL AND K.ADJDT BETWEEN TO_DATE('2021-04-01','YYYY-MM-DD') AND TO_DATE('2021-11-26','YYYY-MM-DD')) THEN K.DIFF_COST_AMT ELSE 0 END) COST_DIFFERENCE_AMOUNT ,
+                0 UNSETTLED_QTY ,
+                0 UNSETTLED_SALE_AMOUNT ,
+                0 UNSETTLED_TAX_AMOUNT ,
+                0 UNSETTLED_PROMO_AMOUNT ,
+                0 UNSETTLED_DISCOUNT_AMOUNT ,
+                0 PENDING_PO_QUANTITY ,
+                0 ASON_WMS_RESERV_QTY_PKG_DUE ,
+                0 PENDING_PKGIN_QTY_INV_DUE 
+        FROM    INVCOSTADJ k INNER JOIN LV_SITE ON k.admsite_code = LV_SITE.SITECODE 
+        WHERE   K.ADJDT <= to_date('2021-11-26', 'yyyy-mm-dd') 
+        AND (array_length(string_to_array('',','), 1) is null or LV_SITE.display_name_shortcode = any(string_to_array('',','))) 
+        GROUP BY 
+                admsite_code 
+                ,icode 
+        UNION ALL 
+        SELECT  pb.admsite_code ,
+                icode ,
+                0 opening_quantity ,
+                0 opening_amount ,
+                0 goods_receive_quantity ,
+                0 goods_receive_amount ,
+                0 goods_return_quantity ,
+                0 goods_return_amount ,
+                0 site_transfer_in_quantity ,
+                0 site_transfer_in_amount ,
+                0 site_transfer_out_quantity ,
+                0 site_transfer_out_amount ,
+                0 production_receive_quantity ,
+                0 production_receive_amount ,
+                0 production_return_quantity ,
+                0 production_return_amount ,
+                0 production_issue_quantity ,
+                0 production_issue_amount ,
+                0 conversion_issue_quantity ,
+                0 conversion_issue_amount ,
+                0 conversion_receive_quantity ,
+                0 conversion_receive_amount ,
+                0 ho_sale_quantity ,
+                0 ho_sale_amount ,
+                0 ho_sale_return_quantity ,
+                0 ho_sale_return_amount ,
+                0 net_ho_sale_quantity 
+                0 net_ho_sale_amount ,
+                0 net_ho_sale_cogs_amount ,
+                0 retail_sale_quantity ,
+                0 retail_sale_amount ,
+                0 retail_sale_return_quantity ,
+                0 retail_sale_return_amount ,
+                0 net_retail_sale_quantity ,
+                0 net_retail_sale_amount ,
+                0 net_retail_sale_cogs_amount ,
+                0 net_sale_quantity ,
+                0 net_sale_amount ,
+                0 net_sale_cogs_amount ,
+                0 adjustment_quantity ,
+                0 adjustment_amount ,
+                0 misc_issue_receive_quantity ,
+                0 misc_issue_receive_amount ,
+                0 sale_tax_amount ,
+                0 sale_promo_amount ,
+                0 sale_discount_amount ,
+                0 warehouse_transfer_in_quantity ,
+                0 warehouse_transfer_in_amount ,
+                0 wh_transfer_out_quantity ,
+                0 wh_transfer_out_amount ,
+                0 closing_stock_quantity ,
+                0 closing_stock_amount ,
+                0 opening_transit_quantity ,
+                0 opening_transit_amount ,
+                0 transit_inward_quantity ,
+                0 transit_inward_amount ,
+                0 transit_outward_quantity ,
+                0 transit_outward_amount ,
+                0 transit_adjustment_quantity ,
+                0 transit_adjustment_amount ,
+                0 closing_transit_quantity ,
+                0 closing_transit_amount ,
+                0 opening_store_qty ,
+                0 closing_store_qty ,
+                0 opening_package_qty ,
+                0 closing_package_qty ,
+                0 MRP_ON_PRICE_CONTROL ,
+                0 RSP_ON_PRICE_CONTROL ,
+                0 PENDING_TRANFER_SALES_ORDER ,
+                0 GP_AMOUNT ,
+                0 ADJUSTED_GP_AMOUNT ,
+                0 TRANSIT_DIFFERENCE_QUANTITY ,
+                0 TRANSIT_DIFFERENCE_AMOUNT ,
+                0 COST_DIFFERENCE_AMOUNT ,
+                SUM (PBI.QTY) UNSETTLED_QTY ,
+                SUM (PBI.NETAMT) UNSETTLED_SALE_AMOUNT ,
+                SUM (PBI.TAXAMT) UNSETTLED_TAX_AMOUNT ,
+                SUM (PBI.PROMOAMT) UNSETTLED_PROMO_AMOUNT ,
+                SUM (PBI.DISCOUNTAMT) UNSETTLED_DISCOUNT_AMOUNT ,
+                0 PENDING_PO_QUANTITY ,
+                0 ASON_WMS_RESERV_QTY_PKG_DUE ,
+                0 PENDING_PKGIN_QTY_INV_DUE 
+        FROM PSITE_POSBILL_PARK PB, PSITE_POSBILLITEM_PARK PBI, LV_SITE 
+        WHERE PB.CODE = PBI.PSITE_POSBILL_CODE 
+        AND PB.admsite_code = LV_SITE.SITECODE 
+        AND PB.BILLDATE::DATE between to_date('2021-04-01', 'yyyy-mm-dd') and to_date('2021-11-26', 'yyyy-mm-dd') 
+        AND (array_length(string_to_array('',','), 1) is null or LV_SITE.display_name_shortcode = any(string_to_array('',','))) 
+        GROUP BY 
+                pb.admsite_code ,icode 
+    ) t0 
+GROUP BY 
+        admsite_code 
+        ,icode;
