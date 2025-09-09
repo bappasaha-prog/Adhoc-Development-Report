@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="19.2.4.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v19.2, Version=19.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Report1" ScriptsSource="&#xD;&#xA;private void AmtInWrd_GetValue(object sender, DevExpress.XtraReports.UI.GetValueEventArgs e) &#xD;&#xA;{&#xD;&#xA;string isNegative = &quot;Rs. &quot;;  &#xD;&#xA;    try  &#xD;&#xA;    {  &#xD;&#xA;        //Console.WriteLine(&quot;Enter a Number to convert to currency&quot;);  &#xD;&#xA;        string number = Convert.ToDouble(e.GetColumnValue(&quot;NET_AMOUNT&quot;)).ToString();  &#xD;&#xA;//&quot;15550000.90&quot;;&#xD;&#xA;  &#xD;&#xA;        if (number.Contains(&quot;-&quot;))  &#xD;&#xA;        {  &#xD;&#xA;            isNegative = isNegative + &quot;Minus &quot;;  &#xD;&#xA;            number = number.Substring(1, number.Length - 1);  &#xD;&#xA;        }  &#xD;&#xA;        if (number == &quot;0&quot;)  &#xD;&#xA;        {  &#xD;&#xA;            e.Value = &quot;Rs. Zero Only&quot;;  &#xD;&#xA;        }  &#xD;&#xA;        else  &#xD;&#xA;        {  &#xD;&#xA;            e.Value = isNegative + ConvertToWords(number);  &#xD;&#xA;        }  &#xD;&#xA;       // Console.ReadKey();  &#xD;&#xA;    }  &#xD;&#xA;    catch (Exception ex)  &#xD;&#xA;    {  &#xD;&#xA;        e.Value = ex.Message;&#xD;&#xA;&#x9;  //Console.WriteLine(ex.Message);&#xD;&#xA;    }&#xD;&#xA;&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;private static String ConvertToWords(String numb)  &#xD;&#xA;{  &#xD;&#xA;    String val = &quot;&quot;, wholeNo = numb, points = &quot;&quot;, andStr = &quot;&quot;, pointStr = &quot;&quot;;  &#xD;&#xA;    String endStr = &quot;Only&quot;;  &#xD;&#xA;    try  &#xD;&#xA;    {  &#xD;&#xA;&#x9;&#x9;numb = Convert.ToDecimal(numb).ToString(&quot;0.00&quot;);&#xD;&#xA;        int decimalPlace = numb.IndexOf(&quot;.&quot;);  &#xD;&#xA;        if (decimalPlace &gt; 0)  &#xD;&#xA;        {  &#xD;&#xA;            wholeNo = numb.Substring(0, decimalPlace);  &#xD;&#xA;            points = numb.Substring(decimalPlace + 1);  &#xD;&#xA;            if (Convert.ToInt32(points) &gt; 0)  &#xD;&#xA;            {  &#xD;&#xA;                andStr = &quot;and&quot;;// just to separate whole numbers from points/cents    &#xD;&#xA;                endStr = &quot;Paisa &quot; + endStr;//Cents    &#xD;&#xA;                //pointStr = ConvertDecimals(points);&#xD;&#xA;&#x9;&#x9;&#x9;pointStr = Convert.ToDecimal(points).ToString(&quot;00&quot;); &#xD;&#xA;&#x9;&#x9;&#x9;pointStr = ConvertDecimals(pointStr);            }  &#xD;&#xA;        }  &#xD;&#xA;        val = String.Format(&quot;{0} {1}{2} {3}&quot;, ConvertWholeNumber(wholeNo).Trim(), andStr, pointStr, endStr);  &#xD;&#xA;    }  &#xD;&#xA;    catch { }  &#xD;&#xA;    return val;  &#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;private static String ConvertDecimals(String number)  &#xD;&#xA;{  &#xD;&#xA;    String cd = &quot;&quot;, digit = &quot;&quot;, engOne = &quot;&quot;;  &#xD;&#xA;    for (int i = 0; i &lt; number.Length; i++)  &#xD;&#xA;    {  &#xD;&#xA;        digit = number[i].ToString();  &#xD;&#xA;        if (digit.Equals(&quot;0&quot;))  &#xD;&#xA;        {  &#xD;&#xA;            engOne = &quot;Zero&quot;;  &#xD;&#xA;        }  &#xD;&#xA;        else  &#xD;&#xA;        {  &#xD;&#xA;            engOne = ones(digit);  &#xD;&#xA;        }  &#xD;&#xA;        cd += &quot; &quot; + engOne;  &#xD;&#xA;    }  &#xD;&#xA;    return cd;  &#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;private static String ConvertWholeNumber(String Number)  &#xD;&#xA;{  &#xD;&#xA;    string word = &quot;&quot;;  &#xD;&#xA;    try  &#xD;&#xA;    {  &#xD;&#xA;        bool beginsZero = false;//tests for 0XX    &#xD;&#xA;        bool isDone = false;//test if already translated    &#xD;&#xA;        double dblAmt = (Convert.ToDouble(Number));  &#xD;&#xA;        //if ((dblAmt &gt; 0) &amp;&amp; number.StartsWith(&quot;0&quot;))    &#xD;&#xA;        if (dblAmt &gt; 0)  &#xD;&#xA;        {//test for zero or digit zero in a nuemric    &#xD;&#xA;            beginsZero = Number.StartsWith(&quot;0&quot;);  &#xD;&#xA;  &#xD;&#xA;            int numDigits = Number.Length;  &#xD;&#xA;            int pos = 0;//store digit grouping    &#xD;&#xA;            String place = &quot;&quot;;//digit grouping name:hundres,thousand,etc...    &#xD;&#xA;            switch (numDigits)  &#xD;&#xA;            {  &#xD;&#xA;                case 1://ones' range    &#xD;&#xA;  &#xD;&#xA;                    word = ones(Number);  &#xD;&#xA;                    isDone = true;  &#xD;&#xA;                    break;  &#xD;&#xA;                case 2://tens' range    &#xD;&#xA;                    word = tens(Number);  &#xD;&#xA;                    isDone = true;  &#xD;&#xA;                    break;  &#xD;&#xA;                case 3://hundreds' range    &#xD;&#xA;                    pos = (numDigits % 3) + 1;  &#xD;&#xA;                    place = &quot; Hundred &quot;;  &#xD;&#xA;                    break;  &#xD;&#xA;                case 4://thousands' range    &#xD;&#xA;                case 5:  &#xD;&#xA;&#x9;&#x9;&#x9;  pos = (numDigits % 4) + 1;  &#xD;&#xA;                    place = &quot; Thousand &quot;;  &#xD;&#xA;                    break;&#xD;&#xA;                case 6://Lacs range  &#xD;&#xA;                case 7:  &#xD;&#xA;&#x9;&#x9;&#x9;  pos = (numDigits % 6) + 1;  &#xD;&#xA;                    place = &quot; Lacs &quot;;  &#xD;&#xA;                    break;&#xD;&#xA;                case 8:  &#xD;&#xA;                case 9:  &#xD;&#xA;                    pos = (numDigits % 8) + 1;  &#xD;&#xA;                    place = &quot; Crore &quot;;  &#xD;&#xA;                    break;  &#xD;&#xA;                case 10://Billions's range    &#xD;&#xA;                case 11:  &#xD;&#xA;                case 12:  &#xD;&#xA;  &#xD;&#xA;                    pos = (numDigits % 10) + 1;  &#xD;&#xA;                    place = &quot; Billion &quot;;  &#xD;&#xA;                    break;  &#xD;&#xA;                //add extra case options for anything above Billion...    &#xD;&#xA;                default:  &#xD;&#xA;                    isDone = true;  &#xD;&#xA;                    break;  &#xD;&#xA;            }  &#xD;&#xA;            if (!isDone)  &#xD;&#xA;            {//if transalation is not done, continue...(Recursion comes in now!!)    &#xD;&#xA;                if (Number.Substring(0, pos) != &quot;0&quot; &amp;&amp; Number.Substring(pos) != &quot;0&quot;)  &#xD;&#xA;                {  &#xD;&#xA;                    try  &#xD;&#xA;                    {  &#xD;&#xA;                        word = ConvertWholeNumber(Number.Substring(0, pos)) + place + ConvertWholeNumber(Number.Substring(pos));  &#xD;&#xA;                    }  &#xD;&#xA;                    catch { }  &#xD;&#xA;                }  &#xD;&#xA;                else  &#xD;&#xA;                {  &#xD;&#xA;                    word = ConvertWholeNumber(Number.Substring(0, pos)) + ConvertWholeNumber(Number.Substring(pos));  &#xD;&#xA;                }  &#xD;&#xA;  &#xD;&#xA;                //check for trailing zeros    &#xD;&#xA;                //if (beginsZero) word = &quot; and &quot; + word.Trim();    &#xD;&#xA;            }  &#xD;&#xA;            //ignore digit grouping names    &#xD;&#xA;            if (word.Trim().Equals(place.Trim())) word = &quot;&quot;;  &#xD;&#xA;        }  &#xD;&#xA;    }  &#xD;&#xA;    catch { }  &#xD;&#xA;    return word.Trim();  &#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;private static String ones(String Number)  &#xD;&#xA;{  &#xD;&#xA;    int _Number = Convert.ToInt32(Number);  &#xD;&#xA;    String name = &quot;&quot;;  &#xD;&#xA;    switch (_Number)  &#xD;&#xA;    {  &#xD;&#xA;  &#xD;&#xA;        case 1:  &#xD;&#xA;            name = &quot;One&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 2:  &#xD;&#xA;            name = &quot;Two&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 3:  &#xD;&#xA;            name = &quot;Three&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 4:  &#xD;&#xA;            name = &quot;Four&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 5:  &#xD;&#xA;            name = &quot;Five&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 6:  &#xD;&#xA;            name = &quot;Six&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 7:  &#xD;&#xA;            name = &quot;Seven&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 8:  &#xD;&#xA;            name = &quot;Eight&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 9:  &#xD;&#xA;            name = &quot;Nine&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;    }  &#xD;&#xA;    return name;  &#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;private static String tens(String Number)  &#xD;&#xA;{  &#xD;&#xA;    int _Number = Convert.ToInt32(Number);  &#xD;&#xA;    String name = null;  &#xD;&#xA;    switch (_Number)  &#xD;&#xA;    {  &#xD;&#xA;        case 10:  &#xD;&#xA;            name = &quot;Ten&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 11:  &#xD;&#xA;            name = &quot;Eleven&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 12:  &#xD;&#xA;            name = &quot;Twelve&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 13:  &#xD;&#xA;            name = &quot;Thirteen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 14:  &#xD;&#xA;            name = &quot;Fourteen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 15:  &#xD;&#xA;            name = &quot;Fifteen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 16:  &#xD;&#xA;            name = &quot;Sixteen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 17:  &#xD;&#xA;            name = &quot;Seventeen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 18:  &#xD;&#xA;            name = &quot;Eighteen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 19:  &#xD;&#xA;            name = &quot;Nineteen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 20:  &#xD;&#xA;            name = &quot;Twenty&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 30:  &#xD;&#xA;            name = &quot;Thirty&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 40:  &#xD;&#xA;            name = &quot;Fourty&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 50:  &#xD;&#xA;            name = &quot;Fifty&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 60:  &#xD;&#xA;            name = &quot;Sixty&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 70:  &#xD;&#xA;            name = &quot;Seventy&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 80:  &#xD;&#xA;            name = &quot;Eighty&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 90:  &#xD;&#xA;            name = &quot;Ninety&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        default:  &#xD;&#xA;            if (_Number &gt; 0)  &#xD;&#xA;            {  &#xD;&#xA;                name = tens(Number.Substring(0, 1) + &quot;0&quot;) + &quot; &quot; + ones(Number.Substring(1));  &#xD;&#xA;            }  &#xD;&#xA;            break;  &#xD;&#xA;    }  &#xD;&#xA;    return name;  &#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;" Margins="16, 15, 16, 17" PageWidth="850" PageHeight="1100" Version="19.2" DataMember="Sales_Invoice_Header" DataSource="#Ref-0" Font="Arial, 9.75pt">
+  <Parameters>
+    <Item1 Ref="3" Description="Code" MultiValue="true" Name="Code" Type="#Ref-2" />
+  </Parameters>
+  <CalculatedFields>
+    <Item1 Ref="4" Name="ItemGrp" Expression="[DIVISION]+' '+[SECTION]+' '+[DEPARTMENT]" DataMember="Sales_Invoice_Header.Sales_Invoice_HeaderSales_Item" />
+    <Item2 Ref="5" Name="ItemAmt" Expression="[INVOICE_RATE]*[INVOICE_QUANTITY]" DataMember="Sales_Invoice_Header.Sales_Invoice_HeaderSales_Item" />
+    <Item3 Ref="6" Name="ItemName" Expression="[BARCODE]+' '+[CATEGORY1]+' '+[CATEGORY2]+' '+[CATEGORY3]+' '+[CATEGORY4]+' '+[CATEGORY5]+' '+[CATEGORY6]" DataMember="Sales_Invoice_Header.Sales_Invoice_HeaderSales_Item" />
+    <Item4 Ref="7" Name="AmtInWrd" DataMember="Sales_Invoice_Header">
+      <Scripts Ref="8" OnGetValue="AmtInWrd_GetValue" />
+    </Item4>
+  </CalculatedFields>
+  <Bands>
+    <Item1 Ref="9" ControlType="TopMarginBand" Name="TopMargin" HeightF="16" />
+    <Item2 Ref="10" ControlType="DetailBand" Name="Detail" HeightF="0" />
+    <Item3 Ref="11" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="17" />
+    <Item4 Ref="12" ControlType="GroupHeaderBand" Name="GroupHeader1" PageBreak="BeforeBand" HeightF="209.030365" Font="Calibri, 9pt">
+      <SubBands>
+        <Item1 Ref="13" ControlType="SubBand" Name="SubBand1" HeightF="148.855667">
+          <Controls>
+            <Item1 Ref="14" ControlType="XRLabel" Name="label15" Multiline="true" Text="label80" TextAlignment="MiddleRight" SizeF="312.5,37.5000038" LocationFloat="475, 0" Font="Calibri, 24pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="15" EventName="BeforePrint" PropertyName="Text" Expression="[INVOICE_NO]" />
+              </ExpressionBindings>
+              <StylePriority Ref="16" UseFont="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="17" ControlType="XRLabel" Name="label7" Multiline="true" Text="ONAYA FASHIONS PVT LTD" TextAlignment="TopCenter" SizeF="688.666748,23" LocationFloat="61.0417671, 54.5833359" Font="Calibri, 24pt, style=Bold" Padding="2,2,0,0,100">
+              <StylePriority Ref="18" UseFont="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="19" ControlType="XRLabel" Name="label8" Multiline="true" Text="label88" TextAlignment="TopCenter" SizeF="688.6668,23" LocationFloat="61.04169, 77.58332" Font="Calibri, 20pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="20" EventName="BeforePrint" PropertyName="Text" Expression="'95A, Park Street, 4th Floor, Kolkata-700016'+NewLine()+&#xA;'West Bengal, PAN : AAECM9913D'+NewLine()+&#xA;'CIN NO. : U51109WB2007PTC114090'+NewLine()+&#xA;'GSTIN : 19AAECM9913D1ZD'" />
+              </ExpressionBindings>
+              <StylePriority Ref="21" UseFont="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="22" ControlType="XRLabel" Name="label9" Multiline="true" Text="FROM&#x9;" TextAlignment="MiddleLeft" SizeF="325,37.5" LocationFloat="50, 0" Font="Calibri, 24pt, style=Bold" Padding="2,2,0,0,100">
+              <StylePriority Ref="23" UseFont="false" UseTextAlignment="false" />
+            </Item4>
+            <Item5 Ref="24" ControlType="XRLabel" Name="label14" Multiline="true" Text="label88" TextAlignment="TopCenter" SizeF="688.6668,23" LocationFloat="61.04181, 100.583321" Font="Calibri, 20pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="25" EventName="BeforePrint" PropertyName="Text" Expression="'Phone : 9073997160, E-Mail : accounts@onaya.in'" />
+              </ExpressionBindings>
+              <StylePriority Ref="26" UseFont="false" UseTextAlignment="false" />
+            </Item5>
+          </Controls>
+        </Item1>
+        <Item2 Ref="27" ControlType="SubBand" Name="SubBand2" HeightF="115.507874">
+          <Controls>
+            <Item1 Ref="28" ControlType="XRLabel" Name="label12" Multiline="true" Text="label88" TextAlignment="MiddleLeft" SizeF="575,37.5" LocationFloat="212.5, 62.5" Font="Calibri, 20pt, style=Bold" Padding="2,2,0,0,100" Borders="Left, Right, Bottom">
+              <ExpressionBindings>
+                <Item1 Ref="29" EventName="BeforePrint" PropertyName="Text" Expression="[REMARKS]" />
+              </ExpressionBindings>
+              <StylePriority Ref="30" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="31" ControlType="XRLabel" Name="label13" Multiline="true" Text="Bilty NO. :" TextAlignment="MiddleLeft" SizeF="187.5,37.5" LocationFloat="25, 62.5" Font="Calibri, 20pt, style=Bold" Padding="2,2,0,0,100" Borders="Left, Bottom">
+              <StylePriority Ref="32" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="33" ControlType="XRLabel" Name="label10" Multiline="true" Text="Transporter :" TextAlignment="MiddleLeft" SizeF="187.5,37.5" LocationFloat="25, 25" Font="Calibri, 20pt, style=Bold" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+              <StylePriority Ref="34" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="35" ControlType="XRLabel" Name="label11" Multiline="true" Text="label88" TextAlignment="MiddleLeft" SizeF="575,37.5" LocationFloat="212.5, 25" Font="Calibri, 20pt, style=Bold" Padding="2,2,0,0,100" Borders="All">
+              <ExpressionBindings>
+                <Item1 Ref="36" EventName="BeforePrint" PropertyName="Text" Expression="[TRANSPORTER_NAME]" />
+              </ExpressionBindings>
+              <StylePriority Ref="37" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item4>
+          </Controls>
+        </Item2>
+      </SubBands>
+      <GroupFields>
+        <Item1 Ref="38" FieldName="INVCODE" />
+      </GroupFields>
+      <Controls>
+        <Item1 Ref="39" ControlType="XRLabel" Name="label6" Multiline="true" Text="label88" TextAlignment="TopCenter" SizeF="688.6668,23" LocationFloat="61.04181, 114.19339" Font="Calibri, 20pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="40" EventName="BeforePrint" PropertyName="Text" Expression="[SHIPPING_CITY]+' '+[SHIPPING_PINCODE]" />
+          </ExpressionBindings>
+          <StylePriority Ref="41" UseFont="false" UseTextAlignment="false" />
+        </Item1>
+        <Item2 Ref="42" ControlType="XRLabel" Name="label4" Multiline="true" Text="GSTIN :" TextAlignment="TopRight" SizeF="250.7879,22.9999924" LocationFloat="61.04168, 160.19339" Font="Calibri, 20pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="43" UseFont="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="44" ControlType="XRLabel" Name="label5" Multiline="true" Text="label88" TextAlignment="TopLeft" SizeF="437.8789,22.9999924" LocationFloat="311.8296, 160.19339" Font="Calibri, 20pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="45" EventName="BeforePrint" PropertyName="Text" Expression="[GST_IDENTIFICATION_NO]" />
+          </ExpressionBindings>
+          <StylePriority Ref="46" UseFont="false" UseTextAlignment="false" />
+        </Item3>
+        <Item4 Ref="47" ControlType="XRLabel" Name="label3" Multiline="true" Text="label88" TextAlignment="TopLeft" SizeF="437.8789,22.9999924" LocationFloat="311.8295, 137.19339" Font="Calibri, 20pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="48" EventName="BeforePrint" PropertyName="Text" Expression="[PHONE1]+' '+[PHONE2]+' '+[MOBILE]" />
+          </ExpressionBindings>
+          <StylePriority Ref="49" UseFont="false" UseTextAlignment="false" />
+        </Item4>
+        <Item5 Ref="50" ControlType="XRLabel" Name="label2" Multiline="true" Text="CONTACT NUMBER :" TextAlignment="TopRight" SizeF="250.7879,22.9999924" LocationFloat="61.0416031, 137.19339" Font="Calibri, 20pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="51" UseFont="false" UseTextAlignment="false" />
+        </Item5>
+        <Item6 Ref="52" ControlType="XRLabel" Name="label1" Multiline="true" Text="TO" TextAlignment="MiddleLeft" SizeF="325,37.5" LocationFloat="50, 12.5" Font="Calibri, 24pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="53" UseFont="false" UseTextAlignment="false" />
+        </Item6>
+        <Item7 Ref="54" ControlType="XRLabel" Name="label88" Multiline="true" Text="label88" TextAlignment="TopCenter" SizeF="688.6668,23" LocationFloat="61.04169, 91.19339" Font="Calibri, 20pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="55" EventName="BeforePrint" PropertyName="Text" Expression="[SHIPPING_ADDRESS]" />
+          </ExpressionBindings>
+          <StylePriority Ref="56" UseFont="false" UseTextAlignment="false" />
+        </Item7>
+        <Item8 Ref="57" ControlType="XRLabel" Name="label80" Multiline="true" Text="label80" TextAlignment="TopCenter" SizeF="688.666748,23" LocationFloat="61.0417671, 68.1934052" Font="Calibri, 24pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="58" EventName="BeforePrint" PropertyName="Text" Expression="[LV_REFSITE_NAME]" />
+          </ExpressionBindings>
+          <StylePriority Ref="59" UseFont="false" UseTextAlignment="false" />
+        </Item8>
+      </Controls>
+      <StylePriority Ref="60" UseFont="false" />
+    </Item4>
+  </Bands>
+  <CrossBandControls>
+    <Item1 Ref="61" ControlType="XRCrossBandBox" Name="crossBandBox2" WidthF="772.9167" StartBand="#Ref-13" EndBand="#Ref-13" StartPointFloat="20.4583149, 37.5000038" EndPointFloat="20.4583149, 139.776276" />
+    <Item2 Ref="62" ControlType="XRCrossBandBox" Name="crossBandBox1" WidthF="772.9167" StartBand="#Ref-12" EndBand="#Ref-12" StartPointFloat="20.4583282, 50.62525" EndPointFloat="20.4583282, 200.818451" />
+  </CrossBandControls>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v19.2" Name="sqlDataSource1" Base64="PFNxbERhdGFTb3VyY2UgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxDb25uZWN0aW9uIE5hbWU9IkNvbm5lY3Rpb24iIENvbm5lY3Rpb25TdHJpbmc9Inhwb3Byb3ZpZGVyPU9EUE1hbmFnZWQ7ZGF0YSBzb3VyY2U9JnF1b3Q7KERFU0NSSVBUSU9OPShBRERSRVNTPShQUk9UT0NPTD1UQ1ApKEhPU1Q9YmEtMDIpKFBPUlQ9MTUyMSkpKENPTk5FQ1RfREFUQT0oU0VSVklDRV9OQU1FPWdpbmVzeXMpKSkmcXVvdDsiIC8+PFF1ZXJ5IFR5cGU9IlNlbGVjdFF1ZXJ5IiBOYW1lPSJTYWxlc19JbnZvaWNlX0hlYWRlciI+PFBhcmFtZXRlciBOYW1lPSJDb2RlIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5JbnQzMikoP0NvZGUpPC9QYXJhbWV0ZXI+PFRhYmxlcz48VGFibGUgTmFtZT0iTFZfU0FMSU5WX0hFQURFUiIgWD0iLTExMCIgWT0iMzAiIFdpZHRoPSIxNjAiIEhlaWdodD0iMjAwNCIgLz48VGFibGUgTmFtZT0iTFZfUkVGU0lURSIgWD0iMTQwIiBZPSI0MCIgV2lkdGg9IjE1MCIgSGVpZ2h0PSIyMzY0IiAvPjxSZWxhdGlvbiBUeXBlPSJJbm5lciIgUGFyZW50PSJMVl9TQUxJTlZfSEVBREVSIiBOZXN0ZWQ9IkxWX1JFRlNJVEUiPjxLZXlDb2x1bW4gUGFyZW50PSJBRE1TSVRFX0NPREUiIE5lc3RlZD0iU0lURUNPREUiIC8+PC9SZWxhdGlvbj48L1RhYmxlcz48Q29sdW1ucz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfSEVBREVSIiBOYW1lPSJJTlZDT0RFIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9IRUFERVIiIE5hbWU9IklOVk9JQ0VfREFURSIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfSEVBREVSIiBOYW1lPSJUUkFOU1BPUlRFUl9OQU1FIiAvPjxDb2x1bW4gVGFibGU9IkxWX1JFRlNJVEUiIE5hbWU9Ik5BTUUiIEFsaWFzPSJMVl9SRUZTSVRFX05BTUUiIC8+PENvbHVtbiBUYWJsZT0iTFZfUkVGU0lURSIgTmFtZT0iU0hJUFBJTkdfQ0lUWSIgLz48Q29sdW1uIFRhYmxlPSJMVl9SRUZTSVRFIiBOYW1lPSJTSElQUElOR19QSU5DT0RFIiAvPjxDb2x1bW4gVGFibGU9IkxWX1JFRlNJVEUiIE5hbWU9IlNISVBQSU5HX0FERFJFU1MiIC8+PENvbHVtbiBUYWJsZT0iTFZfUkVGU0lURSIgTmFtZT0iUEhPTkUxIiAvPjxDb2x1bW4gVGFibGU9IkxWX1JFRlNJVEUiIE5hbWU9IlBIT05FMiIgLz48Q29sdW1uIFRhYmxlPSJMVl9SRUZTSVRFIiBOYW1lPSJNT0JJTEUiIC8+PENvbHVtbiBUYWJsZT0iTFZfUkVGU0lURSIgTmFtZT0iR1NUX0lERU5USUZJQ0FUSU9OX05PIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9IRUFERVIiIE5hbWU9IklOVk9JQ0VfTk8iIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0hFQURFUiIgTmFtZT0iUkVNQVJLUyIgLz48L0NvbHVtbnM+PEZpbHRlcj5bTFZfU0FMSU5WX0hFQURFUi5JTlZDT0RFXSBJbiAoP0NvZGUpPC9GaWx0ZXI+PEdyb3VwRmlsdGVyPjwvR3JvdXBGaWx0ZXI+PE1ldGEgWD0iMjAiIFk9IjIwIiBXaWR0aD0iMjI1IiBIZWlnaHQ9Ijg3NCIgLz48L1F1ZXJ5PjxSZWxhdGlvbiBNYXN0ZXI9IlNhbGVzX0ludm9pY2VfSGVhZGVyIiBEZXRhaWw9IkxWX1NBTElOVl9IU04iIE5hbWU9IlNhbGVzX0ludm9pY2VfSGVhZGVyTFZfU0FMSU5WX0hTTiI+PEtleUNvbHVtbiBNYXN0ZXI9IklOVkNPREUiIERldGFpbD0iSU5WQ09ERSIgLz48L1JlbGF0aW9uPjxSZWxhdGlvbiBNYXN0ZXI9IlNhbGVzX0ludm9pY2VfSGVhZGVyIiBEZXRhaWw9IlNhbGVzX0l0ZW0iIE5hbWU9IlNhbGVzX0ludm9pY2VfSGVhZGVyU2FsZXNfSXRlbSI+PEtleUNvbHVtbiBNYXN0ZXI9IklOVkNPREUiIERldGFpbD0iSU5WQ09ERSIgLz48L1JlbGF0aW9uPjxSZWxhdGlvbiBNYXN0ZXI9IlNhbGVzX0ludm9pY2VfSGVhZGVyIiBEZXRhaWw9IkxWX1NBTElOVl9SRUZfRE9DUyIgTmFtZT0iU2FsZXNfSW52b2ljZV9IZWFkZXJMVl9TQUxJTlZfUkVGX0RPQ1MiPjxLZXlDb2x1bW4gTWFzdGVyPSJJTlZDT0RFIiBEZXRhaWw9IklOVkNPREUiIC8+PC9SZWxhdGlvbj48UmVsYXRpb24gTWFzdGVyPSJTYWxlc19JbnZvaWNlX0hlYWRlciIgRGV0YWlsPSJMVl9TQUxJTlZfQ0hBUkdFIiBOYW1lPSJTYWxlc19JbnZvaWNlX0hlYWRlckxWX1NBTElOVl9DSEFSR0UiPjxLZXlDb2x1bW4gTWFzdGVyPSJJTlZDT0RFIiBEZXRhaWw9IklOVkNPREUiIC8+PC9SZWxhdGlvbj48UmVzdWx0U2NoZW1hPjxEYXRhU2V0IE5hbWU9InNxbERhdGFTb3VyY2UxIj48VmlldyBOYW1lPSJTYWxlc19JbnZvaWNlX0hlYWRlciI+PEZpZWxkIE5hbWU9IklOVkNPREUiIFR5cGU9IkludDY0IiAvPjxGaWVsZCBOYW1lPSJJTlZPSUNFX0RBVEUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJUUkFOU1BPUlRFUl9OQU1FIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkxWX1JFRlNJVEVfTkFNRSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJTSElQUElOR19DSVRZIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlNISVBQSU5HX1BJTkNPREUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU0hJUFBJTkdfQUREUkVTUyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJQSE9ORTEiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iUEhPTkUyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik1PQklMRSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJHU1RfSURFTlRJRklDQVRJT05fTk8iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSU5WT0lDRV9OTyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJSRU1BUktTIiBUeXBlPSJTdHJpbmciIC8+PC9WaWV3PjwvRGF0YVNldD48L1Jlc3VsdFNjaGVtYT48Q29ubmVjdGlvbk9wdGlvbnMgQ2xvc2VDb25uZWN0aW9uPSJ0cnVlIiAvPjwvU3FsRGF0YVNvdXJjZT4=" />
+  </ComponentStorage>
+  <ObjectStorage>
+    <Item1 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v19.2" Ref="2" Content="System.Int32" Type="System.Type" />
+  </ObjectStorage>
+</XtraReportsLayoutSerializer>

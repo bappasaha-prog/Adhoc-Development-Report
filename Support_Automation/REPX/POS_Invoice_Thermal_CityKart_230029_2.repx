@@ -1,0 +1,748 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="19.2.4.0" Ref="0" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v19.2, Version=19.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Report4" ScriptsSource="private void FAmountInWords_GetValue(object sender, GetValueEventArgs e)&#xD;&#xA;{&#xD;&#xA;&#x9;e.Value = &quot;Rs. &quot; + AmountInWords_IndianFormat(Convert.ToInt32(e.GetColumnValue(&quot;NetAmt&quot;))) + &quot; Only.&quot;;&#xD;&#xA;}&#xD;&#xA;public string AmountInWords_IndianFormat(int number)&#xD;&#xA;        {&#xD;&#xA;            if (number == 0)&#xD;&#xA;                return &quot;Zero&quot;;&#xD;&#xA;&#xD;&#xA;            if (number &lt; 0)&#xD;&#xA;                return &quot;Minus &quot; + AmountInWords_IndianFormat(Math.Abs(number));&#xD;&#xA;&#xD;&#xA;            string words = &quot;&quot;;&#xD;&#xA;&#xD;&#xA;            if ((number / 10000000) &gt; 0)&#xD;&#xA;            {&#xD;&#xA;                words += AmountInWords_IndianFormat(number / 10000000) + &quot; Crore &quot;;&#xD;&#xA;                number %= 10000000;&#xD;&#xA;            }&#xD;&#xA;&#xD;&#xA;            if ((number / 100000) &gt; 0)&#xD;&#xA;            {&#xD;&#xA;                words += AmountInWords_IndianFormat(number / 100000) + &quot; Lakh &quot;;&#xD;&#xA;                number %= 100000;&#xD;&#xA;            }&#xD;&#xA;&#xD;&#xA;            if ((number / 1000) &gt; 0)&#xD;&#xA;            {&#xD;&#xA;                words += AmountInWords_IndianFormat(number / 1000) + &quot; Thousand &quot;;&#xD;&#xA;                number %= 1000;&#xD;&#xA;            }&#xD;&#xA;&#xD;&#xA;            if ((number / 100) &gt; 0)&#xD;&#xA;            {&#xD;&#xA;                words += AmountInWords_IndianFormat(number / 100) + &quot; Hundred &quot;;&#xD;&#xA;                number %= 100;&#xD;&#xA;            }&#xD;&#xA;&#xD;&#xA;            if (number &gt; 0)&#xD;&#xA;            {&#xD;&#xA;                if (words != &quot;&quot;)&#xD;&#xA;                    words += &quot;and &quot;;&#xD;&#xA;&#xD;&#xA;                var unitsMap = new[] { &quot;Zero&quot;, &quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;, &quot;Four&quot;, &quot;Five&quot;, &quot;Six&quot;, &quot;Seven&quot;, &quot;Eight&quot;, &quot;Nine&quot;, &quot;Ten&quot;, &quot;Eleven&quot;, &quot;Twelve&quot;, &quot;Thirteen&quot;, &quot;Fourteen&quot;, &quot;Fifteen&quot;, &quot;Sixteen&quot;, &quot;Seventeen&quot;, &quot;Eighteen&quot;, &quot;Nineteen&quot; };&#xD;&#xA;                var tensMap = new[] { &quot;zero&quot;, &quot;Ten&quot;, &quot;Twenty&quot;, &quot;Thirty&quot;, &quot;Forty&quot;, &quot;Fifty&quot;, &quot;Sixty&quot;, &quot;Seventy&quot;, &quot;Eighty&quot;, &quot;Ninety&quot; };&#xD;&#xA;&#xD;&#xA;                if (number &lt; 20)&#xD;&#xA;                    words += unitsMap[number];&#xD;&#xA;                else&#xD;&#xA;                {&#xD;&#xA;                    words += tensMap[number / 10];&#xD;&#xA;                    if ((number % 10) &gt; 0)&#xD;&#xA;                        words += &quot;-&quot; + unitsMap[number % 10];&#xD;&#xA;                }&#xD;&#xA;            }&#xD;&#xA;            &#xD;&#xA;            return words;&#xD;&#xA;        }&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;" Margins="0, 0, 0, 0" PrinterName="\\gsl-kol-dt-46\EPSON TM-T88IV Receipt" PaperKind="Custom" PaperName="Roll Paper 80 x 3276 mm" PageWidth="284" PageHeight="12898" Version="19.2" DataMember="v_Report_POSBill" XmlDataPath="C:\Users\ujjal.b\Downloads\POSBillDocumentData - Pintoo.xml" Font="Arial, 8pt">
+  <CalculatedFields>
+    <Item1 Ref="1" Name="FAmountInWords" Expression="[NetAmt]" DataMember="v_Report_POSBill">
+      <Scripts Ref="2" OnGetValue="FAmountInWords_GetValue" />
+    </Item1>
+    <Item2 Ref="3" Name="FMOPTotalMOPCash" Expression="IIF([MOPType]='CSH',[BaseTender],0)" DataMember="v_Report_POSBillMOP" />
+    <Item3 Ref="4" Name="FMOPBalanceRefund" Expression="IIF([MOPType]=='CSH',[BaseBalance],0)" DataMember="v_Report_POSBillMOP" />
+    <Item4 Ref="5" Name="CalLessDiscount" Expression="100 *(([IDiscountAmt]+[LPDiscountAmt]+[PromoAmt])/[BasicAmt])" DataMember="v_Report_POSBillItem" />
+    <Item5 Ref="7" Name="TotalGst" Expression="[CGSTRate]+[SGSTRate]+[IGSTRate]" DataMember="v_Report_POSBillTaxSummary" />
+  </CalculatedFields>
+  <Bands>
+    <Item1 Ref="8" ControlType="TopMarginBand" Name="TopMargin" HeightF="0" />
+    <Item2 Ref="9" ControlType="DetailBand" Name="Detail" HeightF="0" />
+    <Item3 Ref="10" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="0" />
+    <Item4 Ref="11" ControlType="ReportHeaderBand" Name="ReportHeader" HeightF="13.000001">
+      <Controls>
+        <Item1 Ref="12" ControlType="XRLabel" Name="label72" Multiline="true" Text="label72" TextAlignment="TopCenter" SizeF="262.024567,13.000001" LocationFloat="14.3724642, 0" Font="Times New Roman, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="13" EventName="BeforePrint" PropertyName="Text" Expression="Iif([PrintCount].[CurrentCopy]&gt;1, 'Duplicate Copy', '')" />
+          </ExpressionBindings>
+          <StylePriority Ref="14" UseFont="false" UseTextAlignment="false" />
+        </Item1>
+      </Controls>
+    </Item4>
+    <Item5 Ref="15" ControlType="DetailReportBand" Name="POSReportHeader_Store" Level="0" DataMember="v_Store">
+      <Bands>
+        <Item1 Ref="16" ControlType="DetailBand" Name="Detail1" HeightF="0" />
+        <Item2 Ref="17" ControlType="ReportHeaderBand" Name="ReportHeader1" HeightF="111.342606">
+          <SubBands>
+            <Item1 Ref="18" ControlType="SubBand" Name="SubBand2" HeightF="18.4810925">
+              <Controls>
+                <Item1 Ref="19" ControlType="XRLabel" Name="label3" Text="label3" TextAlignment="TopCenter" SizeF="265.068665,13.0000019" LocationFloat="12.9313393, 3.12499619" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+                  <ExpressionBindings>
+                    <Item1 Ref="20" EventName="BeforePrint" PropertyName="Text" Expression="Concat([Address],', ',[City])" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="21" UseFont="false" UseTextAlignment="false" />
+                </Item1>
+              </Controls>
+            </Item1>
+            <Item2 Ref="22" ControlType="SubBand" Name="SubBand3" HeightF="31.2676868">
+              <Controls>
+                <Item1 Ref="23" ControlType="XRLabel" Name="label69" CanShrink="true" Text="label3" TextAlignment="TopCenter" SizeF="265.549042,13.0000038" LocationFloat="12.9313374, 16.0000153" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+                  <ExpressionBindings>
+                    <Item1 Ref="24" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([Mobile]), '', 'Mobile: ' + [Mobile])" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="25" UseFont="false" UseTextAlignment="false" />
+                </Item1>
+                <Item2 Ref="26" ControlType="XRLabel" Name="label4" Text="label3" TextAlignment="TopCenter" SizeF="265.2952,13.000001" LocationFloat="12.7047729, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+                  <ExpressionBindings>
+                    <Item1 Ref="27" EventName="BeforePrint" PropertyName="Text" Expression="'PH: ' + [OfficePhone1]" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="28" UseFont="false" UseTextAlignment="false" />
+                </Item2>
+              </Controls>
+            </Item2>
+            <Item3 Ref="29" ControlType="SubBand" Name="SubBand5" HeightF="13.9583378">
+              <Controls>
+                <Item1 Ref="30" ControlType="XRLabel" Name="label6" CanGrow="false" CanShrink="true" Text="label3" TextAlignment="TopCenter" SizeF="265.295227,13.9583378" LocationFloat="12.704771, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+                  <ExpressionBindings>
+                    <Item1 Ref="31" EventName="BeforePrint" PropertyName="Text" Expression="[Email1]" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="32" UseFont="false" UseTextAlignment="false" />
+                </Item1>
+              </Controls>
+            </Item3>
+            <Item4 Ref="33" ControlType="SubBand" Name="SubBand6" HeightF="19.2259216">
+              <Controls>
+                <Item1 Ref="34" ControlType="XRLabel" Name="label7" Text="label3" TextAlignment="TopCenter" SizeF="265.295227,13.000001" LocationFloat="11.9729862, 3.12749314" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+                  <ExpressionBindings>
+                    <Item1 Ref="35" EventName="BeforePrint" PropertyName="Text" Expression="IIF(!IsNullOrEmpty([GSTINNo]),'GSTIN : ' + [GSTINNo], 'GSTIN : NA')" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="36" UseFont="false" UseTextAlignment="false" />
+                </Item1>
+              </Controls>
+            </Item4>
+          </SubBands>
+          <Controls>
+            <Item1 Ref="37" ControlType="XRPictureBox" Name="pictureBox1" ImageSource="img,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FspMs5g8eTIv1926dWO/IpTIIjb6yHGStydOlFRyiVbyALjF49lwK7fPhs50TBS1jz/+mP3jB+oFF1zgLb+oKcnhf/5oO2wv77rrLoTS9/QPPvgg3NqHLJSZZsGmRPhGjx49aNAgNytwlkQxOV16ovS7S+qXW265d955x40OGpQhnZlFE/YGr9t8xP72t79FH9kS7g12l4akNiiIVN500009evQgwu9+9ztvxanTy7YjC2Wmubh9P/300+OOO+6ggw7ab7/9eA9i6/uDne7duyuXXFK/5pprvvzyyzRpt62c6eBwJGSHIHNf+cpX7r333iuuuOKaa66ZNGnS5Zdffskll+jDUfE3v/nNpZdeyubh0sPmRx99dOGFF6KtGIcddhhbjg3Wzh+6WSgzzSI+5OPjnXL48OF77bUX79r+VgclKqlWUrnhhhu+8MILuLHds1Au4rBhVlppJTZJz549Tz75ZLYHNmD4cXveeeeNHDmST1/r77zzThsiiP/617+sHDdu3P77749Bk1GjRvGZjQNbqx1EMwtlpgXEoZLd6TZ94403OAJMnDjxyiuvvOWWW1TM2P1f/epXn3766aJpiVDbzCLIOuusw8b40pe+NGPGDIXS7xyXWmopdgs1ggOnzv79+7/22ms2HDx4sPtq7Nix//znP3lZwQbveupsa7JQZpqLygjVWxPdBIwHHnjgr3/968MPPzxlypQjjzySB+D666/XJ6vkosyJJ57Iezf74aWXXmIj/eUvf5k6der3vvc9KpG8P//5z+ycRx55ZPTo0fgsscQSKOPrr79uWxyWXHJJKs866yz23oABA/y9InaUGy+fKDMdBWWOUoPdOWfOHOyKPaqGUsktHJ5//nk8sfPb9yLOwIEDS4fA4hjIZnDbHH/88VbGR+99990Xh0qU8cMPP6QS0fyv4g/AeN3mcosttrAVtruxHchCmWkubm6Fz5rAv96tINzCyFq5yLLtttuid5wWvXRLHH744egdlVwC2+O2226j5osFKCY+XKKYHDx5SR85ciQ13/72t2miULYbWSgriYdZwxUVP/cs02den3Y4/2cyCymDBg1C2lS3OD/+5Cc/Ccnz8bn77ru55ES51FJLYfBk4eDpkktOlNTw6o0NRYx2+vTNQvk58R0cMPuxnMBlqpihieHD3fZZsExmYWSrrbZC2jgk/vOf/7Rm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vvvuN954g9dbRW2fffbh1sYbb4yNJ3uehhhoHG058XGgO+igg9DKtdZaC5tKFNaX6yOPPBJPauiIS7vD55prrvnBD35AQGRUoSQfuPHGGzmuEhkfLnHwlf/0008n/pZbbklKwN1tt90WWVx99dW5Sw6qM3DSRGF99b7rrrs40Cji4NEyLjsO9XyiBCZ91qxZu+66K0uSX70zCxfs3hBK9IgaFIRK7yKXJdVZbLHhw4dzSf21116LGzWPPfYYNSeffPLQoUO5RObQKYy33367X79+vA6jYltssQU+BPzJT37CLdQQuSQItzwhIpTf/e53vUWN/eL/7LPPclT0hEgNJXdpO3LkSC633nprarhLHESTGrSyb9++VCKUvtSvu+66xBk7diw2io8PIJG+AnZM6lYo/VCiBD7BWMj8J4yZhYtUKCn92h0UlL322otKsBLnq666in2OQqFNyJavUFzSHOVCQ/fdd99evXpx3MMtfo+SF3CC4EOlr9LK3GWXXcZ78SqrrKJ04ukzhf56zFS78ed0SYSzzz77008/HTBggP7UDBw48PXXX2cIV1xxBaddBBpP+Na3vkXXY8aMweeWW24hiJkAXXTMF/D6P1FSPvjggywJJ0pXOpNZKGD3VpwoQ0RQNITS86P1//znP9dbbz1r3nrrrS9/+ctImD4090Q5bty4lVZaiZOdQmkoTp1ImydKLnHz+8rzzz+fy6985SvYaNwvfvGLDz74YIcddqAXxA7niRMn0q/+XPrGxkEVW9nF+Y477sDYaqutVl11VU+mtEU0GdqIESP22WefDz/8sJTEXHxgQzc7DnUrlOlc33vvvSwnC9kBFyCTSXGLxif60Ucfzdb12z1rQis5r1GJ7myyySac0dZcc00u/bqQIGussQbCZFvkCeXCfvnll5U56N+/v30dcsghiKlCSQ2l58EJEyaQxnvvvUcNDsRZf/31qUc0uQTOj/qbHidKLtFEbNPYeeedH3/8cQy6oxV66sF29dVXx/OUU0751a9+5Vg6PvV8ovRVxY01evToY445Jp8oMx2f9Nh4+OGHc9zzZZl6pQ20v/GNb1CPEgECpI1shY08KZdI1a9//Wsa+o9iEBN55ZInwj8nV0mpoS3dYXOijO7wpwaIg8NvfvMbkyRDKv2+0hPl5ptvjm3OxiETmpAGbb1l21NPPfWss84qRV8YqFuh9Huc2Fus+pFHHlncyWQ6LhV/Ve1PWjyIqS+W8rWvfY27KKOXtOWMRs1zzz3HJTtfXUNtsdFEQChRT3x89SYaQol44Qk4cEvRHDt2rK1MiaMlwvezn/2MmlJnhUpihxbHqzc2KaGP22yzjZ5+gUANts8jDYcPH26ThYJ6PlGmW+rKK68ckf8XxkyHRx2BdK9SGfXALfa2L0ygYGHgk7ZKK4sAZYVS+FJPb6XPSwQXLy1nz55d1JWh0obRJOLYRXRkDnE5ZswYf/VyoaCehTJg5dIVymQ6MrFXKYUaLyndzCW/BL8u1FawIoiXtgofjQiY1nAZTexahxTrMT755BNrgBrBRkzDx15CRqmsDtjxqVuhdJHAdUqNTKbDUlKauVsXUk1RuTQosTHiVd1W6SZP40C0pd7SeuFu1GBoRxld211x/3NnRDDSgIoczBb8Nsy7lFLcWQio5xOli+c6pb/9n8l0WEKA3K7u3tAp0CHUJ4Vb1c2jBqyMUBge9KwJsbMVldZbpgYYNg0u1QnXB3UrlHHUTxeszhYvU3+4RUMHQ4kq9M7LVAdjb6eVYD01xqz2DwO0GyrB5mkZtyJnsDIy8TK6Buz0suOzSHxHmclkMvNDFspMJpNpgiyUmUwm0wRZKDOZTKYJslBmMplME2ShzGQymSbIQpnJZDJNkIUyk8lkmiALZSaTyTRBFspMJpNpgiyUmUwm0wRZKDOZTKYJslBmMplME2ShzGQymSbIQpnJZDJNkIUyk8lkmiALZSaTyTRBFspMJpNpgiyUmUwm0wRZKDOZTKYJslBmMplME2ShzGQymSbIQpnJZDJNkIUyk8lkmiALZSaTyTRBFspMJpNpgiyUmUwm0wRZKDOZTKYJslBmMplME2ShzGQymSbIQpnJZDJNkIUyk8lkmiALZSaTyTRBFspMJpNpgiyUmUwm0wRZKDOZTKYJslBmMplME2ShzGQymUb57LP/DyyN+1KPXJWLAAAAAElFTkSuQmCC" Sizing="Squeeze" SizeF="153.496216,94.37037" LocationFloat="64.00604, 3.2037096" />
+            <Item2 Ref="38" ControlType="XRLabel" Name="label1" Text="label1" TextAlignment="TopCenter" SizeF="265.2952,13.7685394" LocationFloat="11.972991, 97.5740662" Font="Times New Roman, 10pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="39" EventName="BeforePrint" PropertyName="Text" Expression="'Citykart Stores Pvt. Ltd.'" />
+              </ExpressionBindings>
+              <StylePriority Ref="40" UseFont="false" UseTextAlignment="false" />
+            </Item2>
+          </Controls>
+        </Item2>
+      </Bands>
+    </Item5>
+    <Item6 Ref="41" ControlType="ReportFooterBand" Name="ReportFooter" Expanded="false" HeightF="0" />
+    <Item7 Ref="42" ControlType="DetailReportBand" Name="POSReportHeader" Level="1" DataMember="v_Report_POSBill">
+      <Bands>
+        <Item1 Ref="43" ControlType="DetailBand" Name="Detail2" HeightF="0" />
+        <Item2 Ref="44" ControlType="ReportHeaderBand" Name="ReportHeader2" HeightF="35.50002">
+          <SubBands>
+            <Item1 Ref="45" ControlType="SubBand" Name="SubBand7" HeightF="26.5555573">
+              <Controls>
+                <Item1 Ref="46" ControlType="XRLabel" Name="label2" Text="Date:" SizeF="38.85765,12.58334" LocationFloat="13.0148163, 13.9722176" Font="Times New Roman, 9pt, style=Bold" Padding="2,2,0,0,100">
+                  <StylePriority Ref="47" UseFont="false" />
+                </Item1>
+                <Item2 Ref="48" ControlType="XRLabel" Name="label5" TextFormatString="{0:dd-MMM-yyyy' at ' hh:mm tt}" Text="label11" SizeF="225.085724,12.583334" LocationFloat="51.87247, 13.9722176" Font="Times New Roman, 9pt, style=Bold" Padding="2,2,0,0,100">
+                  <ExpressionBindings>
+                    <Item1 Ref="49" EventName="BeforePrint" PropertyName="Text" Expression="[BillDate]" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="50" UseFont="false" />
+                </Item2>
+                <Item3 Ref="51" ControlType="XRLabel" Name="label9" Text="label9" SizeF="263.92627,13.9722176" LocationFloat="13.0148163, 0" Font="Times New Roman, 10pt, style=Bold" Padding="2,2,0,0,100">
+                  <ExpressionBindings>
+                    <Item1 Ref="52" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CNNo]), 'Memo No: '+[BillNo], 'Memo No: '+[CNNo])" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="53" UseFont="false" />
+                </Item3>
+              </Controls>
+            </Item1>
+          </SubBands>
+          <Controls>
+            <Item1 Ref="54" ControlType="XRLine" Name="line2" SizeF="265.357727,2.083334" LocationFloat="11.5833292, 31.7500134" />
+            <Item2 Ref="55" ControlType="XRLine" Name="line1" SizeF="265.357758,5.625025" LocationFloat="11.5833292, 0" />
+            <Item3 Ref="56" ControlType="XRLabel" Name="label8" Text="label8" TextAlignment="TopCenter" SizeF="264.236328,23.0000019" LocationFloat="12.704771, 5.625025" Font="Times New Roman, 12pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="57" EventName="BeforePrint" PropertyName="Text" Expression="IIF(IsNullOrEmpty([CNNo]),'Tax Invoice', 'Credit Note')" />
+              </ExpressionBindings>
+              <StylePriority Ref="58" UseFont="false" UseTextAlignment="false" />
+            </Item3>
+          </Controls>
+        </Item2>
+      </Bands>
+    </Item7>
+    <Item8 Ref="59" ControlType="DetailReportBand" Name="POSReportHeader_Customer" Level="2" DataMember="v_Customer">
+      <Bands>
+        <Item1 Ref="60" ControlType="DetailBand" Name="Detail3" HeightF="0" />
+        <Item2 Ref="61" ControlType="ReportHeaderBand" Name="ReportHeader3" HeightF="27.0007935">
+          <Controls>
+            <Item1 Ref="62" ControlType="XRLabel" Name="label79" Multiline="true" Text="label79" SizeF="180.817612,12.5833292" LocationFloat="93.18239, 12.3341455" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="63" EventName="BeforePrint" PropertyName="Text" Expression="[Mobile]" />
+              </ExpressionBindings>
+              <StylePriority Ref="64" UseFont="false" />
+            </Item1>
+            <Item2 Ref="65" ControlType="XRLabel" Name="label78" Multiline="true" Text="label78" SizeF="180.817581,12.3341236" LocationFloat="93.18239, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="66" EventName="BeforePrint" PropertyName="Text" Expression="[CustomerName]" />
+              </ExpressionBindings>
+              <StylePriority Ref="67" UseFont="false" />
+            </Item2>
+            <Item3 Ref="68" ControlType="XRLine" Name="line10" SizeF="264.253418,2.08333588" LocationFloat="12.704771, 24.9174576" />
+            <Item4 Ref="69" ControlType="XRLabel" Name="label13" SizeF="80.25105,12.334137" LocationFloat="12.9313374, 0" Font="Times New Roman, 9pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="70" EventName="BeforePrint" PropertyName="Text" Expression="'Customer: '" />
+              </ExpressionBindings>
+              <StylePriority Ref="71" UseFont="false" />
+            </Item4>
+            <Item5 Ref="72" ControlType="XRLabel" Name="label14" SizeF="80.25105,12.5833311" LocationFloat="12.9313374, 12.3341455" Font="Times New Roman, 9pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="73" EventName="BeforePrint" PropertyName="Text" Expression="'Mobile: '" />
+              </ExpressionBindings>
+              <StylePriority Ref="74" UseFont="false" />
+            </Item5>
+          </Controls>
+        </Item2>
+        <Item3 Ref="75" ControlType="ReportFooterBand" Name="ReportFooter7" HeightF="18.392149">
+          <Controls>
+            <Item1 Ref="76" ControlType="XRLabel" Name="label80" Multiline="true" CanShrink="true" Text="label80" SizeF="260.231445,18.392149" LocationFloat="13.76851, 0" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="77" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([GSTIN]), '', 'Customer GSTIN: '+[GSTIN])" />
+              </ExpressionBindings>
+              <StylePriority Ref="78" UseFont="false" />
+            </Item1>
+          </Controls>
+        </Item3>
+      </Bands>
+    </Item8>
+    <Item9 Ref="79" ControlType="DetailReportBand" Name="POSReportHeader_HeaderColumns" Level="3">
+      <Bands>
+        <Item1 Ref="80" ControlType="DetailBand" Name="Detail4" HeightF="27.0833321">
+          <Controls>
+            <Item1 Ref="81" ControlType="XRLabel" Name="label10" Text="Disc." TextAlignment="TopCenter" SizeF="37.5,12.5" LocationFloat="137.5, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <StylePriority Ref="82" UseFont="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="83" ControlType="XRLine" Name="line4" SizeF="270.3185,2.083332" LocationFloat="7.68150473, 25" />
+            <Item3 Ref="84" ControlType="XRLabel" Name="label22" Text="HSN Code" TextAlignment="TopCenter" SizeF="75,12.5" LocationFloat="200, 12.5" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <StylePriority Ref="85" UseFont="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="86" ControlType="XRLabel" Name="label20" Text="Amount" TextAlignment="TopRight" SizeF="62.5,12.5" LocationFloat="212.5, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <StylePriority Ref="87" UseFont="false" UseTextAlignment="false" />
+            </Item4>
+            <Item5 Ref="88" ControlType="XRLabel" Name="label19" Text="Dis %" TextAlignment="TopRight" SizeF="37.5,12.5" LocationFloat="175, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <StylePriority Ref="89" UseFont="false" UseTextAlignment="false" />
+            </Item5>
+            <Item6 Ref="90" ControlType="XRLabel" Name="label18" Text="Rate" TextAlignment="TopLeft" SizeF="50,12.5" LocationFloat="87.5, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <StylePriority Ref="91" UseFont="false" UseTextAlignment="false" />
+            </Item6>
+            <Item7 Ref="92" ControlType="XRLabel" Name="label17" Text="Qty" TextAlignment="TopLeft" SizeF="25,12.5" LocationFloat="62.5, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <StylePriority Ref="93" UseFont="false" UseTextAlignment="false" />
+            </Item7>
+            <Item8 Ref="94" ControlType="XRLabel" Name="label16" Text="Item" TextAlignment="TopCenter" SizeF="37.5,12.5" LocationFloat="25, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <StylePriority Ref="95" UseFont="false" UseTextAlignment="false" />
+            </Item8>
+            <Item9 Ref="96" ControlType="XRLabel" Name="label15" Text="Sl" TextAlignment="TopRight" SizeF="12.5,12.5" LocationFloat="12.5, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <StylePriority Ref="97" UseFont="false" UseTextAlignment="false" />
+            </Item9>
+          </Controls>
+        </Item1>
+      </Bands>
+    </Item9>
+    <Item10 Ref="98" ControlType="DetailReportBand" Name="POSReportBillDetails" Level="4" DataMember="v_Report_POSBillItem" Visible="false">
+      <Bands>
+        <Item1 Ref="99" ControlType="DetailBand" Name="Detail5" HeightF="12.5833282">
+          <SubBands>
+            <Item1 Ref="100" ControlType="SubBand" Name="SubBand9" HeightF="16.5570564">
+              <Controls>
+                <Item1 Ref="101" ControlType="XRLabel" Name="label11" TextFormatString="{0:#.00}" Text="label28" TextAlignment="TopRight" SizeF="46.71685,12.5833282" LocationFloat="170.785416, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+                  <ExpressionBindings>
+                    <Item1 Ref="102" EventName="BeforePrint" PropertyName="Text" Expression="Iif(([MDiscountAmt]+[IDiscountAmt]+[PromoAmt])=0, '', ([MDiscountAmt]+[IDiscountAmt]+[PromoAmt])/[RSP]*[Qty]*100)" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="103" UseFont="false" UseTextAlignment="false" />
+                </Item1>
+                <Item2 Ref="104" ControlType="XRLabel" Name="label29" TextFormatString="{0:#.00}" Text="label29" TextAlignment="TopRight" SizeF="60.4976959,12.5833282" LocationFloat="217.502274, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+                  <Summary Ref="105" Running="Report" />
+                  <ExpressionBindings>
+                    <Item1 Ref="106" EventName="BeforePrint" PropertyName="Text" Expression="[NetAmt]" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="107" UseFont="false" UseTextAlignment="false" />
+                </Item2>
+                <Item3 Ref="108" ControlType="XRLabel" Name="label28" TextFormatString="{0:#.00}" Text="label28" TextAlignment="TopRight" SizeF="46.71685,12.5833282" LocationFloat="123.960793, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+                  <ExpressionBindings>
+                    <Item1 Ref="109" EventName="BeforePrint" PropertyName="Text" Expression="[MDiscountAmt]+[IDiscountAmt]+[PromoAmt]" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="110" UseFont="false" UseTextAlignment="false" />
+                </Item3>
+                <Item4 Ref="111" ControlType="XRLabel" Name="label27" TextFormatString="{0:#.00}" Text="label27" TextAlignment="TopRight" SizeF="46.71685,12.5833282" LocationFloat="77.24394, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+                  <ExpressionBindings>
+                    <Item1 Ref="112" EventName="BeforePrint" PropertyName="Text" Expression="[ESP]" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="113" UseFont="false" UseTextAlignment="false" />
+                </Item4>
+                <Item5 Ref="114" ControlType="XRLabel" Name="label26" TextFormatString="{0:#,#}" Text="label26" TextAlignment="TopRight" SizeF="36.75038,12.5833282" LocationFloat="40.49357, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+                  <ExpressionBindings>
+                    <Item1 Ref="115" EventName="BeforePrint" PropertyName="Text" Expression="[Qty]" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="116" UseFont="false" UseTextAlignment="false" />
+                </Item5>
+                <Item6 Ref="117" ControlType="XRLabel" Name="label32" TextAlignment="TopRight" SizeF="32.3316765,12.5833282" LocationFloat="8.161891, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+                  <ExpressionBindings>
+                    <Item1 Ref="118" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([v_SalesPerson_v_Report_POSBillItem].[SalesPersonId]), '', 'SM: '+[v_SalesPerson_v_Report_POSBillItem].[SalesPersonId])" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="119" UseFont="false" UseTextAlignment="false" />
+                </Item6>
+              </Controls>
+            </Item1>
+          </SubBands>
+          <Controls>
+            <Item1 Ref="120" ControlType="XRLabel" Name="label31" Text="label31" TextAlignment="TopCenter" SizeF="78.707016,12.5833282" LocationFloat="199.773392, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100" Borders="Top, Right, Bottom">
+              <ExpressionBindings>
+                <Item1 Ref="121" EventName="BeforePrint" PropertyName="Text" Expression="[HSNSACCode]" />
+              </ExpressionBindings>
+              <StylePriority Ref="122" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="123" ControlType="XRLabel" Name="label25" AutoWidth="true" CanGrow="false" Text="label25" TextAlignment="TopLeft" WordWrap="false" SizeF="174.7501,12.5833282" LocationFloat="25.0232887, 0" Font="Calibri, 8pt" Padding="2,2,0,0,100" Borders="Top, Right, Bottom">
+              <ExpressionBindings>
+                <Item1 Ref="124" EventName="BeforePrint" PropertyName="Text" Expression="[v_Report_Item_v_Report_POSBillItem].[Barcode]+' - '+[v_Report_Item_v_Report_POSBillItem].[v_Report_ItemGroup_v_Report_Item].[Department]" />
+              </ExpressionBindings>
+              <StylePriority Ref="125" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="126" ControlType="XRLabel" Name="label24" Text="label24" TextAlignment="TopRight" SizeF="16.7304459,12.5833282" LocationFloat="8.292839, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100" Borders="Top, Right, Bottom">
+              <ExpressionBindings>
+                <Item1 Ref="127" EventName="BeforePrint" PropertyName="Text" Expression="[SerialNo]" />
+              </ExpressionBindings>
+              <StylePriority Ref="128" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item3>
+          </Controls>
+        </Item1>
+        <Item2 Ref="129" ControlType="ReportFooterBand" Name="ReportFooter1" HeightF="27.6961">
+          <Controls>
+            <Item1 Ref="130" ControlType="XRLine" Name="line6" SizeF="269.707184,2.08334732" LocationFloat="8.292838, 20.47437" />
+            <Item2 Ref="131" ControlType="XRLabel" Name="label35" TextFormatString="{0:#.00}" Text="label35" TextAlignment="TopRight" SizeF="115.558868,15.7884636" LocationFloat="162.4411, 3.08332682" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <Summary Ref="132" Running="Report" />
+              <ExpressionBindings>
+                <Item1 Ref="133" EventName="BeforePrint" PropertyName="Text" Expression="Sum([NetAmt])" />
+              </ExpressionBindings>
+              <StylePriority Ref="134" UseFont="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="135" ControlType="XRLabel" Name="label34" TextFormatString="{0:#.000}" Text="label34" TextAlignment="TopRight" SizeF="49.30655,15.7884588" LocationFloat="74.65424, 3.08333468" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="136" EventName="BeforePrint" PropertyName="Text" Expression="Sum([Qty])" />
+              </ExpressionBindings>
+              <StylePriority Ref="137" UseFont="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="138" ControlType="XRLabel" Name="label33" Text="Total :" SizeF="40.0452576,15.7884588" LocationFloat="11.9729891, 3.08333468" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <StylePriority Ref="139" UseFont="false" />
+            </Item4>
+            <Item5 Ref="140" ControlType="XRLine" Name="line5" SizeF="269.838135,2.170149" LocationFloat="8.161891, 0" />
+          </Controls>
+        </Item2>
+      </Bands>
+    </Item10>
+    <Item11 Ref="141" ControlType="DetailReportBand" Name="POSBillAmountInWords" Level="6" DataMember="v_Report_POSBill">
+      <Bands>
+        <Item1 Ref="142" ControlType="DetailBand" Name="Detail6" HeightF="0" />
+        <Item2 Ref="143" ControlType="ReportFooterBand" Name="ReportFooter2" HeightF="16.5748081">
+          <Controls>
+            <Item1 Ref="144" ControlType="XRLabel" Name="label36" Text="label36" SizeF="262.794159,12.5833282" LocationFloat="15.2058716, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="145" EventName="BeforePrint" PropertyName="Text" Expression=" [FAmountInWords]" />
+              </ExpressionBindings>
+              <StylePriority Ref="146" UseFont="false" />
+            </Item1>
+          </Controls>
+        </Item2>
+      </Bands>
+    </Item11>
+    <Item12 Ref="147" ControlType="DetailReportBand" Name="CreditNoteSection" Level="7">
+      <Bands>
+        <Item1 Ref="148" ControlType="DetailBand" Name="Detail7" HeightF="13">
+          <Controls>
+            <Item1 Ref="149" ControlType="XRLabel" Name="label37" Text="label37" SizeF="262.794128,12.5833282" LocationFloat="15.2058744, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="150" EventName="BeforePrint" PropertyName="Text" Expression="IIF(IsNullOrEmpty([v_Report_POSBill].[CNNo]),'','Credit Note Issued : ' + [v_Report_POSBill].[CNNo] + ', Amount: ' + [v_Report_POSBill].[CNAmt])" />
+              </ExpressionBindings>
+              <StylePriority Ref="151" UseFont="false" />
+            </Item1>
+          </Controls>
+        </Item1>
+      </Bands>
+      <ExpressionBindings>
+        <Item1 Ref="152" EventName="BeforePrint" PropertyName="Visible" Expression="!IsNullOrEmpty([v_Report_POSBill].[CNNo])" />
+      </ExpressionBindings>
+    </Item12>
+    <Item13 Ref="153" ControlType="DetailReportBand" Name="POSBillMOP" Level="9" DataMember="v_Report_POSBillMOP">
+      <Bands>
+        <Item1 Ref="154" ControlType="DetailBand" Name="Detail8" HeightF="24">
+          <Controls>
+            <Item1 Ref="155" ControlType="XRLine" Name="line7" SizeF="260.386169,3.000002" LocationFloat="17.2892113, 20.00001" />
+            <Item2 Ref="156" ControlType="XRLabel" Name="label43" Text="label43" SizeF="10.0000305,23" LocationFloat="299, 0" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="157" EventName="BeforePrint" PropertyName="Text" Expression="[FMOPBalanceRefund]" />
+                <Item2 Ref="158" EventName="BeforePrint" PropertyName="Visible" Expression="False" />
+              </ExpressionBindings>
+            </Item2>
+            <Item3 Ref="159" ControlType="XRLabel" Name="label41" Text="label41" SizeF="12.5024633,23" LocationFloat="0, 0" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="160" EventName="BeforePrint" PropertyName="Text" Expression="[FMOPTotalMOPCash]" />
+                <Item2 Ref="161" EventName="BeforePrint" PropertyName="Visible" Expression="False" />
+              </ExpressionBindings>
+            </Item3>
+            <Item4 Ref="162" ControlType="XRLabel" Name="label39" Text="label39" SizeF="141.115112,12.5833282" LocationFloat="18.6496, 7.41424465" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="163" EventName="BeforePrint" PropertyName="Text" Expression="[MOPName]" />
+              </ExpressionBindings>
+              <StylePriority Ref="164" UseFont="false" />
+            </Item4>
+            <Item5 Ref="165" ControlType="XRLabel" Name="label38" Text="label38" TextAlignment="TopRight" SizeF="108.776,12.5833282" LocationFloat="161.897064, 7.414255" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="166" EventName="BeforePrint" PropertyName="Text" Expression="[BaseTender]" />
+              </ExpressionBindings>
+              <StylePriority Ref="167" UseTextAlignment="false" />
+            </Item5>
+          </Controls>
+        </Item1>
+        <Item2 Ref="168" ControlType="ReportFooterBand" Name="ReportFooter3" HeightF="14">
+          <SubBands>
+            <Item1 Ref="169" ControlType="SubBand" Name="SubBand10" HeightF="17">
+              <Controls>
+                <Item1 Ref="170" ControlType="XRLabel" Name="label74" Text="label73" TextAlignment="TopRight" SizeF="100,12.5833282" LocationFloat="170.673065, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+                  <ExpressionBindings>
+                    <Item1 Ref="171" EventName="BeforePrint" PropertyName="Text" Expression="[FMOPBalanceRefund]" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="172" UseFont="false" UseTextAlignment="false" />
+                </Item1>
+                <Item2 Ref="173" ControlType="XRLabel" Name="label42" Text="label42" SizeF="142.475479,12.5833282" LocationFloat="17.28921, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+                  <ExpressionBindings>
+                    <Item1 Ref="174" EventName="BeforePrint" PropertyName="Text" Expression="'Balance Refund : '" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="175" UseFont="false" />
+                </Item2>
+              </Controls>
+            </Item1>
+          </SubBands>
+          <Controls>
+            <Item1 Ref="176" ControlType="XRLabel" Name="label73" Text="label73" TextAlignment="TopRight" SizeF="100,12.5833282" LocationFloat="170.673065, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="177" EventName="BeforePrint" PropertyName="Text" Expression="Sum([FMOPTotalMOPCash])" />
+              </ExpressionBindings>
+              <StylePriority Ref="178" UseFont="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="179" ControlType="XRLabel" Name="label40" Text="label40" SizeF="142.475479,12.5833282" LocationFloat="17.28921, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <Summary Ref="180" Running="Report" IgnoreNullValues="true" />
+              <ExpressionBindings>
+                <Item1 Ref="181" EventName="BeforePrint" PropertyName="Text" Expression="'Customer Paid: '" />
+              </ExpressionBindings>
+              <StylePriority Ref="182" UseFont="false" />
+            </Item2>
+          </Controls>
+        </Item2>
+      </Bands>
+    </Item13>
+    <Item14 Ref="183" ControlType="DetailReportBand" Name="POSBillReportFooter" Level="10" DataMember="v_Report_POSBill">
+      <Bands>
+        <Item1 Ref="184" ControlType="DetailBand" Name="Detail9" HeightF="0">
+          <SubBands>
+            <Item1 Ref="185" ControlType="SubBand" Name="SubBand11" HeightF="19.63857">
+              <Controls>
+                <Item1 Ref="186" ControlType="XRLabel" Name="label44" Text="Total Sale:" SizeF="96.4792938,12.5833282" LocationFloat="17.2892132, 4.77635956" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100">
+                  <StylePriority Ref="187" UseFont="false" />
+                </Item1>
+                <Item2 Ref="188" ControlType="XRLabel" Name="label45" Text="label45" TextAlignment="TopRight" SizeF="106.043259,12.5833282" LocationFloat="164.6298, 4.77635956" Font="Times New Roman, 10pt, style=Bold" Padding="2,2,0,0,100">
+                  <ExpressionBindings>
+                    <Item1 Ref="189" EventName="BeforePrint" PropertyName="Text" Expression="[BasicAmt]" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="190" UseFont="false" UseTextAlignment="false" />
+                </Item2>
+              </Controls>
+              <ExpressionBindings>
+                <Item1 Ref="191" EventName="BeforePrint" PropertyName="Visible" Expression="IsNullOrEmpty([CNNo])" />
+              </ExpressionBindings>
+            </Item1>
+            <Item2 Ref="192" ControlType="SubBand" Name="SubBand12" HeightF="14.0931358">
+              <Controls>
+                <Item1 Ref="193" ControlType="XRLabel" Name="label46" Text="Total Savings:" SizeF="96.4792938,12.5833282" LocationFloat="17.2892132, 0" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100">
+                  <StylePriority Ref="194" UseFont="false" />
+                </Item1>
+                <Item2 Ref="195" ControlType="XRLabel" Name="label49" Text="label49" TextAlignment="TopRight" SizeF="106.155624,12.5833282" LocationFloat="164.6298, 0" Font="Times New Roman, 10pt, style=Bold" Padding="2,2,0,0,100">
+                  <ExpressionBindings>
+                    <Item1 Ref="196" EventName="BeforePrint" PropertyName="Text" Expression="[DiscountAmt]+[PromoAmt]" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="197" UseFont="false" UseTextAlignment="false" />
+                </Item2>
+              </Controls>
+              <ExpressionBindings>
+                <Item1 Ref="198" EventName="BeforePrint" PropertyName="Visible" Expression="IsNullOrEmpty([CNNo]) And ([MDiscountAmt]+[LPDiscountAmt]+[PromoAmt])&gt;0" />
+              </ExpressionBindings>
+            </Item2>
+            <Item3 Ref="199" ControlType="SubBand" Name="SubBand13" HeightF="13.62166">
+              <Controls>
+                <Item1 Ref="200" ControlType="XRLabel" Name="label47" Text="Round Off:" SizeF="96.47931,12.5833282" LocationFloat="17.2892036, 0" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100">
+                  <StylePriority Ref="201" UseFont="false" />
+                </Item1>
+                <Item2 Ref="202" ControlType="XRLabel" Name="label50" Text="label50" TextAlignment="TopRight" SizeF="106.155624,12.5833282" LocationFloat="164.6298, 0" Font="Times New Roman, 10pt, style=Bold" Padding="2,2,0,0,100">
+                  <ExpressionBindings>
+                    <Item1 Ref="203" EventName="BeforePrint" PropertyName="Text" Expression="[RoundOff]" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="204" UseFont="false" UseTextAlignment="false" />
+                </Item2>
+              </Controls>
+              <ExpressionBindings>
+                <Item1 Ref="205" EventName="BeforePrint" PropertyName="Visible" Expression="IsNullOrEmpty([CNNo]) And [RoundOff]&lt;&gt;0" />
+              </ExpressionBindings>
+            </Item3>
+            <Item4 Ref="206" ControlType="SubBand" Name="SubBand1" HeightF="15.3680534">
+              <Controls>
+                <Item1 Ref="207" ControlType="XRLabel" Name="label51" Text="label51" TextAlignment="TopRight" SizeF="106.043274,12.5833254" LocationFloat="164.629791, 0" Font="Times New Roman, 10pt, style=Bold" Padding="2,2,0,0,100">
+                  <ExpressionBindings>
+                    <Item1 Ref="208" EventName="BeforePrint" PropertyName="Text" Expression="[NetPayable]" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="209" UseFont="false" UseTextAlignment="false" />
+                </Item1>
+                <Item2 Ref="210" ControlType="XRLabel" Name="label48" Text="Net Payable:" SizeF="96.4792938,12.5833282" LocationFloat="17.2892132, 0" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100">
+                  <StylePriority Ref="211" UseFont="false" />
+                </Item2>
+              </Controls>
+            </Item4>
+          </SubBands>
+        </Item1>
+      </Bands>
+    </Item14>
+    <Item15 Ref="212" ControlType="DetailReportBand" Name="POSGSTSummary" Level="8" DataMember="v_Report_POSBillTaxSummary">
+      <Bands>
+        <Item1 Ref="213" ControlType="DetailBand" Name="Detail10" HeightF="19.4905434">
+          <Controls>
+            <Item1 Ref="214" ControlType="XRLabel" Name="label62" Text="label62" TextAlignment="TopRight" SizeF="44.24022,12.5833282" LocationFloat="233.4351, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="215" EventName="BeforePrint" PropertyName="Text" Expression="[CESSAmt]" />
+              </ExpressionBindings>
+              <StylePriority Ref="216" UseFont="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="217" ControlType="XRLabel" Name="label61" Text="label61" TextAlignment="TopRight" SizeF="44.24022,12.5833282" LocationFloat="189.194885, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="218" EventName="BeforePrint" PropertyName="Text" Expression="[SGSTAmt]" />
+              </ExpressionBindings>
+              <StylePriority Ref="219" UseFont="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="220" ControlType="XRLabel" Name="label60" Text="label60" TextAlignment="TopRight" SizeF="44.24022,12.5833282" LocationFloat="144.954666, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="221" EventName="BeforePrint" PropertyName="Text" Expression="[CGSTAmt]" />
+              </ExpressionBindings>
+              <StylePriority Ref="222" UseFont="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="223" ControlType="XRLabel" Name="label59" Text="label59" TextAlignment="TopRight" SizeF="56.33184,12.5833282" LocationFloat="88.62284, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="224" EventName="BeforePrint" PropertyName="Text" Expression="[Taxable]" />
+              </ExpressionBindings>
+              <StylePriority Ref="225" UseFont="false" UseTextAlignment="false" />
+            </Item4>
+            <Item5 Ref="226" ControlType="XRLabel" Name="label58" Text="label58" SizeF="69.09948,12.5833282" LocationFloat="19.52336, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="227" EventName="BeforePrint" PropertyName="Text" Expression="[TaxDescription]" />
+              </ExpressionBindings>
+              <StylePriority Ref="228" UseFont="false" />
+            </Item5>
+          </Controls>
+        </Item1>
+        <Item2 Ref="229" ControlType="ReportHeaderBand" Name="ReportHeader4" HeightF="33.00663">
+          <Controls>
+            <Item1 Ref="230" ControlType="XRLabel" Name="label57" Text="CESS" TextAlignment="TopRight" SizeF="44.24022,12.5833282" LocationFloat="233.4351, 17.7916946" Font="Arial, 7pt, style=Underline" Padding="2,2,0,0,100">
+              <StylePriority Ref="231" UseFont="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="232" ControlType="XRLabel" Name="label56" Text="SGST" TextAlignment="TopRight" SizeF="44.24022,12.5833282" LocationFloat="189.194885, 17.7916946" Font="Arial, 7pt, style=Underline" Padding="2,2,0,0,100">
+              <StylePriority Ref="233" UseFont="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="234" ControlType="XRLabel" Name="label55" Text="CGST" TextAlignment="TopRight" SizeF="44.2401733,12.583334" LocationFloat="144.954712, 17.7916756" Font="Arial, 7pt, style=Underline" Padding="2,2,0,0,100">
+              <StylePriority Ref="235" UseFont="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="236" ControlType="XRLabel" Name="label54" Text="Taxable" TextAlignment="TopRight" SizeF="55.7730179,12.5833282" LocationFloat="89.18168, 17.7917461" Font="Arial, 7pt, style=Underline" Padding="2,2,0,0,100">
+              <StylePriority Ref="237" UseFont="false" UseTextAlignment="false" />
+            </Item4>
+            <Item5 Ref="238" ControlType="XRLabel" Name="label53" Text="Description" SizeF="69.65832,12.5833282" LocationFloat="19.52336, 17.79174" Font="Arial, 7pt, style=Underline" Padding="2,2,0,0,100">
+              <StylePriority Ref="239" UseFont="false" />
+            </Item5>
+            <Item6 Ref="240" ControlType="XRLine" Name="line8" LineStyle="Dash" SizeF="259.025726,2.083334" LocationFloat="18.6496, 15.7083426" />
+            <Item7 Ref="241" ControlType="XRLabel" Name="label52" Text="GST Summary:" SizeF="104.437439,12.5833282" LocationFloat="19.5233574, 3.12501431" Font="Arial, 7pt, style=Bold" Padding="2,2,0,0,100">
+              <StylePriority Ref="242" UseFont="false" />
+            </Item7>
+          </Controls>
+        </Item2>
+        <Item3 Ref="243" ControlType="ReportFooterBand" Name="ReportFooter4" HeightF="48.54217">
+          <Controls>
+            <Item1 Ref="244" ControlType="XRLine" Name="line9" SizeF="260.3861,2.083333" LocationFloat="17.2892113, 0" />
+            <Item2 Ref="245" ControlType="XRLabel" Name="label67" Text="label67" TextAlignment="TopRight" SizeF="44.24022,12.5833282" LocationFloat="233.4351, 2.083335" Font="Times New Roman, 7.5pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="246" EventName="BeforePrint" PropertyName="Text" Expression="Sum([CESSAmt])" />
+              </ExpressionBindings>
+              <StylePriority Ref="247" UseFont="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="248" ControlType="XRLabel" Name="label66" Text="label66" TextAlignment="TopRight" SizeF="44.24022,12.5833282" LocationFloat="189.194885, 2.083335" Font="Times New Roman, 7.5pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="249" EventName="BeforePrint" PropertyName="Text" Expression="Sum([SGSTAmt])" />
+              </ExpressionBindings>
+              <StylePriority Ref="250" UseFont="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="251" ControlType="XRLabel" Name="label65" Text="label65" TextAlignment="TopRight" SizeF="44.24022,12.5833282" LocationFloat="144.954666, 2.083335" Font="Times New Roman, 7.5pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="252" EventName="BeforePrint" PropertyName="Text" Expression="Sum([CGSTAmt])" />
+              </ExpressionBindings>
+              <StylePriority Ref="253" UseFont="false" UseTextAlignment="false" />
+            </Item4>
+            <Item5 Ref="254" ControlType="XRLabel" Name="label64" Text="label64" TextAlignment="TopRight" SizeF="67.71072,12.5833273" LocationFloat="77.24395, 2.08332419" Font="Times New Roman, 7.5pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="255" EventName="BeforePrint" PropertyName="Text" Expression="Sum([Taxable])" />
+              </ExpressionBindings>
+              <StylePriority Ref="256" UseFont="false" UseTextAlignment="false" />
+            </Item5>
+            <Item6 Ref="257" ControlType="XRLabel" Name="label63" Text="Total:" SizeF="57.72059,12.5833282" LocationFloat="19.52336, 2.083335" Font="Times New Roman, 7.5pt, style=Bold" Padding="2,2,0,0,100">
+              <StylePriority Ref="258" UseFont="false" />
+            </Item6>
+          </Controls>
+        </Item3>
+      </Bands>
+    </Item15>
+    <Item16 Ref="259" ControlType="DetailReportBand" Name="QRCode" Level="11" DataMember="v_Report_POSBill">
+      <Bands>
+        <Item1 Ref="260" ControlType="DetailBand" Name="Detail11" HeightF="0" />
+        <Item2 Ref="261" ControlType="ReportFooterBand" Name="ReportFooter5" HeightF="148.722961">
+          <Controls>
+            <Item1 Ref="262" ControlType="XRLabel" Name="label96" Multiline="true" Text="label96" SizeF="100,23" LocationFloat="8.292842, 32.7377625" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="263" EventName="BeforePrint" PropertyName="Text" Expression="[BillNo]+' '+[BillDate]" />
+              </ExpressionBindings>
+            </Item1>
+            <Item2 Ref="264" ControlType="XRBarCode" Name="barCode3" AutoModule="true" ShowText="false" SizeF="109.431122,128.722992" LocationFloat="170.785416, 10.0000067" Padding="10,10,0,0,100">
+              <Symbology Ref="265" Name="QRCode" CompactionMode="Byte" />
+              <ExpressionBindings>
+                <Item1 Ref="266" EventName="BeforePrint" PropertyName="Text" Expression="[BillNo]" />
+              </ExpressionBindings>
+            </Item2>
+          </Controls>
+        </Item2>
+      </Bands>
+    </Item16>
+    <Item17 Ref="267" ControlType="DetailReportBand" Name="POSBillReportFooterBarcode" Level="12" DataMember="v_Report_POSBill">
+      <Bands>
+        <Item1 Ref="268" ControlType="DetailBand" Name="Detail12" HeightF="0" />
+        <Item2 Ref="269" ControlType="ReportFooterBand" Name="ReportFooter6" HeightF="106.447342">
+          <SubBands>
+            <Item1 Ref="270" ControlType="SubBand" Name="SubBand4" HeightF="108.705734">
+              <Controls>
+                <Item1 Ref="271" ControlType="XRLabel" Name="label70" Multiline="true" Text="label70" SizeF="193.429108,19.4537277" LocationFloat="77.24395, 56.81006" Padding="2,2,0,0,100">
+                  <ExpressionBindings>
+                    <Item1 Ref="272" EventName="BeforePrint" PropertyName="Text" Expression="[CreatedBy]" />
+                  </ExpressionBindings>
+                </Item1>
+                <Item2 Ref="273" ControlType="XRLabel" Name="label30" Multiline="true" Text="Cashier:" SizeF="58.5943642,19.4537277" LocationFloat="18.6495857, 56.81006" Font="Arial, 8pt" Padding="2,2,0,0,100">
+                  <StylePriority Ref="274" UseFont="false" />
+                </Item2>
+                <Item3 Ref="275" ControlType="XRLabel" Name="label23" Multiline="true" Text="E.&amp;O.E.&#xD;&#xA;CITYKART" TextAlignment="TopRight" SizeF="81.47818,28.01725" LocationFloat="189.194885, 76.26379" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+                  <StylePriority Ref="276" UseFont="false" UseTextAlignment="false" />
+                </Item3>
+                <Item4 Ref="277" ControlType="XRLabel" Name="label21" Multiline="true" Text="Cedit Note Vaild only for 30 Days.&#xD;&#xA;Partial reedemption not allowed.&#xD;&#xA;Credit note cannot be adjusted at any other                   Location." SizeF="252.023468,54.59771" LocationFloat="18.6495972, 2.21234941" Font="Arial, 8pt" Padding="2,2,0,0,100">
+                  <StylePriority Ref="278" UseFont="false" />
+                </Item4>
+              </Controls>
+              <ExpressionBindings>
+                <Item1 Ref="279" EventName="BeforePrint" PropertyName="Visible" Expression="!IsNullOrEmpty([CNAmt])" />
+              </ExpressionBindings>
+            </Item1>
+            <Item2 Ref="280" ControlType="SubBand" Name="SubBand8" HeightF="138.0422">
+              <Controls>
+                <Item1 Ref="281" ControlType="XRLabel" Name="label89" Multiline="true" SizeF="100,23" LocationFloat="18.649601, 100.148071" Padding="2,2,0,0,100" />
+                <Item2 Ref="282" ControlType="XRLabel" Name="label81" Multiline="true" Text="We recommend dry clean for all fancy items.&#xD;&#xA;Please read the terms and conditions other side of the bill." SizeF="252.023468,39.9854851" LocationFloat="18.6496, 40.7088661" Font="Arial, 8pt" Padding="2,2,0,0,100">
+                  <StylePriority Ref="283" UseFont="false" />
+                </Item2>
+                <Item3 Ref="284" ControlType="XRLabel" Name="label75" Multiline="true" Text="E.&amp;O.E.&#xD;&#xA;CITYKART" TextAlignment="TopRight" SizeF="81.47818,28.01725" LocationFloat="189.194885, 100.148079" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+                  <StylePriority Ref="285" UseFont="false" UseTextAlignment="false" />
+                </Item3>
+                <Item4 Ref="286" ControlType="XRLabel" Name="label76" Multiline="true" Text="Cashier:" SizeF="58.5943642,19.4537277" LocationFloat="18.6495857, 80.69435" Font="Arial, 8pt" Padding="2,2,0,0,100">
+                  <StylePriority Ref="287" UseFont="false" />
+                </Item4>
+                <Item5 Ref="288" ControlType="XRLabel" Name="label77" Multiline="true" Text="label70" SizeF="193.429108,19.4537277" LocationFloat="77.24395, 80.69435" Padding="2,2,0,0,100">
+                  <ExpressionBindings>
+                    <Item1 Ref="289" EventName="BeforePrint" PropertyName="Text" Expression="[CreatedBy]" />
+                  </ExpressionBindings>
+                </Item5>
+                <Item6 Ref="290" ControlType="XRLabel" Name="label71" Multiline="true" Text="NO EXCHANGE WITHOUT BARCODE &amp; INVOICE&#xD;&#xA;NO EXCHANGE ON DISCOUNTED ITEMS." SizeF="252.023468,40.7088242" LocationFloat="18.6495953, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+                  <StylePriority Ref="291" UseFont="false" />
+                </Item6>
+              </Controls>
+              <ExpressionBindings>
+                <Item1 Ref="292" EventName="BeforePrint" PropertyName="Visible" Expression="IsNullOrEmpty([CNAmt])" />
+              </ExpressionBindings>
+            </Item2>
+          </SubBands>
+          <Controls>
+            <Item1 Ref="293" ControlType="XRLabel" Name="label12" Multiline="true" Text="Terms and Conditions" SizeF="152.028046,12.583374" LocationFloat="17.2892132, 88.41658" Font="Arial, 8pt, style=Bold, Underline" Padding="2,2,0,0,100">
+              <StylePriority Ref="294" UseFont="false" />
+            </Item1>
+            <Item2 Ref="295" ControlType="XRBarCode" Name="barCode1" Module="1" AutoModule="true" TextAlignment="BottomCenter" SizeF="268.779144,60.75749" LocationFloat="8.161895, 9.999974" Padding="10,10,0,0,100">
+              <Symbology Ref="296" Name="Code128" />
+              <ExpressionBindings>
+                <Item1 Ref="297" EventName="BeforePrint" PropertyName="Text" Expression="ToStr([BillNo])" />
+              </ExpressionBindings>
+              <StylePriority Ref="298" UseTextAlignment="false" />
+            </Item2>
+          </Controls>
+        </Item2>
+      </Bands>
+    </Item17>
+    <Item18 Ref="299" ControlType="DetailReportBand" Name="DepartmentGroup" Level="5" DataMember="v_Report_POSBillItem">
+      <Bands>
+        <Item1 Ref="300" ControlType="DetailBand" Name="Detail13" HeightF="0" />
+        <Item2 Ref="301" ControlType="ReportHeaderBand" Name="ReportHeader5" HeightF="29.3333225">
+          <Controls>
+            <Item1 Ref="302" ControlType="XRLabel" Name="label90" AutoWidth="true" CanGrow="false" Text="label25" TextAlignment="TopLeft" WordWrap="false" SizeF="174.7501,12.5833282" LocationFloat="40.49357, 16.7499866" Font="Calibri, 8pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="303" EventName="BeforePrint" PropertyName="Text" Expression="[v_Report_Item_v_Report_POSBillItem].[v_Report_ItemGroup_v_Report_Item].[Department]" />
+              </ExpressionBindings>
+              <StylePriority Ref="304" UseFont="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="305" ControlType="XRLabel" Name="label68" Text="Sl" TextAlignment="TopRight" SizeF="16.1458473,12.5833282" LocationFloat="8.292838, 2.083333" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Right">
+              <StylePriority Ref="306" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="307" ControlType="XRLabel" Name="label82" Text="Item" TextAlignment="TopCenter" SizeF="39.56735,12.5833273" LocationFloat="24.4386864, 2.083333" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Right">
+              <StylePriority Ref="308" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="309" ControlType="XRLabel" Name="label83" Text="Qty" TextAlignment="TopLeft" SizeF="29.1763611,12.5833282" LocationFloat="64.0060349, 2.083333" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Right">
+              <StylePriority Ref="310" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item4>
+            <Item5 Ref="311" ControlType="XRLabel" Name="label84" Text="Rate" TextAlignment="TopLeft" SizeF="44.36329,12.5833292" LocationFloat="93.1823959, 2.083333" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Right">
+              <StylePriority Ref="312" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item5>
+            <Item6 Ref="313" ControlType="XRLabel" Name="label86" Text="Amount" TextAlignment="TopRight" SizeF="62.288208,12.5833282" LocationFloat="215.711823, 2.083333" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Right">
+              <StylePriority Ref="314" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item6>
+            <Item7 Ref="315" ControlType="XRLine" Name="line11" SizeF="269.707184,2.08333325" LocationFloat="8.292838, 0" />
+            <Item8 Ref="316" ControlType="XRLine" Name="line12" SizeF="270.3185,2.083332" LocationFloat="8.161891, 27.24999" />
+            <Item9 Ref="317" ControlType="XRLabel" Name="label88" Text="Disc." TextAlignment="TopCenter" SizeF="79.95659,12.5833282" LocationFloat="137.54567, 2.083319" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Right">
+              <StylePriority Ref="318" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item9>
+          </Controls>
+        </Item2>
+        <Item3 Ref="319" ControlType="GroupHeaderBand" Name="GroupHeader1" HeightF="0" Visible="false">
+          <GroupFields>
+            <Item1 Ref="320" FieldName="v_Report_Item_v_Report_POSBillItem.v_Report_ItemGroup_v_Report_Item.Department" />
+          </GroupFields>
+        </Item3>
+        <Item4 Ref="321" ControlType="GroupFooterBand" Name="GroupFooter1" HeightF="13.65227">
+          <Controls>
+            <Item1 Ref="322" ControlType="XRLabel" Name="label94" TextFormatString="{0:#.00}" Text="label29" TextAlignment="TopRight" SizeF="60.4976959,12.5833282" LocationFloat="217.502274, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100" Borders="Right">
+              <Summary Ref="323" Running="Group" />
+              <ExpressionBindings>
+                <Item1 Ref="324" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([NetAmt])" />
+              </ExpressionBindings>
+              <StylePriority Ref="325" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="326" ControlType="XRLabel" Name="label93" TextFormatString="{0:#.00}" Text="label28" TextAlignment="TopRight" SizeF="93.54146,12.5833282" LocationFloat="123.9608, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100" Borders="Right">
+              <Summary Ref="327" Running="Group" />
+              <ExpressionBindings>
+                <Item1 Ref="328" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([MDiscountAmt]+[IDiscountAmt]+[PromoAmt])" />
+              </ExpressionBindings>
+              <StylePriority Ref="329" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="330" ControlType="XRLabel" Name="label92" TextFormatString="{0:#.00}" Text="label27" TextAlignment="TopRight" SizeF="46.71685,12.5833282" LocationFloat="77.24394, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100" Borders="Right">
+              <Summary Ref="331" Running="Group" />
+              <ExpressionBindings>
+                <Item1 Ref="332" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([ESP])" />
+              </ExpressionBindings>
+              <StylePriority Ref="333" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="334" ControlType="XRLabel" Name="label91" TextFormatString="{0:#,#}" Text="label26" TextAlignment="TopRight" SizeF="36.75038,12.5833282" LocationFloat="40.49357, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100" Borders="Right">
+              <Summary Ref="335" Running="Group" />
+              <ExpressionBindings>
+                <Item1 Ref="336" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([Qty])" />
+              </ExpressionBindings>
+              <StylePriority Ref="337" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item4>
+          </Controls>
+        </Item4>
+        <Item5 Ref="338" ControlType="GroupFooterBand" Name="GroupFooter2" Level="1" HeightF="22.5577164">
+          <Controls>
+            <Item1 Ref="339" ControlType="XRLine" Name="line13" SizeF="269.838135,2.170149" LocationFloat="8.161891, 0" />
+            <Item2 Ref="340" ControlType="XRLabel" Name="label85" Text="Total :" SizeF="40.0452576,15.7884588" LocationFloat="11.9729891, 3.08333468" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <StylePriority Ref="341" UseFont="false" />
+            </Item2>
+            <Item3 Ref="342" ControlType="XRLabel" Name="label87" TextFormatString="{0:#.000}" Text="label34" TextAlignment="TopRight" SizeF="49.30655,15.7884588" LocationFloat="74.65424, 3.08333468" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <Summary Ref="343" Running="Report" />
+              <ExpressionBindings>
+                <Item1 Ref="344" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([Qty])" />
+              </ExpressionBindings>
+              <StylePriority Ref="345" UseFont="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="346" ControlType="XRLabel" Name="label95" TextFormatString="{0:#.00}" Text="label35" TextAlignment="TopRight" SizeF="115.558868,15.7884636" LocationFloat="162.4411, 3.08332682" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <Summary Ref="347" Running="Report" />
+              <ExpressionBindings>
+                <Item1 Ref="348" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([NetAmt])" />
+              </ExpressionBindings>
+              <StylePriority Ref="349" UseFont="false" UseTextAlignment="false" />
+            </Item4>
+            <Item5 Ref="350" ControlType="XRLine" Name="line14" SizeF="269.707184,2.08334732" LocationFloat="8.292838, 20.47437" />
+          </Controls>
+        </Item5>
+      </Bands>
+    </Item18>
+  </Bands>
+  <CrossBandControls>
+    <Item1 Ref="351" ControlType="XRCrossBandBox" Name="crossBandBox3" WidthF="279.411774" StartBand="#Ref-148" EndBand="#Ref-169" StartPointFloat="4.901961, 0" EndPointFloat="4.901961, 17.0000114" />
+    <Item2 Ref="352" ControlType="XRCrossBandBox" Name="crossBandBox2" WidthF="264.552826" StartBand="#Ref-229" EndBand="#Ref-243" StartPointFloat="15.2058754, 1.041605" EndPointFloat="15.2058754, 38.54217" />
+    <Item3 Ref="353" ControlType="XRCrossBandBox" Name="crossBandBox1" WidthF="264.552826" StartBand="#Ref-154" EndBand="#Ref-169" StartPointFloat="15.2058716, 0" EndPointFloat="15.2058716, 16.5368385" />
+  </CrossBandControls>
+  <DefaultPrinterSettingsUsing Ref="354" UsePaperKind="true" />
+</XtraReportsLayoutSerializer>

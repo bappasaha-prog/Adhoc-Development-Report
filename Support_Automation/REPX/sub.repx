@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="19.2.4.0" Ref="0" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v19.2, Version=19.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Report1" ScriptsSource="private void FAmountInWords_GetValue(object sender, GetValueEventArgs e)&#xD;&#xA;{&#xD;&#xA;&#x9;e.Value = &quot;Rs. &quot; + AmountInWords_IndianFormat(Convert.ToInt32(e.GetColumnValue(&quot;NetAmt&quot;))) + &quot; Only.&quot;;&#xD;&#xA;}&#xD;&#xA;public string AmountInWords_IndianFormat(int number)&#xD;&#xA;        {&#xD;&#xA;            if (number == 0)&#xD;&#xA;                return &quot;Zero&quot;;&#xD;&#xA;&#xD;&#xA;            if (number &lt; 0)&#xD;&#xA;                return &quot;Minus &quot; + AmountInWords_IndianFormat(Math.Abs(number));&#xD;&#xA;&#xD;&#xA;            string words = &quot;&quot;;&#xD;&#xA;&#xD;&#xA;            if ((number / 10000000) &gt; 0)&#xD;&#xA;            {&#xD;&#xA;                words += AmountInWords_IndianFormat(number / 10000000) + &quot; Crore &quot;;&#xD;&#xA;                number %= 10000000;&#xD;&#xA;            }&#xD;&#xA;&#xD;&#xA;            if ((number / 100000) &gt; 0)&#xD;&#xA;            {&#xD;&#xA;                words += AmountInWords_IndianFormat(number / 100000) + &quot; Lakh &quot;;&#xD;&#xA;                number %= 100000;&#xD;&#xA;            }&#xD;&#xA;&#xD;&#xA;            if ((number / 1000) &gt; 0)&#xD;&#xA;            {&#xD;&#xA;                words += AmountInWords_IndianFormat(number / 1000) + &quot; Thousand &quot;;&#xD;&#xA;                number %= 1000;&#xD;&#xA;            }&#xD;&#xA;&#xD;&#xA;            if ((number / 100) &gt; 0)&#xD;&#xA;            {&#xD;&#xA;                words += AmountInWords_IndianFormat(number / 100) + &quot; Hundred &quot;;&#xD;&#xA;                number %= 100;&#xD;&#xA;            }&#xD;&#xA;&#xD;&#xA;            if (number &gt; 0)&#xD;&#xA;            {&#xD;&#xA;                if (words != &quot;&quot;)&#xD;&#xA;                    words += &quot;and &quot;;&#xD;&#xA;&#xD;&#xA;                var unitsMap = new[] { &quot;Zero&quot;, &quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;, &quot;Four&quot;, &quot;Five&quot;, &quot;Six&quot;, &quot;Seven&quot;, &quot;Eight&quot;, &quot;Nine&quot;, &quot;Ten&quot;, &quot;Eleven&quot;, &quot;Twelve&quot;, &quot;Thirteen&quot;, &quot;Fourteen&quot;, &quot;Fifteen&quot;, &quot;Sixteen&quot;, &quot;Seventeen&quot;, &quot;Eighteen&quot;, &quot;Nineteen&quot; };&#xD;&#xA;                var tensMap = new[] { &quot;zero&quot;, &quot;Ten&quot;, &quot;Twenty&quot;, &quot;Thirty&quot;, &quot;Forty&quot;, &quot;Fifty&quot;, &quot;Sixty&quot;, &quot;Seventy&quot;, &quot;Eighty&quot;, &quot;Ninety&quot; };&#xD;&#xA;&#xD;&#xA;                if (number &lt; 20)&#xD;&#xA;                    words += unitsMap[number];&#xD;&#xA;                else&#xD;&#xA;                {&#xD;&#xA;                    words += tensMap[number / 10];&#xD;&#xA;                    if ((number % 10) &gt; 0)&#xD;&#xA;                        words += &quot;-&quot; + unitsMap[number % 10];&#xD;&#xA;                }&#xD;&#xA;            }&#xD;&#xA;            &#xD;&#xA;            return words;&#xD;&#xA;        }&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;" Landscape="true" Margins="16, 23, 11, 26" PaperKind="A5" PageWidth="827" PageHeight="583" Version="19.2" DataMember="v_Report_POSBill" Font="Arial, 9.75pt">
+  <CalculatedFields>
+    <Item1 Ref="1" Name="AMTinWords" DataMember="v_Report_POSBill">
+      <Scripts Ref="2" OnGetValue="FAmountInWords_GetValue" />
+    </Item1>
+  </CalculatedFields>
+  <Bands>
+    <Item1 Ref="3" ControlType="TopMarginBand" Name="TopMargin" HeightF="11" Font="Arial, 8pt">
+      <StylePriority Ref="4" UseFont="false" />
+    </Item1>
+    <Item2 Ref="5" ControlType="DetailBand" Name="Detail" HeightF="0" Font="Arial, 8pt" Visible="false">
+      <StylePriority Ref="6" UseFont="false" />
+    </Item2>
+    <Item3 Ref="7" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="25.7216129" Font="Arial, 8pt">
+      <StylePriority Ref="8" UseFont="false" />
+    </Item3>
+    <Item4 Ref="9" ControlType="DetailReportBand" Name="DetailReport5" Level="0" DataMember="v_Report_POSBillTaxSummary" Font="Arial, 8pt">
+      <Bands>
+        <Item1 Ref="10" ControlType="DetailBand" Name="Detail6" HeightF="17.92029">
+          <Controls>
+            <Item1 Ref="11" ControlType="XRLabel" Name="label53" Multiline="true" Text="label53" TextAlignment="TopRight" SizeF="115.909119,15.1515141" LocationFloat="138.162811, 0" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="12" EventName="BeforePrint" PropertyName="Text" Expression="[Taxable]" />
+              </ExpressionBindings>
+            </Item1>
+            <Item2 Ref="13" ControlType="XRLabel" Name="label52" Multiline="true" Text="label52" SizeF="133.522736,15.1515141" LocationFloat="4.640068, 0" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="14" EventName="BeforePrint" PropertyName="Text" Expression="[TaxDescription]" />
+              </ExpressionBindings>
+            </Item2>
+          </Controls>
+        </Item1>
+        <Item2 Ref="15" ControlType="ReportFooterBand" Name="ReportFooter3" HeightF="23.9519329">
+          <Controls>
+            <Item1 Ref="16" ControlType="XRLabel" Name="label60" Multiline="true" Text="label53" TextAlignment="TopRight" SizeF="115.909119,14.1098843" LocationFloat="138.162811, 1.99997723" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="17" EventName="BeforePrint" PropertyName="Text" Expression="[Taxable]" />
+              </ExpressionBindings>
+              <StylePriority Ref="18" UseFont="false" />
+            </Item1>
+            <Item2 Ref="19" ControlType="XRLabel" Name="label58" Multiline="true" Text="Total:" SizeF="133.52272,14.10988" LocationFloat="4.640091, 1.99997723" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <StylePriority Ref="20" UseFont="false" />
+            </Item2>
+          </Controls>
+        </Item2>
+        <Item3 Ref="21" ControlType="GroupHeaderBand" Name="GroupHeader2" RepeatEveryPage="true" HeightF="15.1515141">
+          <Controls>
+            <Item1 Ref="22" ControlType="XRLabel" Name="label46" Multiline="true" Text="Description" SizeF="133.522736,15.1515121" LocationFloat="4.640068, 0" Font="Arial, 8pt, style=Bold, Underline" Padding="2,2,0,0,100">
+              <StylePriority Ref="23" UseFont="false" />
+            </Item1>
+            <Item2 Ref="24" ControlType="XRLabel" Name="label47" Multiline="true" Text="Taxable" TextAlignment="TopRight" SizeF="124.053009,15.1515141" LocationFloat="138.162811, 0" Font="Arial, 8pt, style=Bold, Underline" Padding="2,2,0,0,100">
+              <StylePriority Ref="25" UseFont="false" UseTextAlignment="false" />
+            </Item2>
+          </Controls>
+        </Item3>
+      </Bands>
+    </Item4>
+  </Bands>
+  <CrossBandControls>
+    <Item1 Ref="27" ControlType="XRCrossBandBox" Name="crossBandBox2" BorderWidth="1" WidthF="772.4791" StartBand="#Ref-26" StartPointFloat="7.99999952, 1" EndPointFloat="7.99999952, 0" />
+  </CrossBandControls>
+  <ObjectStorage>
+    <Item1 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v19.2" Ref="26" Content="~Xtra#NULL" Type="DevExpress.XtraReports.UI.DetailBand" />
+  </ObjectStorage>
+</XtraReportsLayoutSerializer>

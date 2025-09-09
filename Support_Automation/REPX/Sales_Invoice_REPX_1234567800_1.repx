@@ -1,0 +1,848 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="19.2.4.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v19.2, Version=19.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="SalesInvoice" ScriptsSource="private void AmountInWords_GetValue(object sender, DevExpress.XtraReports.UI.GetValueEventArgs e) {&#xD;&#xA;string isNegative = &quot;Rs. &quot;;  &#xD;&#xA;    try  &#xD;&#xA;    {  &#xD;&#xA;        //Console.WriteLine(&quot;Enter a Number to convert to currency&quot;);  &#xD;&#xA;        string number = Convert.ToDouble(e.GetColumnValue(&quot;NET_AMOUNT&quot;)).ToString();  &#xD;&#xA;//&quot;15550000.90&quot;;&#xD;&#xA;  &#xD;&#xA;        if (number.Contains(&quot;-&quot;))  &#xD;&#xA;        {  &#xD;&#xA;            isNegative = isNegative + &quot;Minus &quot;;  &#xD;&#xA;            number = number.Substring(1, number.Length - 1);  &#xD;&#xA;        }  &#xD;&#xA;        if (number == &quot;0&quot;)  &#xD;&#xA;        {  &#xD;&#xA;            e.Value = &quot;Rs. Zero Only&quot;;  &#xD;&#xA;        }  &#xD;&#xA;        else  &#xD;&#xA;        {  &#xD;&#xA;            e.Value = isNegative + ConvertToWords(number);  &#xD;&#xA;        }  &#xD;&#xA;       // Console.ReadKey();  &#xD;&#xA;    }  &#xD;&#xA;    catch (Exception ex)  &#xD;&#xA;    {  &#xD;&#xA;        e.Value = ex.Message;&#xD;&#xA;&#x9;  //Console.WriteLine(ex.Message);&#xD;&#xA;    } &#xD;&#xA;}&#xD;&#xA;private static String ConvertToWords(String numb)  &#xD;&#xA;{  &#xD;&#xA;    String val = &quot;&quot;, wholeNo = numb, points = &quot;&quot;, andStr = &quot;&quot;, pointStr = &quot;&quot;;  &#xD;&#xA;    String endStr = &quot;Only&quot;;  &#xD;&#xA;    try  &#xD;&#xA;    {  &#xD;&#xA;        int decimalPlace = numb.IndexOf(&quot;.&quot;);  &#xD;&#xA;        if (decimalPlace &gt; 0)  &#xD;&#xA;        {  &#xD;&#xA;            wholeNo = numb.Substring(0, decimalPlace);  &#xD;&#xA;            points = numb.Substring(decimalPlace + 1);  &#xD;&#xA;            if (Convert.ToInt32(points) &gt; 0)  &#xD;&#xA;            {  &#xD;&#xA;                andStr = &quot;and&quot;;// just to separate whole numbers from points/cents    &#xD;&#xA;                endStr = &quot;Paisa &quot; + endStr;//Cents    &#xD;&#xA;                pointStr = ConvertDecimals(points);  &#xD;&#xA;            }  &#xD;&#xA;        }  &#xD;&#xA;        val = String.Format(&quot;{0} {1}{2} {3}&quot;, ConvertWholeNumber(wholeNo).Trim(), andStr, pointStr, endStr);  &#xD;&#xA;    }  &#xD;&#xA;    catch { }  &#xD;&#xA;    return val;  &#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;private static String ConvertDecimals(String number)  &#xD;&#xA;{  &#xD;&#xA;    String cd = &quot;&quot;, digit = &quot;&quot;, engOne = &quot;&quot;;  &#xD;&#xA;    for (int i = 0; i &lt; number.Length; i++)  &#xD;&#xA;    {  &#xD;&#xA;        digit = number[i].ToString();  &#xD;&#xA;        if (digit.Equals(&quot;0&quot;))  &#xD;&#xA;        {  &#xD;&#xA;            engOne = &quot;Zero&quot;;  &#xD;&#xA;        }  &#xD;&#xA;        else  &#xD;&#xA;        {  &#xD;&#xA;            engOne = ones(digit);  &#xD;&#xA;        }  &#xD;&#xA;        cd += &quot; &quot; + engOne;  &#xD;&#xA;    }  &#xD;&#xA;    return cd;  &#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;private static String ConvertWholeNumber(String Number)  &#xD;&#xA;{  &#xD;&#xA;    string word = &quot;&quot;;  &#xD;&#xA;    try  &#xD;&#xA;    {  &#xD;&#xA;        bool beginsZero = false;//tests for 0XX    &#xD;&#xA;        bool isDone = false;//test if already translated    &#xD;&#xA;        double dblAmt = (Convert.ToDouble(Number));  &#xD;&#xA;        //if ((dblAmt &gt; 0) &amp;&amp; number.StartsWith(&quot;0&quot;))    &#xD;&#xA;        if (dblAmt &gt; 0)  &#xD;&#xA;        {//test for zero or digit zero in a nuemric    &#xD;&#xA;            beginsZero = Number.StartsWith(&quot;0&quot;);  &#xD;&#xA;  &#xD;&#xA;            int numDigits = Number.Length;  &#xD;&#xA;            int pos = 0;//store digit grouping    &#xD;&#xA;            String place = &quot;&quot;;//digit grouping name:hundres,thousand,etc...    &#xD;&#xA;            switch (numDigits)  &#xD;&#xA;            {  &#xD;&#xA;                case 1://ones' range    &#xD;&#xA;  &#xD;&#xA;                    word = ones(Number);  &#xD;&#xA;                    isDone = true;  &#xD;&#xA;                    break;  &#xD;&#xA;                case 2://tens' range    &#xD;&#xA;                    word = tens(Number);  &#xD;&#xA;                    isDone = true;  &#xD;&#xA;                    break;  &#xD;&#xA;                case 3://hundreds' range    &#xD;&#xA;                    pos = (numDigits % 3) + 1;  &#xD;&#xA;                    place = &quot; Hundred &quot;;  &#xD;&#xA;                    break;  &#xD;&#xA;                case 4://thousands' range    &#xD;&#xA;                case 5:  &#xD;&#xA;&#x9;&#x9;&#x9;  pos = (numDigits % 4) + 1;  &#xD;&#xA;                    place = &quot; Thousand &quot;;  &#xD;&#xA;                    break;&#xD;&#xA;                case 6://Lacs range  &#xD;&#xA;                case 7:  &#xD;&#xA;&#x9;&#x9;&#x9;  pos = (numDigits % 6) + 1;  &#xD;&#xA;                    place = &quot; Lacs &quot;;  &#xD;&#xA;                    break;&#xD;&#xA;                case 8:  &#xD;&#xA;                case 9:  &#xD;&#xA;                    pos = (numDigits % 8) + 1;  &#xD;&#xA;                    place = &quot; Crore &quot;;  &#xD;&#xA;                    break;  &#xD;&#xA;                case 10://Billions's range    &#xD;&#xA;                case 11:  &#xD;&#xA;                case 12:  &#xD;&#xA;  &#xD;&#xA;                    pos = (numDigits % 10) + 1;  &#xD;&#xA;                    place = &quot; Billion &quot;;  &#xD;&#xA;                    break;  &#xD;&#xA;                //add extra case options for anything above Billion...    &#xD;&#xA;                default:  &#xD;&#xA;                    isDone = true;  &#xD;&#xA;                    break;  &#xD;&#xA;            }  &#xD;&#xA;            if (!isDone)  &#xD;&#xA;            {//if transalation is not done, continue...(Recursion comes in now!!)    &#xD;&#xA;                if (Number.Substring(0, pos) != &quot;0&quot; &amp;&amp; Number.Substring(pos) != &quot;0&quot;)  &#xD;&#xA;                {  &#xD;&#xA;                    try  &#xD;&#xA;                    {  &#xD;&#xA;                        word = ConvertWholeNumber(Number.Substring(0, pos)) + place + ConvertWholeNumber(Number.Substring(pos));  &#xD;&#xA;                    }  &#xD;&#xA;                    catch { }  &#xD;&#xA;                }  &#xD;&#xA;                else  &#xD;&#xA;                {  &#xD;&#xA;                    word = ConvertWholeNumber(Number.Substring(0, pos)) + ConvertWholeNumber(Number.Substring(pos));  &#xD;&#xA;                }  &#xD;&#xA;  &#xD;&#xA;                //check for trailing zeros    &#xD;&#xA;                //if (beginsZero) word = &quot; and &quot; + word.Trim();    &#xD;&#xA;            }  &#xD;&#xA;            //ignore digit grouping names    &#xD;&#xA;            if (word.Trim().Equals(place.Trim())) word = &quot;&quot;;  &#xD;&#xA;        }  &#xD;&#xA;    }  &#xD;&#xA;    catch { }  &#xD;&#xA;    return word.Trim();  &#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;private static String ones(String Number)  &#xD;&#xA;{  &#xD;&#xA;    int _Number = Convert.ToInt32(Number);  &#xD;&#xA;    String name = &quot;&quot;;  &#xD;&#xA;    switch (_Number)  &#xD;&#xA;    {  &#xD;&#xA;  &#xD;&#xA;        case 1:  &#xD;&#xA;            name = &quot;One&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 2:  &#xD;&#xA;            name = &quot;Two&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 3:  &#xD;&#xA;            name = &quot;Three&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 4:  &#xD;&#xA;            name = &quot;Four&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 5:  &#xD;&#xA;            name = &quot;Five&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 6:  &#xD;&#xA;            name = &quot;Six&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 7:  &#xD;&#xA;            name = &quot;Seven&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 8:  &#xD;&#xA;            name = &quot;Eight&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 9:  &#xD;&#xA;            name = &quot;Nine&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;    }  &#xD;&#xA;    return name;  &#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;private static String tens(String Number)  &#xD;&#xA;{  &#xD;&#xA;    int _Number = Convert.ToInt32(Number);  &#xD;&#xA;    String name = null;  &#xD;&#xA;    switch (_Number)  &#xD;&#xA;    {  &#xD;&#xA;        case 10:  &#xD;&#xA;            name = &quot;Ten&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 11:  &#xD;&#xA;            name = &quot;Eleven&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 12:  &#xD;&#xA;            name = &quot;Twelve&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 13:  &#xD;&#xA;            name = &quot;Thirteen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 14:  &#xD;&#xA;            name = &quot;Fourteen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 15:  &#xD;&#xA;            name = &quot;Fifteen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 16:  &#xD;&#xA;            name = &quot;Sixteen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 17:  &#xD;&#xA;            name = &quot;Seventeen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 18:  &#xD;&#xA;            name = &quot;Eighteen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 19:  &#xD;&#xA;            name = &quot;Nineteen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 20:  &#xD;&#xA;            name = &quot;Twenty&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 30:  &#xD;&#xA;            name = &quot;Thirty&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 40:  &#xD;&#xA;            name = &quot;Fourty&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 50:  &#xD;&#xA;            name = &quot;Fifty&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 60:  &#xD;&#xA;            name = &quot;Sixty&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 70:  &#xD;&#xA;            name = &quot;Seventy&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 80:  &#xD;&#xA;            name = &quot;Eighty&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 90:  &#xD;&#xA;            name = &quot;Ninety&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        default:  &#xD;&#xA;            if (_Number &gt; 0)  &#xD;&#xA;            {  &#xD;&#xA;                name = tens(Number.Substring(0, 1) + &quot;0&quot;) + &quot; &quot; + ones(Number.Substring(1));  &#xD;&#xA;            }  &#xD;&#xA;            break;  &#xD;&#xA;    }  &#xD;&#xA;    return name;  &#xD;&#xA;}&#xD;&#xA;" Margins="24, 25, 53, 36" PageWidth="850" PageHeight="1100" Version="19.2" DataMember="LV_SALINV_HEADER_1" DataSource="#Ref-0" Font="Arial, 9.75pt">
+  <Parameters>
+    <Item1 Ref="3" MultiValue="true" Name="Code" Type="#Ref-2" />
+    <Item2 Ref="5" Description="ReportsHeader" Name="ReportsHeader" />
+    <Item3 Ref="6" Description="ReportsFooter" Name="ReportsFooter" />
+  </Parameters>
+  <CalculatedFields>
+    <Item1 Ref="7" Name="AmountInWords" DataMember="LV_SALINV_HEADER_1">
+      <Scripts Ref="8" OnGetValue="AmountInWords_GetValue" />
+    </Item1>
+    <Item2 Ref="9" Name="value" Expression="[INVOICE_RATE]*[INVOICE_QUANTITY]" DataMember="LV_SALINV_HEADER_1.LV_SALINV_HEADER_1LV_SALINV_ITEM" />
+  </CalculatedFields>
+  <Bands>
+    <Item1 Ref="10" ControlType="TopMarginBand" Name="TopMargin" HeightF="53" />
+    <Item2 Ref="11" ControlType="DetailBand" Name="Detail" HeightF="0" />
+    <Item3 Ref="12" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="36" />
+    <Item4 Ref="13" ControlType="GroupHeaderBand" Name="GroupHeader1" PageBreak="BeforeBand" HeightF="441.958282">
+      <GroupFields>
+        <Item1 Ref="14" FieldName="INVCODE" />
+      </GroupFields>
+      <Controls>
+        <Item1 Ref="15" ControlType="XRLabel" Name="label1" KeepTogether="true" Multiline="true" Text=":" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="7.65426636,15" LocationFloat="512.904358, 342" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100" Borders="None">
+          <StylePriority Ref="16" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item1>
+        <Item2 Ref="17" ControlType="XRLine" Name="line12" SizeF="800.0417,4.08334351" LocationFloat="0.9583013, 196.125076" />
+        <Item3 Ref="18" ControlType="XRLabel" Name="label157" TextFormatString="{0:dd-MM-yyyy}" KeepTogether="true" Multiline="true" Text="Tax Invoice" AnchorHorizontal="Left" TextAlignment="TopRight" SizeF="206.190857,14.9999542" LocationFloat="593.2229, 215.2084" Font="Arial, 10pt, style=Bold" BackColor="White" Padding="2,2,0,0,100" Borders="None">
+          <ExpressionBindings>
+            <Item1 Ref="19" EventName="BeforePrint" PropertyName="Text" Expression="[INVOICE_DATE]" />
+          </ExpressionBindings>
+          <StylePriority Ref="20" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item3>
+        <Item4 Ref="21" ControlType="XRLabel" Name="label158" KeepTogether="true" Multiline="true" Text="Date:" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="87.49997,15" LocationFloat="505.722931, 215.2084" Font="Arial, 10pt, style=Bold" BackColor="White" Padding="2,2,0,0,100" Borders="None">
+          <StylePriority Ref="22" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item4>
+        <Item5 Ref="23" ControlType="XRLabel" Name="label159" KeepTogether="true" Multiline="true" Text="Tax Invoice" AnchorHorizontal="Left" TextAlignment="TopRight" SizeF="207.7771,14.9999847" LocationFloat="593.2229, 200.20842" Font="Arial, 10pt, style=Bold" BackColor="White" Padding="2,2,0,0,100" Borders="None">
+          <ExpressionBindings>
+            <Item1 Ref="24" EventName="BeforePrint" PropertyName="Text" Expression="[INVOICE_NO]" />
+          </ExpressionBindings>
+          <StylePriority Ref="25" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item5>
+        <Item6 Ref="26" ControlType="XRLabel" Name="label160" KeepTogether="true" Multiline="true" ProcessNullValues="SuppressAndShrink" Text="label1" TextAlignment="TopLeft" SizeF="400,15" LocationFloat="2.91670156, 181.125076" Font="Arial, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="27" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([WEBSITE]),'' ,' Website :- '+[WEBSITE])" />
+          </ExpressionBindings>
+          <StylePriority Ref="28" UseFont="false" UseTextAlignment="false" />
+        </Item6>
+        <Item7 Ref="29" ControlType="XRLabel" Name="label161" KeepTogether="true" Multiline="true" Text="label1" SizeF="386.708282,15" LocationFloat="3.973643E-05, 215.2084" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100" Borders="None">
+          <ExpressionBindings>
+            <Item1 Ref="30" EventName="BeforePrint" PropertyName="Text" Expression="Concat('GSTIN:- ',[OWNER_GSTIN_NO])+Concat('GST State:- ',[OWNER_GSTIN_STATE_NAME],' (',[OWNER_GSTIN_STATE_CODE],')' )" />
+          </ExpressionBindings>
+          <StylePriority Ref="31" UseFont="false" UseBorders="false" />
+        </Item7>
+        <Item8 Ref="32" ControlType="XRLabel" Name="label162" KeepTogether="true" Multiline="true" Text="label1" TextAlignment="TopLeft" SizeF="251.188477,15" LocationFloat="0, 200.2084" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100" Borders="None">
+          <ExpressionBindings>
+            <Item1 Ref="33" EventName="BeforePrint" PropertyName="Text" Expression="'CIN NO: '+' - ' +[LV_SALINV_HEADER_1LV_ORGANIZATION_UNIT].[CIN]" />
+          </ExpressionBindings>
+          <StylePriority Ref="34" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+        </Item8>
+        <Item9 Ref="35" ControlType="XRLabel" Name="label163" KeepTogether="true" Multiline="true" Text="label1" TextAlignment="TopLeft" SizeF="400,15" LocationFloat="2.91665387, 166.125076" Font="Arial, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="36" EventName="BeforePrint" PropertyName="Text" Expression="'Phone: '+[PHONE1]+', '+[PHONE2]+' '+[PHONE3]" />
+          </ExpressionBindings>
+          <StylePriority Ref="37" UseFont="false" UseTextAlignment="false" />
+        </Item9>
+        <Item10 Ref="38" ControlType="XRLabel" Name="label165" KeepTogether="true" Multiline="true" ProcessNullValues="SuppressAndShrink" Text="label1" TextAlignment="TopLeft" SizeF="400,15" LocationFloat="2.91666985, 151.125015" Font="Arial, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="39" EventName="BeforePrint" PropertyName="Text" Expression="[STATE]+' '+[CITY]+' '+[PINCODE]" />
+          </ExpressionBindings>
+          <StylePriority Ref="40" UseFont="false" UseTextAlignment="false" />
+        </Item10>
+        <Item11 Ref="41" ControlType="XRLabel" Name="label166" KeepTogether="true" Multiline="true" CanShrink="true" Text="label1" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="406.3062,24.7916565" LocationFloat="2.91668582, 126.333366" Font="Arial, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="42" EventName="BeforePrint" PropertyName="Text" Expression="[ADDRESS]" />
+          </ExpressionBindings>
+          <StylePriority Ref="43" UseFont="false" UseTextAlignment="false" />
+        </Item11>
+        <Item12 Ref="44" ControlType="XRLabel" Name="label167" Multiline="true" Text="label1" TextAlignment="TopLeft" SizeF="406.3062,21.8750019" LocationFloat="2.91668582, 104.458366" Font="Arial, 13pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="45" EventName="BeforePrint" PropertyName="Text" Expression="[NAME]" />
+          </ExpressionBindings>
+          <StylePriority Ref="46" UseFont="false" UseTextAlignment="false" />
+        </Item12>
+        <Item13 Ref="47" ControlType="XRLabel" Name="label168" Multiline="true" Text="Tax Invoice" TextAlignment="TopCenter" SizeF="200.14212,27.3749981" LocationFloat="324.583344, 0" Font="Arial, 14pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="48" UseFont="false" UseTextAlignment="false" />
+        </Item13>
+        <Item14 Ref="49" ControlType="XRPictureBox" Name="pictureBox1" ImageSource="img,iVBORw0KGgoAAAANSUhEUgAAAGUAAABXCAYAAAAdzotpAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwwAADsMBx2+oZAAACEVJREFUeF7tmgty2zgQRH0n30l30p18pyyerOdtTfgBZZuEFHVtF8jBYAB0A1RSm7c/LwyHlykD4mXKgHgoU06n05+3t7cLPz4+rtFPvL+/X+K0j45hTTmfz19CYwbgmfiUIZC+NIZxsOaPjmFN0QyFRlhjVWT7gfmAVmrsI2AYU7wZAhF9V3QFhzwDzRLmpDnkaFo+j4phTMEARNQIxZYpZBoGFB8Qpx9ar44lTjsqDjdFwbwpElSByc08MZWn8PSlKYCYho2IQ02pwvDuZwdBFTf7yK9ikmec5xxXYZ+1eB8Nh5mCMIqrMLwT98RX4Wg9/VPUSMjYKVhfMI7YSDhkNQim8LaKqUApbOYSo6/C/MytecQwQWiIpo6C3U1J4RVQ8WkRRzEV0f4tsBY1QM4LnJt47Tsah6wkxVIcYinSvWZUUMO6os7p8yjY1RTEkAghUjhP+E8jTXZuYsa9LSOYs7spCjElwG8ZIqitMbSa4/Nvzr0Fu5pSkTfGk4pAv8mcgzldA++j4FBTgN96hNmTzOtBSNRP6xHYbXY/XVMnkngKBsn3NKeASfprzHFJhU4ypzVpM4cxR2IXU9x8bpyYfQiUxszB/syrhi4hczXFNfGuGbSu7wjsaopg075XcWjnQH8SbDHFeZ2TtqK31m9it5kVD9EVh1ZhNGXphCqWBFtMAeQ4J63m0OZhoV1ay29i1+OgCWxYc7wZmrIE+pPgO6bUA8K7fcSe2hQ377ObzWdP6hIUXoKtpiSYk/EaA3M9R2FXU1JABdkCx0rwHVPA3BjNOgK7maJ43gjeRzSF9UHirPsI7GIKm2SDCjCaKfn5Sj71TZnCSJ8vb6+3xLX9c6aA3zCFG+nncooV1qkgjjlH4OlMWWPFVOxoHG7KltM4JXA1hXeZcZnwMzUaDjWFb/aW7/aUwFX8LWDuo/6EtYRDTQFbTmqKrwHfMYWxR/1uLGEIU3qFSfE14F5TmHNL/p44fFVbPiEpvoLeawpzHvVH3jX8tQsWmpv8Sc6h97ZM1bvHlJFvCegyxVMlec9+hKn9VSw4B0Qifw1T9e4xhTG9n8wj8NcuPEVw6bOSQiwJmqItQTOXkHNab6sp5K/NczRmTVkSGqQQS7lp8hoQq/cgWG+LKdRe29cImDWFk7uEFKLHwB4xFG0uN+eEU7G5z5J1e9ZxNGZNmducSCHWNtp7QjkI5JFPXd5Zh/Gcc47kOU4aB49wW2ZNWUMVYgmKugZqkQsVL+e5l+yJehBQl9ioWFd/Brnpnzh51FA0WozxWXNo8xYAn6Hmu64cSx8tecQcvwdcm3tawzCmKBKtNas5KfIUHUMNc4E1Na1XnJ9AGiLXMIwpQiMUEmgEcGP0u2FboOiaQh9w/N7I/dC6ziUMZ4pg8QpM6xw+u0HnV3xaYvZnfkUKBa2xFUt10hTz1nCYKSyOcbVOLppNGKOfd1pvgXGYIE4OSIEEfY6rpO7UmCnk/FOkn1oaI9ewuykK6zgXTps1qzBsjJiimUPL2FwD8ToemC9ToDq/ps6B+aZy6xyu1332YFdTcsFTm64bWoKC2vZsOGtP5df554yZMySRdeAW7GpKjplDz4YTCAnXTmJvXfrMg7VmvVFz6DV4CruZkptZWmDm1bpVsMq5ulWgJfNqbl1D9q0JnQcB9mI3U3KBfnKm0HMSEa5uGM7VrWauIXMzvxq2tA9Q513LF7uZkvlbuISaO7fprSe25nuz6oFZE7nmr90scYgpLI6N9nAJVbw5kTIHrqGecNex9eQzLvOHNmVtM72YO9EVNW8NVXxRT/5WU3r3vZspKUzviVlDrylbT/iciVXktX1XE+fWV7GbKXOn7zvoNaWKs7bezK0HKPvgEu7d826mgByzdloVcul09ZoC7jWwYsut682ruMsUNpQT9ppSNzy3UPPqKa3YYkrvmjNnbn0986Z5a/uouMuUelrgkiCJqbHEEIDWDfdsZIspoBoDmZe4ByHjS6hzs17qwOzr2UdFtyl1sinSD9dALRY7V4P+HtT19I6bmxtuERHj5jTZso+Ku39TfhIs/p4N3GuKcN5750/8VB0whCn3YtkUPj/J1vfR2hu22LmQWOFHiyfbFbllyzkXspZzmyPZom0d63gqU25+Bz74fPBb1b71jU299l9rkxhzETmIoK0OVHCMOJ9aDF7yap32OW7h5KcpbU03jPUt4IlN4R9a+L+Cm3BpSuv7JDFEDiJw+10589vSntMU+JlHHZ6vNS8GXLuu5FZ8NCPkyxQQptA2qS6x9/f2I9xyTy2uKZecd4RGzf//JQzkHVM+jfr/pljncguvpry9sZ5Wq71oCnmnk8a8TLmYwYnnM4YpCIiQ3Jw0BUMuBqDs1RRqUZP3NIWcj/bMeGpfDL+Y0v643WKnNu6dOV+mfPLmh/5qytfvSd4UhApTvm5FMeUSK6Z83RTnvN6UUyP5mHIiL0yB/6wpN2g/9JjwRX9TMnY15YYYW4gR8hLjRiZbzOGSA3I6N/OD/4QpaQgn+VnwsKb4zZcV/r5o1s3vzQbMjTNe24qM3/49ah4Pa0oaMrXZ/F24fErau6zvkNxsfVZUY4K4derYpbYHD2kKG1wyBCCAhqQxgFaRjJOjeDybJxyTyPqOBZmbz09rChtcM0QoQraQcbbGM0YLsj4x48L3zOc5a9DKrLeEhzJFQzzJz4qHMIUThhEY4gnsASaa7zOt9Xg27knOPHPtT/rJStbcqfcePIwpCLQVjFMIn+feQcayb+l9LqYJ+d6Lh/yhf3a8TBkQL1MGxMuUAfEyZUC8TBkQL1MGxMuUAfEyZUC8TBkOf/78BwSoRVIlsXhKAAAAAElFTkSuQmCC" SizeF="114.833359,104.458351" LocationFloat="0, 0" />
+        <Item15 Ref="50" ControlType="XRLabel" Name="label169" KeepTogether="true" Multiline="true" Text="Invoice No.:" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="87.5,15" LocationFloat="505.7229, 200.2084" Font="Arial, 10pt, style=Bold" BackColor="White" Padding="2,2,0,0,100" Borders="None">
+          <StylePriority Ref="51" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item15>
+        <Item16 Ref="52" ControlType="XRLine" Name="line11" AnchorHorizontal="Left" SizeF="799.4138,2.08332825" LocationFloat="1.76606336E-05, 230.208359" />
+        <Item17 Ref="53" ControlType="XRBarCode" Name="barCode2" AutoModule="true" ShowText="false" ProcessNullValues="SuppressAndShrink" SizeF="159.588684,156.125031" LocationFloat="639.8251, 10.0000219" Padding="10,10,0,0,100">
+          <Symbology Ref="54" Name="QRCode" CompactionMode="Byte" ErrorCorrectionLevel="Q" />
+          <ExpressionBindings>
+            <Item1 Ref="55" EventName="BeforePrint" PropertyName="Text" Expression="[E_INVOICE_SIGNED_QR_DATA]" />
+          </ExpressionBindings>
+        </Item17>
+        <Item18 Ref="56" ControlType="XRLabel" Name="label144" Multiline="true" CanShrink="true" ProcessNullValues="SuppressAndShrink" Text="label2" SizeF="799.5059,15.708313" LocationFloat="1.4940896, 424.166656" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="57" EventName="BeforePrint" PropertyName="Text" Expression="?ReportsHeader" />
+          </ExpressionBindings>
+        </Item18>
+        <Item19 Ref="58" ControlType="XRLine" Name="line4" SizeF="798.0833,2.083313" LocationFloat="2.916689, 439.874969" Visible="false" />
+        <Item20 Ref="59" ControlType="XRLine" Name="line3" SizeF="798.0833,2.083374" LocationFloat="2.916689, 422.083282" />
+        <Item21 Ref="60" ControlType="XRLabel" Name="label66" Multiline="true" ProcessNullValues="SuppressAndShrink" Text="label66" SizeF="245.833435,18" LocationFloat="100, 404.0833" Font="Arial, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="61" EventName="BeforePrint" PropertyName="Text" Expression="[E_INVOICE_IRN]" />
+          </ExpressionBindings>
+          <StylePriority Ref="62" UseFont="false" />
+        </Item21>
+        <Item22 Ref="63" ControlType="XRLabel" Name="label65" Multiline="true" ProcessNullValues="SuppressAndShrink" Text="label65" TextAlignment="TopRight" SizeF="135.791748,18" LocationFloat="425.4043, 404.0833" Font="Arial, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="64" EventName="BeforePrint" PropertyName="Text" Expression="[E_INVOICE_ACK_NO]" />
+          </ExpressionBindings>
+          <StylePriority Ref="65" UseFont="false" />
+        </Item22>
+        <Item23 Ref="66" ControlType="XRLabel" Name="label64" TextFormatString="{0:dd/MM/yyy HH:mm:ss}" Multiline="true" ProcessNullValues="SuppressAndShrink" Text="label64" SizeF="152.303833,18" LocationFloat="648.696167, 404.083282" Font="Arial, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="67" EventName="BeforePrint" PropertyName="Text" Expression="[E_INVOICE_ACK_DATETIME]" />
+          </ExpressionBindings>
+          <StylePriority Ref="68" UseFont="false" />
+        </Item23>
+        <Item24 Ref="69" ControlType="XRLabel" Name="label63" Multiline="true" ProcessNullValues="SuppressAndShrink" Text="Date" SizeF="87.5,18" LocationFloat="561.1961, 404.0833" Font="Arial, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="70" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([E_INVOICE_IRN]),'' , 'Date :')&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="71" UseFont="false" />
+        </Item24>
+        <Item25 Ref="72" ControlType="XRLabel" Name="label62" Multiline="true" ProcessNullValues="SuppressAndShrink" Text="Ack No." SizeF="62.12497,18" LocationFloat="363.279327, 404.0833" Font="Arial, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="73" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([E_INVOICE_IRN]),'' , 'Ack No. :')&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="74" UseFont="false" />
+        </Item25>
+        <Item26 Ref="75" ControlType="XRLabel" Name="label61" Multiline="true" ProcessNullValues="SuppressAndShrink" Text="IRN" SizeF="100,18" LocationFloat="0, 404.0833" Font="Arial, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="76" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([E_INVOICE_IRN]),'' , 'IRN :')" />
+          </ExpressionBindings>
+          <StylePriority Ref="77" UseFont="false" />
+        </Item26>
+        <Item27 Ref="78" ControlType="XRLine" Name="line2" SizeF="800.0833,2.08340454" LocationFloat="0.916692853, 401.999878" />
+        <Item28 Ref="79" ControlType="XRLine" Name="line1" AnchorHorizontal="Left" SizeF="797.9198,4.083374" LocationFloat="1.49408972, 307.916626" />
+        <Item29 Ref="80" ControlType="XRLabel" Name="label45" KeepTogether="true" Multiline="true" Text="Invoice No.:" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="279.5125,14.9999695" LocationFloat="521.4875, 356.999969" Font="Arial, 9pt" BackColor="Transparent" Padding="2,2,0,0,100">
+          <Summary Ref="81" Running="Group" />
+          <ExpressionBindings>
+            <Item1 Ref="82" EventName="BeforePrint" PropertyName="Text" Expression="[LV_SALINV_HEADER_1CV_TEJOO_ERP_OUTSTANDING].[OUTSTANDING]" />
+          </ExpressionBindings>
+          <StylePriority Ref="83" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item29>
+        <Item30 Ref="84" ControlType="XRLabel" Name="label12" KeepTogether="true" Multiline="true" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="280.441223,14.9999695" LocationFloat="520.5588, 292.291748" Font="Arial, 9pt" BackColor="Transparent" Padding="2,2,0,0,100" Borders="None">
+          <ExpressionBindings>
+            <Item1 Ref="85" EventName="BeforePrint" PropertyName="Text" Expression="[SHIPPING_EMAIL1]" />
+          </ExpressionBindings>
+          <StylePriority Ref="86" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item30>
+        <Item31 Ref="87" ControlType="XRLabel" Name="label13" KeepTogether="true" Multiline="true" Text=":" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="7.65426636,15" LocationFloat="512.904358, 292.291748" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100">
+          <StylePriority Ref="88" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item31>
+        <Item32 Ref="89" ControlType="XRLabel" Name="label36" KeepTogether="true" Multiline="true" Text="Email" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="100.529236,15" LocationFloat="412.375, 292.291748" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100">
+          <StylePriority Ref="90" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item32>
+        <Item33 Ref="91" ControlType="XRLabel" Name="label10" KeepTogether="true" Multiline="true" Text="Email" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="87.5,15" LocationFloat="0, 292.291748" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100">
+          <StylePriority Ref="92" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item33>
+        <Item34 Ref="93" ControlType="XRLabel" Name="label11" KeepTogether="true" Multiline="true" Text=":" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="13.5416489,15" LocationFloat="87.5000153, 292.291748" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100">
+          <StylePriority Ref="94" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item34>
+        <Item35 Ref="95" ControlType="XRLabel" Name="label14" KeepTogether="true" Multiline="true" Text="Bill To" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="87.5,15" LocationFloat="0, 232.291733" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100">
+          <StylePriority Ref="96" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item35>
+        <Item36 Ref="97" ControlType="XRLabel" Name="label15" KeepTogether="true" Multiline="true" Text="Invoice No.:" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="311.333221,14.9999933" LocationFloat="101.041649, 232.291733" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100" Borders="Right" BorderWidth="1">
+          <ExpressionBindings>
+            <Item1 Ref="98" EventName="BeforePrint" PropertyName="Text" Expression="[CUSTOMER_NAME]" />
+          </ExpressionBindings>
+          <StylePriority Ref="99" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+        </Item36>
+        <Item37 Ref="100" ControlType="XRLabel" Name="label16" KeepTogether="true" Multiline="true" Text="Ship To" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="102.612915,15" LocationFloat="412.374878, 232.291733" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100">
+          <StylePriority Ref="101" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item37>
+        <Item38 Ref="102" ControlType="XRLabel" Name="label17" KeepTogether="true" Multiline="true" Text="Invoice No.:" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="280.4414,15.0000153" LocationFloat="520.5586, 232.2917" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="103" EventName="BeforePrint" PropertyName="Text" Expression="[LV_REFSITE_NAME]" />
+          </ExpressionBindings>
+          <StylePriority Ref="104" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item38>
+        <Item39 Ref="105" ControlType="XRLabel" Name="label18" KeepTogether="true" Multiline="true" Text=":" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="5.570923,15" LocationFloat="514.987732, 232.291733" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100">
+          <StylePriority Ref="106" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item39>
+        <Item40 Ref="107" ControlType="XRLabel" Name="label20" KeepTogether="true" Multiline="true" Text="Invoice No.:" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="311.333221,14.9999933" LocationFloat="101.041634, 247.291733" Font="Arial, 9pt" BackColor="Transparent" Padding="2,2,0,0,100" Borders="Right" BorderWidth="1">
+          <ExpressionBindings>
+            <Item1 Ref="108" EventName="BeforePrint" PropertyName="Text" Expression="[CV_BILLING_ADDRESS]" />
+          </ExpressionBindings>
+          <StylePriority Ref="109" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+        </Item40>
+        <Item41 Ref="110" ControlType="XRLabel" Name="label21" KeepTogether="true" Multiline="true" Text="Invoice No.:" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="311.333252,14.9999924" LocationFloat="101.041679, 262.291748" Font="Arial, 9pt" BackColor="Transparent" Padding="2,2,0,0,100" Borders="Right" BorderWidth="1">
+          <ExpressionBindings>
+            <Item1 Ref="111" EventName="BeforePrint" PropertyName="Text" Expression="[CV_BILLING_CITY]+' '+[CV__BILLING_PINCODE]" />
+          </ExpressionBindings>
+          <StylePriority Ref="112" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+        </Item41>
+        <Item42 Ref="113" ControlType="XRLabel" Name="label23" KeepTogether="true" Multiline="true" Text="Invoice No.:" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="311.33313,15" LocationFloat="101.041672, 312" Font="Arial, 9pt" BackColor="255,240,240,240" Padding="2,2,0,0,100" Borders="Right">
+          <ExpressionBindings>
+            <Item1 Ref="114" EventName="BeforePrint" PropertyName="Text" Expression="iIf([CV_GST_IDENTIFICATION_NO]='Unregistered','NOT REGISTERED', [CV_GST_IDENTIFICATION_NO])" />
+          </ExpressionBindings>
+          <StylePriority Ref="115" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item42>
+        <Item43 Ref="116" ControlType="XRLabel" Name="label24" KeepTogether="true" Multiline="true" Text="Invoice No.:" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="311.333038,15" LocationFloat="101.041626, 326.999939" Font="Arial, 9pt" BackColor="255,240,240,240" Padding="2,2,0,0,100" Borders="Right">
+          <ExpressionBindings>
+            <Item1 Ref="117" EventName="BeforePrint" PropertyName="Text" Expression="[CV_GST_STATE_NAME]+' '+[CV_GST_STATE_CODE]" />
+          </ExpressionBindings>
+          <StylePriority Ref="118" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item43>
+        <Item44 Ref="119" ControlType="XRLabel" Name="label26" KeepTogether="true" Multiline="true" Text="Invoice No.:" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="280.4414,15.0000153" LocationFloat="520.5586, 247.291763" Font="Arial, 9pt" BackColor="Transparent" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="120" EventName="BeforePrint" PropertyName="Text" Expression="[SHIPPING_ADDRESS]" />
+          </ExpressionBindings>
+          <StylePriority Ref="121" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item44>
+        <Item45 Ref="122" ControlType="XRLabel" Name="label27" KeepTogether="true" Multiline="true" Text="Invoice No.:" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="280.4414,15" LocationFloat="520.5586, 262.291748" Font="Arial, 9pt" BackColor="Transparent" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="123" EventName="BeforePrint" PropertyName="Text" Expression="[SHIPPING_CITY]+' '+[SHIPPING_PINCODE]" />
+          </ExpressionBindings>
+          <StylePriority Ref="124" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item45>
+        <Item46 Ref="125" ControlType="XRLabel" Name="label30" KeepTogether="true" Multiline="true" Text="Invoice No.:" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="280.441467,15.0000305" LocationFloat="520.558533, 326.999969" Font="Arial, 9pt" BackColor="255,240,240,240" Padding="2,2,0,0,100" Borders="None">
+          <ExpressionBindings>
+            <Item1 Ref="126" EventName="BeforePrint" PropertyName="Text" Expression="[SHIPPING_GST_STATE_NAME]+' '+[SHIPPING_GST_STATE_CODE]" />
+          </ExpressionBindings>
+          <StylePriority Ref="127" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item46>
+        <Item47 Ref="128" ControlType="XRLabel" Name="label29" KeepTogether="true" Multiline="true" Text="Invoice No.:" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="280.441467,14.9999695" LocationFloat="520.558533, 311.999969" Font="Arial, 9pt" BackColor="255,240,240,240" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="129" EventName="BeforePrint" PropertyName="Text" Expression="iIf([SHIPPING_GST_IDENTIFICATION_NO]='','NOT REGISTERED',[SHIPPING_GST_IDENTIFICATION_NO])" />
+          </ExpressionBindings>
+          <StylePriority Ref="130" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item47>
+        <Item48 Ref="131" ControlType="XRLabel" Name="label31" KeepTogether="true" Multiline="true" Text="GSTIN" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="87.5,15" LocationFloat="0, 312" Font="Arial, 9pt, style=Bold" BackColor="255,240,240,240" Padding="2,2,0,0,100">
+          <StylePriority Ref="132" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item48>
+        <Item49 Ref="133" ControlType="XRLabel" Name="label32" KeepTogether="true" Multiline="true" Text="GST State" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="87.5,15" LocationFloat="0, 327" Font="Arial, 9pt, style=Bold" BackColor="255,240,240,240" Padding="2,2,0,0,100" Borders="None">
+          <StylePriority Ref="134" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item49>
+        <Item50 Ref="135" ControlType="XRLabel" Name="label34" KeepTogether="true" Multiline="true" Text=":" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="13.5416489,15" LocationFloat="87.5000153, 312" Font="Arial, 9pt, style=Bold" BackColor="255,240,240,240" Padding="2,2,0,0,100">
+          <StylePriority Ref="136" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item50>
+        <Item51 Ref="137" ControlType="XRLabel" Name="label35" KeepTogether="true" Multiline="true" Text=":" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="13.5416336,15" LocationFloat="87.50003, 327" Font="Arial, 9pt, style=Bold" BackColor="255,240,240,240" Padding="2,2,0,0,100" Borders="None">
+          <StylePriority Ref="138" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item51>
+        <Item52 Ref="139" ControlType="XRLabel" Name="label37" KeepTogether="true" Multiline="true" Text="GSTIN" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="100.529266,15" LocationFloat="412.374969, 312" Font="Arial, 9pt, style=Bold" BackColor="255,240,240,240" Padding="2,2,0,0,100">
+          <StylePriority Ref="140" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item52>
+        <Item53 Ref="141" ControlType="XRLabel" Name="label38" KeepTogether="true" Multiline="true" Text=":" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="7.65438843,15" LocationFloat="512.904236, 312" Font="Arial, 9pt, style=Bold" BackColor="255,240,240,240" Padding="2,2,0,0,100">
+          <StylePriority Ref="142" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item53>
+        <Item54 Ref="143" ControlType="XRLabel" Name="label40" KeepTogether="true" Multiline="true" Text="GST State" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="100.529327,15" LocationFloat="412.3751, 327" Font="Arial, 9pt, style=Bold" BackColor="255,240,240,240" Padding="2,2,0,0,100" Borders="None">
+          <StylePriority Ref="144" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item54>
+        <Item55 Ref="145" ControlType="XRLabel" Name="label39" KeepTogether="true" Multiline="true" Text=":" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="7.65426636,15" LocationFloat="512.904358, 327" Font="Arial, 9pt, style=Bold" BackColor="255,240,240,240" Padding="2,2,0,0,100" Borders="None">
+          <StylePriority Ref="146" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item55>
+        <Item56 Ref="147" ControlType="XRLabel" Name="label41" KeepTogether="true" Multiline="true" Text="Transporter" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="87.5,15" LocationFloat="0, 342" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100" Borders="None">
+          <StylePriority Ref="148" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item56>
+        <Item57 Ref="149" ControlType="XRLabel" Name="label42" KeepTogether="true" Multiline="true" Text=":" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="13.5416336,15" LocationFloat="87.50003, 342" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100" Borders="None">
+          <StylePriority Ref="150" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item57>
+        <Item58 Ref="151" ControlType="XRLabel" Name="label43" KeepTogether="true" Multiline="true" Text="Invoice No.:" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="311.333069,30" LocationFloat="101.041725, 342" Font="Arial, 9pt" BackColor="Transparent" Padding="2,2,0,0,100" Borders="Right">
+          <ExpressionBindings>
+            <Item1 Ref="152" EventName="BeforePrint" PropertyName="Text" Expression="[TRANSPORTER_NAME]" />
+          </ExpressionBindings>
+          <StylePriority Ref="153" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item58>
+        <Item59 Ref="154" ControlType="XRLabel" Name="label44" KeepTogether="true" Multiline="true" Text="Doc No." AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="100.529266,15" LocationFloat="412.374969, 342" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100" Borders="None">
+          <StylePriority Ref="155" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item59>
+        <Item60 Ref="156" ControlType="XRLabel" Name="label46" KeepTogether="true" Multiline="true" Text="L.R. No." AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="87.5,15" LocationFloat="3.17891427E-05, 372" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100">
+          <StylePriority Ref="157" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item60>
+        <Item61 Ref="158" ControlType="XRLabel" Name="label47" KeepTogether="true" Multiline="true" Text=":" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="13.5416336,15" LocationFloat="87.50003, 372" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100">
+          <StylePriority Ref="159" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item61>
+        <Item62 Ref="160" ControlType="XRLabel" Name="label48" KeepTogether="true" Multiline="true" Text="Invoice No.:" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="170.041672,15" LocationFloat="101.041611, 372" Font="Arial, 9pt" BackColor="Transparent" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="161" EventName="BeforePrint" PropertyName="Text" Expression="iif(IsNullOrEmpty([LOGISTIC_DOCUMENT_NO]),[LOGISTIC_NO],[LOGISTIC_DOCUMENT_NO])" />
+          </ExpressionBindings>
+          <StylePriority Ref="162" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item62>
+        <Item63 Ref="163" ControlType="XRLabel" Name="label51" KeepTogether="true" Multiline="true" Text="Remarks" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="100.529266,15" LocationFloat="412.374969, 372" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100">
+          <StylePriority Ref="164" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item63>
+        <Item64 Ref="165" ControlType="XRLabel" Name="label52" KeepTogether="true" Multiline="true" Text="Invoice No.:" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="280.441223,29.99997" LocationFloat="520.5588, 372.000061" Font="Arial, 9pt" BackColor="Transparent" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="166" EventName="BeforePrint" PropertyName="Text" Expression="[REMARKS]" />
+          </ExpressionBindings>
+          <StylePriority Ref="167" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item64>
+        <Item65 Ref="168" ControlType="XRLabel" Name="label53" KeepTogether="true" Multiline="true" Text=":" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="7.65426636,15" LocationFloat="512.904358, 357" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100" Borders="None">
+          <StylePriority Ref="169" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item65>
+        <Item66 Ref="170" ControlType="XRLabel" Name="label54" KeepTogether="true" Multiline="true" Text="GST State" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="146.512421,15" LocationFloat="520.558655, 342" Font="Arial, 9pt" BackColor="Transparent" Padding="2,2,0,0,100" Borders="None">
+          <ExpressionBindings>
+            <Item1 Ref="171" EventName="BeforePrint" PropertyName="Text" Expression="[DOCUMENT_NO]" />
+          </ExpressionBindings>
+          <StylePriority Ref="172" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item66>
+        <Item67 Ref="173" ControlType="XRLabel" Name="label55" KeepTogether="true" Multiline="true" Text="Date:" AnchorHorizontal="Left" TextAlignment="TopRight" SizeF="42.7083435,15" LocationFloat="271.083282, 372" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100">
+          <StylePriority Ref="174" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item67>
+        <Item68 Ref="175" ControlType="XRLabel" Name="label56" TextFormatString="{0:dd-MM-yyyy}" KeepTogether="true" Multiline="true" Text="Date:" AnchorHorizontal="Left" TextAlignment="TopRight" SizeF="98.583374,15" LocationFloat="313.791626, 372" Font="Arial, 9pt" BackColor="Transparent" Padding="2,2,0,0,100" Borders="Right">
+          <ExpressionBindings>
+            <Item1 Ref="176" EventName="BeforePrint" PropertyName="Text" Expression="[LOGISTIC_DATE]" />
+          </ExpressionBindings>
+          <StylePriority Ref="177" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item68>
+        <Item69 Ref="178" ControlType="XRLabel" Name="label59" KeepTogether="true" Multiline="true" Text="Date:" AnchorHorizontal="Left" TextAlignment="TopRight" SizeF="42.7083435,15" LocationFloat="667.0711, 342" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100" Borders="None">
+          <StylePriority Ref="179" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item69>
+        <Item70 Ref="180" ControlType="XRLabel" Name="label57" KeepTogether="true" Multiline="true" Text=":" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="7.65444946,15" LocationFloat="512.904236, 372" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100">
+          <StylePriority Ref="181" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item70>
+        <Item71 Ref="182" ControlType="XRLabel" Name="label60" KeepTogether="true" Multiline="true" Text="Outstanding." AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="100.529266,15" LocationFloat="412.374969, 357" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100">
+          <StylePriority Ref="183" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item71>
+        <Item72 Ref="184" ControlType="XRLabel" Name="label133" KeepTogether="true" Multiline="true" Text=":" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="13.5416336,15" LocationFloat="87.50003, 232.291733" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100">
+          <StylePriority Ref="185" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item72>
+        <Item73 Ref="186" ControlType="XRLabel" Name="label107" KeepTogether="true" Multiline="true" Text="Invoice No.:" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="311.33313,14.9999962" LocationFloat="101.041679, 277.291748" Font="Arial, 9pt" BackColor="Transparent" Padding="2,2,0,0,100" Borders="Right" BorderWidth="1">
+          <ExpressionBindings>
+            <Item1 Ref="187" EventName="BeforePrint" PropertyName="Text" Expression="[CV_BILLING_OFFICE_PHONE1]+' '+[CV_OFFICE_PHONE2]+' '+[CV_BILLING_OFFICE_PHONE3]" />
+          </ExpressionBindings>
+          <StylePriority Ref="188" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+        </Item73>
+        <Item74 Ref="189" ControlType="XRLabel" Name="label145" KeepTogether="true" Multiline="true" Text="Invoice No.:" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="280.441467,15" LocationFloat="520.558533, 277.291748" Font="Arial, 9pt" BackColor="Transparent" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="190" EventName="BeforePrint" PropertyName="Text" Expression="[SHIPPING_PHONE1]+' '+[SHIPPING_PHONE2]+' '+[SHIPPING_PHONE3]" />
+          </ExpressionBindings>
+          <StylePriority Ref="191" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item74>
+        <Item75 Ref="192" ControlType="XRLabel" Name="label22" KeepTogether="true" Multiline="true" AnchorHorizontal="Left" TextAlignment="TopRight" SizeF="68.37485,16.00003" LocationFloat="343.999817, 387" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100" Borders="Right">
+          <StylePriority Ref="193" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item75>
+        <Item76 Ref="194" ControlType="XRLabel" Name="label9" KeepTogether="true" Multiline="true" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="311.333252,19.708252" LocationFloat="101.041733, 292.291748" Font="Arial, 9pt" BackColor="Transparent" Padding="2,2,0,0,100" Borders="Right" BorderWidth="1">
+          <ExpressionBindings>
+            <Item1 Ref="195" EventName="BeforePrint" PropertyName="Text" Expression="[CV_EMAIL1]" />
+          </ExpressionBindings>
+          <StylePriority Ref="196" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+        </Item76>
+        <Item77 Ref="197" ControlType="XRLabel" Name="label33" KeepTogether="true" Multiline="true" Text="Invoice No.:" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="170.041672,15" LocationFloat="102.08326, 387" Font="Arial, 9pt" BackColor="Transparent" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="198" EventName="BeforePrint" PropertyName="Text" Expression="[AGCODE]" />
+          </ExpressionBindings>
+          <StylePriority Ref="199" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item77>
+        <Item78 Ref="200" ControlType="XRLabel" Name="label28" KeepTogether="true" Multiline="true" Text=":" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="13.5416336,15" LocationFloat="88.54168, 387" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100">
+          <StylePriority Ref="201" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item78>
+        <Item79 Ref="202" ControlType="XRLabel" Name="label25" KeepTogether="true" Multiline="true" Text="Agent Name" AnchorHorizontal="Left" TextAlignment="TopLeft" SizeF="87.5,15" LocationFloat="1.04168224, 387" Font="Arial, 9pt, style=Bold" BackColor="Transparent" Padding="2,2,0,0,100">
+          <StylePriority Ref="203" UseFont="false" UseBackColor="false" UseTextAlignment="false" />
+        </Item79>
+      </Controls>
+    </Item4>
+    <Item5 Ref="204" ControlType="DetailReportBand" Name="DetailReport" Level="0" DataMember="LV_SALINV_HEADER_1.LV_SALINV_HEADER_1LV_SALINV_ITEM" DataSource="#Ref-0">
+      <Bands>
+        <Item1 Ref="205" ControlType="DetailBand" Name="Detail1" HeightF="23">
+          <Controls>
+            <Item1 Ref="206" ControlType="XRLabel" Name="label129" Multiline="true" Text="label129" TextAlignment="TopRight" SizeF="88.99988,23" LocationFloat="712.0001, 0" Padding="2,2,0,0,100" Borders="Right">
+              <ExpressionBindings>
+                <Item1 Ref="207" EventName="BeforePrint" PropertyName="Text" Expression="[value]" />
+              </ExpressionBindings>
+              <StylePriority Ref="208" UseBorders="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="209" ControlType="XRLabel" Name="label128" Multiline="true" Text="label128" TextAlignment="TopCenter" SizeF="59.588562,23" LocationFloat="652.411133, 0" Padding="2,2,0,0,100" Borders="Right">
+              <ExpressionBindings>
+                <Item1 Ref="210" EventName="BeforePrint" PropertyName="Text" Expression="[UOM]" />
+              </ExpressionBindings>
+              <StylePriority Ref="211" UseBorders="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="212" ControlType="XRLabel" Name="label75" Multiline="true" Text="label75" TextAlignment="TopRight" SizeF="74.61322,23" LocationFloat="577.798, 0" Padding="2,2,0,0,100" Borders="Right">
+              <ExpressionBindings>
+                <Item1 Ref="213" EventName="BeforePrint" PropertyName="Text" Expression="[INVOICE_QUANTITY]" />
+              </ExpressionBindings>
+              <StylePriority Ref="214" UseBorders="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="215" ControlType="XRLabel" Name="label74" Multiline="true" Text="label74" TextAlignment="TopRight" SizeF="74.61313,23" LocationFloat="503.184784, 0" Padding="2,2,0,0,100" Borders="Right">
+              <ExpressionBindings>
+                <Item1 Ref="216" EventName="BeforePrint" PropertyName="Text" Expression="[INVOICE_RATE]" />
+              </ExpressionBindings>
+              <StylePriority Ref="217" UseBorders="false" UseTextAlignment="false" />
+            </Item4>
+            <Item5 Ref="218" ControlType="XRLabel" Name="label73" Multiline="true" Text="label73" TextAlignment="TopRight" SizeF="61.9030457,23" LocationFloat="441.281738, 0" Padding="2,2,0,0,100" Borders="Right">
+              <ExpressionBindings>
+                <Item1 Ref="219" EventName="BeforePrint" PropertyName="Text" Expression="[ITEM_TAX_RATE]" />
+              </ExpressionBindings>
+              <StylePriority Ref="220" UseBorders="false" UseTextAlignment="false" />
+            </Item5>
+            <Item6 Ref="221" ControlType="XRLabel" Name="label71" Multiline="true" Text="label71" TextAlignment="TopCenter" SizeF="100,23" LocationFloat="341.281738, 0" Padding="2,2,0,0,100" Borders="Right">
+              <ExpressionBindings>
+                <Item1 Ref="222" EventName="BeforePrint" PropertyName="Text" Expression="[HSN_CODE]" />
+              </ExpressionBindings>
+              <StylePriority Ref="223" UseBorders="false" UseTextAlignment="false" />
+            </Item6>
+            <Item7 Ref="224" ControlType="XRLabel" Name="label70" Multiline="true" Text="label70" TextAlignment="TopCenter" SizeF="100,23" LocationFloat="241.281708, 0" Padding="2,2,0,0,100" Borders="Right">
+              <ExpressionBindings>
+                <Item1 Ref="225" EventName="BeforePrint" PropertyName="Text" Expression="[CATEGORY6]" />
+              </ExpressionBindings>
+              <StylePriority Ref="226" UseBorders="false" UseTextAlignment="false" />
+            </Item7>
+            <Item8 Ref="227" ControlType="XRLabel" Name="label69" Multiline="true" Text="label69" TextAlignment="TopCenter" SizeF="82.95468,23" LocationFloat="158.327026, 0" Padding="2,2,0,0,100" Borders="Right">
+              <ExpressionBindings>
+                <Item1 Ref="228" EventName="BeforePrint" PropertyName="Text" Expression="[CATEGORY1]" />
+              </ExpressionBindings>
+              <StylePriority Ref="229" UseBorders="false" UseTextAlignment="false" />
+            </Item8>
+            <Item9 Ref="230" ControlType="XRLabel" Name="label68" Multiline="true" Text="label68" TextAlignment="TopCenter" SizeF="99.36896,23" LocationFloat="58.9580727, 0" Padding="2,2,0,0,100" Borders="Right">
+              <ExpressionBindings>
+                <Item1 Ref="231" EventName="BeforePrint" PropertyName="Text" Expression="[ITEM_CODE]" />
+              </ExpressionBindings>
+              <StylePriority Ref="232" UseBorders="false" UseTextAlignment="false" />
+            </Item9>
+            <Item10 Ref="233" ControlType="XRLabel" Name="label67" Multiline="true" Text="label67" SizeF="58.0413857,23" LocationFloat="0.9166926, 0" Padding="2,2,0,0,100" Borders="Left, Right">
+              <Summary Ref="234" Running="Group" />
+              <ExpressionBindings>
+                <Item1 Ref="235" EventName="BeforePrint" PropertyName="Text" Expression="sumRecordNumber([BARCODE])" />
+              </ExpressionBindings>
+              <StylePriority Ref="236" UseBorders="false" />
+            </Item10>
+          </Controls>
+        </Item1>
+        <Item2 Ref="237" ControlType="GroupHeaderBand" Name="GroupHeader2" RepeatEveryPage="true" HeightF="23" KeepTogether="true">
+          <Controls>
+            <Item1 Ref="238" ControlType="XRLabel" Name="label117" Multiline="true" Text="Rate" TextAlignment="TopRight" SizeF="74.61322,23" LocationFloat="503.184753, 0" Font="Arial, 9.75pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Right, Bottom">
+              <StylePriority Ref="239" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="240" ControlType="XRLabel" Name="label103" Multiline="true" Text="Qty." TextAlignment="TopRight" SizeF="74.61322,23" LocationFloat="577.798, 0" Font="Arial, 9.75pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Right, Bottom">
+              <StylePriority Ref="241" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="242" ControlType="XRLabel" Name="label102" Multiline="true" Text="UOM" TextAlignment="TopCenter" SizeF="59.588562,23" LocationFloat="652.411133, 0" Font="Arial, 9.75pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Right, Bottom">
+              <StylePriority Ref="243" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="244" ControlType="XRLabel" Name="label101" Multiline="true" Text="Value" TextAlignment="TopRight" SizeF="89.0003052,23" LocationFloat="711.9997, 0" Font="Arial, 9.75pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Right, Bottom">
+              <StylePriority Ref="245" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item4>
+            <Item5 Ref="246" ControlType="XRLabel" Name="label100" Multiline="true" Text="Tax %" TextAlignment="TopRight" SizeF="61.9030762,23" LocationFloat="441.2817, 0" Font="Arial, 9.75pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Right, Bottom">
+              <StylePriority Ref="247" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item5>
+            <Item6 Ref="248" ControlType="XRLabel" Name="label97" Multiline="true" Text="HSN Code" TextAlignment="TopCenter" SizeF="100,23" LocationFloat="341.281738, 0" Font="Arial, 9.75pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Right, Bottom">
+              <StylePriority Ref="249" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item6>
+            <Item7 Ref="250" ControlType="XRLabel" Name="label94" Multiline="true" Text="Counter No." TextAlignment="TopCenter" SizeF="100,23" LocationFloat="241.281723, 0" Font="Arial, 9.75pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Right, Bottom">
+              <StylePriority Ref="251" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item7>
+            <Item8 Ref="252" ControlType="XRLabel" Name="label58" Multiline="true" Text="Item Code" TextAlignment="TopCenter" SizeF="82.95468,23" LocationFloat="158.327026, 0" Font="Arial, 9.75pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Right, Bottom">
+              <StylePriority Ref="253" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item8>
+            <Item9 Ref="254" ControlType="XRLabel" Name="label50" Multiline="true" Text="Barcode" TextAlignment="TopCenter" SizeF="99.36896,23" LocationFloat="58.9580727, 0" Font="Arial, 9.75pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Right, Bottom">
+              <StylePriority Ref="255" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item9>
+            <Item10 Ref="256" ControlType="XRLabel" Name="label19" Multiline="true" Text="Sl. No." TextAlignment="TopCenter" SizeF="57.91641,23" LocationFloat="1.04166317, 0" Font="Arial, 9.75pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="All">
+              <StylePriority Ref="257" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item10>
+          </Controls>
+        </Item2>
+        <Item3 Ref="258" ControlType="GroupFooterBand" Name="GroupFooter1" HeightF="16">
+          <Controls>
+            <Item1 Ref="259" ControlType="XRLabel" Name="label137" TextFormatString="{0:#0.000}" Multiline="true" Text="Quantity" TextAlignment="TopRight" SizeF="74.61316,16" LocationFloat="577.798, 0" Font="Arial, 8pt, style=Bold" BackColor="Gainsboro" Padding="2,2,0,0,100" Borders="Top">
+              <Summary Ref="260" Running="Group" />
+              <ExpressionBindings>
+                <Item1 Ref="261" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([INVOICE_QUANTITY])" />
+              </ExpressionBindings>
+              <StylePriority Ref="262" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="263" ControlType="XRLabel" Name="label136" Multiline="true" TextAlignment="TopCenter" SizeF="59.588562,16" LocationFloat="652.411133, 0" Font="Arial, 9pt, style=Bold" BackColor="Gainsboro" Padding="2,2,0,0,100" Borders="Top">
+              <StylePriority Ref="264" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="265" ControlType="XRLabel" Name="label135" TextFormatString="{0:#0.00}" Multiline="true" Text="Amount" TextAlignment="TopRight" SizeF="88.99988,16" LocationFloat="712.0001, 0" Font="Arial, 8pt, style=Bold" BackColor="Gainsboro" Padding="2,2,0,0,100" Borders="Top">
+              <Summary Ref="266" Running="Group" />
+              <ExpressionBindings>
+                <Item1 Ref="267" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([value])" />
+              </ExpressionBindings>
+              <StylePriority Ref="268" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="269" ControlType="XRLabel" Name="label134" Multiline="true" Text="Total:" TextAlignment="TopRight" SizeF="577.798,16" LocationFloat="0, 0" Font="Arial, 8pt, style=Bold" BackColor="Gainsboro" Padding="2,2,0,0,100" Borders="Top">
+              <StylePriority Ref="270" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item4>
+          </Controls>
+        </Item3>
+      </Bands>
+    </Item5>
+    <Item6 Ref="271" ControlType="DetailReportBand" Name="DetailReport1" Level="1" DataMember="LV_SALINV_HEADER_1.LV_SALINV_HEADER_1LV_SALINV_CHARGE" DataSource="#Ref-0">
+      <Bands>
+        <Item1 Ref="272" ControlType="DetailBand" Name="Detail2" HeightF="18">
+          <Controls>
+            <Item1 Ref="273" ControlType="XRLabel" Name="label76" Multiline="true" Text="label7" SizeF="205.58316,18" LocationFloat="506.416931, 0" Font="Arial, 8pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="274" EventName="BeforePrint" PropertyName="Text" Expression="iif([CHARGE_BASIS]='Percentage','[ @'+' '+[CHARGE_RATE]+'% on '+[CHARGE_APPLICABLE_ON]+' ]','[ @'+' '+[CHARGE_RATE]+' on '+[CHARGE_APPLICABLE_ON]+' ]')" />
+              </ExpressionBindings>
+              <StylePriority Ref="275" UseFont="false" />
+            </Item1>
+            <Item2 Ref="276" ControlType="XRLabel" Name="label77" TextFormatString="{0:#0.00}" Multiline="true" Text="label8" TextAlignment="TopRight" SizeF="88.99988,18" LocationFloat="712.0001, 0" Font="Arial, 8pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="277" EventName="BeforePrint" PropertyName="Text" Expression="[CHARGE_AMOUNT]" />
+              </ExpressionBindings>
+              <StylePriority Ref="278" UseFont="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="279" ControlType="XRLabel" Name="label78" Multiline="true" Text="label9" SizeF="166.124664,18" LocationFloat="340.292267, 0" Font="Arial, 8pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="280" EventName="BeforePrint" PropertyName="Text" Expression="[SALES_CHARGE_NAME]" />
+              </ExpressionBindings>
+              <StylePriority Ref="281" UseFont="false" />
+            </Item3>
+          </Controls>
+        </Item1>
+        <Item2 Ref="282" ControlType="GroupHeaderBand" Name="GroupHeader3" HeightF="0" />
+        <Item3 Ref="283" ControlType="GroupFooterBand" Name="GroupFooter2" HeightF="43.000042">
+          <Controls>
+            <Item1 Ref="284" ControlType="XRLabel" Name="label155" Multiline="true" Text="Grand Total  :  " TextAlignment="TopRight" SizeF="706.5652,20" LocationFloat="0, 0" Font="Arial, 8.5pt, style=Bold" BackColor="255,240,240,240" Padding="2,2,0,0,100" Borders="Top">
+              <StylePriority Ref="285" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="286" ControlType="XRLabel" Name="label156" TextFormatString="{0:#0.00}" RightToLeft="Yes" KeepTogether="true" AllowMarkupText="true" CanGrow="false" CanShrink="true" Text="label46" TextAlignment="TopLeft" SizeF="92.84857,20" LocationFloat="706.565247, 0" Font="Arial, 8.5pt, style=Bold" BackColor="255,240,240,240" Padding="2,2,0,0,100" Borders="Top">
+              <ExpressionBindings>
+                <Item1 Ref="287" EventName="BeforePrint" PropertyName="Text" Expression="[LV_SALINV_HEADER_1].[NET_AMOUNT]" />
+              </ExpressionBindings>
+              <StylePriority Ref="288" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="289" ControlType="XRLabel" Name="label79" Multiline="true" Text="Amount in Words" SizeF="155.208328,23.0000019" LocationFloat="0, 20.0000057" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100">
+              <StylePriority Ref="290" UseFont="false" />
+            </Item3>
+            <Item4 Ref="291" ControlType="XRLabel" Name="label80" Multiline="true" Text="label69" SizeF="644.2055,23.00001" LocationFloat="155.208328, 20.0000324" Font="Arial, 8.5pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="292" EventName="BeforePrint" PropertyName="Text" Expression="[LV_SALINV_HEADER_1].[AmountInWords]" />
+              </ExpressionBindings>
+              <StylePriority Ref="293" UseFont="false" />
+            </Item4>
+          </Controls>
+        </Item3>
+      </Bands>
+    </Item6>
+    <Item7 Ref="294" ControlType="DetailReportBand" Name="DetailReport2" Level="2" DataMember="LV_SALINV_HEADER_1.LV_SALINV_HEADER_1LV_SALINV_HSN" DataSource="#Ref-0">
+      <Bands>
+        <Item1 Ref="295" ControlType="DetailBand" Name="Detail3" HeightF="20">
+          <Controls>
+            <Item1 Ref="296" ControlType="XRLabel" Name="label92" Multiline="true" CanGrow="false" Text="label58" SizeF="127.783638,20" LocationFloat="0, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="Left">
+              <ExpressionBindings>
+                <Item1 Ref="297" EventName="BeforePrint" PropertyName="Text" Expression="[HSN_CODE]" />
+              </ExpressionBindings>
+              <StylePriority Ref="298" UseFont="false" UseBorders="false" />
+            </Item1>
+            <Item2 Ref="299" ControlType="XRLabel" Name="label91" TextFormatString="{0:#.00}" Multiline="true" Text="label59" TextAlignment="TopRight" SizeF="94.40712,20" LocationFloat="127.783676, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="Left">
+              <ExpressionBindings>
+                <Item1 Ref="300" EventName="BeforePrint" PropertyName="Text" Expression="[TAXABLE_AMOUNT]" />
+              </ExpressionBindings>
+              <StylePriority Ref="301" UseFont="false" UseBorders="false" />
+            </Item2>
+            <Item3 Ref="302" ControlType="XRLabel" Name="label90" TextFormatString="{0:#.000}" Multiline="true" Text="label60" TextAlignment="TopRight" SizeF="63.42343,20" LocationFloat="222.1908, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="Left">
+              <ExpressionBindings>
+                <Item1 Ref="303" EventName="BeforePrint" PropertyName="Text" Expression="[INVOICED_QUANTITY]" />
+              </ExpressionBindings>
+              <StylePriority Ref="304" UseFont="false" UseBorders="false" />
+            </Item3>
+            <Item4 Ref="305" ControlType="XRLabel" Name="label89" TextFormatString="{0:#.00}" Multiline="true" Text="label61" TextAlignment="TopCenter" SizeF="47.6264648,20" LocationFloat="291.207, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="Left">
+              <ExpressionBindings>
+                <Item1 Ref="306" EventName="BeforePrint" PropertyName="Text" Expression="[UOM]" />
+              </ExpressionBindings>
+              <StylePriority Ref="307" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item4>
+            <Item5 Ref="308" ControlType="XRLabel" Name="label84" TextFormatString="{0:#.00}" Multiline="true" Text="label62" TextAlignment="TopRight" SizeF="49.62674,20" LocationFloat="338.833557, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="Left">
+              <ExpressionBindings>
+                <Item1 Ref="309" EventName="BeforePrint" PropertyName="Text" Expression="[IGST_RATE]" />
+              </ExpressionBindings>
+              <StylePriority Ref="310" UseFont="false" UseBorders="false" />
+            </Item5>
+            <Item6 Ref="311" ControlType="XRLabel" Name="label83" TextFormatString="{0:#.00}" Multiline="true" Text="label63" TextAlignment="TopRight" SizeF="55.55612,20" LocationFloat="388.4603, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="Left">
+              <ExpressionBindings>
+                <Item1 Ref="312" EventName="BeforePrint" PropertyName="Text" Expression="[IGST_AMOUNT]" />
+              </ExpressionBindings>
+              <StylePriority Ref="313" UseFont="false" UseBorders="false" />
+            </Item6>
+            <Item7 Ref="314" ControlType="XRLabel" Name="label82" TextFormatString="{0:#.00}" Multiline="true" Text="label64" TextAlignment="TopRight" SizeF="52.9336243,20" LocationFloat="444.016357, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="Left">
+              <ExpressionBindings>
+                <Item1 Ref="315" EventName="BeforePrint" PropertyName="Text" Expression="[CGST_RATE]" />
+              </ExpressionBindings>
+              <StylePriority Ref="316" UseFont="false" UseBorders="false" />
+            </Item7>
+            <Item8 Ref="317" ControlType="XRLabel" Name="label85" TextFormatString="{0:#.00}" Multiline="true" Text="label65" TextAlignment="TopRight" SizeF="56.625,20" LocationFloat="496.95, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="Left">
+              <ExpressionBindings>
+                <Item1 Ref="318" EventName="BeforePrint" PropertyName="Text" Expression="[CGST_AMOUNT]" />
+              </ExpressionBindings>
+              <StylePriority Ref="319" UseFont="false" UseBorders="false" />
+            </Item8>
+            <Item9 Ref="320" ControlType="XRLabel" Name="label86" TextFormatString="{0:#.00}" Multiline="true" Text="label66" TextAlignment="TopRight" SizeF="55.1333,20" LocationFloat="553.575, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="Left">
+              <ExpressionBindings>
+                <Item1 Ref="321" EventName="BeforePrint" PropertyName="Text" Expression="[SGST_RATE]" />
+              </ExpressionBindings>
+              <StylePriority Ref="322" UseFont="false" UseBorders="false" />
+            </Item9>
+            <Item10 Ref="323" ControlType="XRLabel" Name="label87" TextFormatString="{0:#.00}" Multiline="true" Text="label67" TextAlignment="TopRight" SizeF="55.3156128,20" LocationFloat="608.7083, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="Left">
+              <ExpressionBindings>
+                <Item1 Ref="324" EventName="BeforePrint" PropertyName="Text" Expression="[SGST_AMOUNT]" />
+              </ExpressionBindings>
+              <StylePriority Ref="325" UseFont="false" UseBorders="false" />
+            </Item10>
+            <Item11 Ref="326" ControlType="XRLabel" Name="label88" TextFormatString="{0:#.00}" Multiline="true" Text="label68" TextAlignment="TopRight" SizeF="55.65088,20" LocationFloat="664.334839, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="Left">
+              <ExpressionBindings>
+                <Item1 Ref="327" EventName="BeforePrint" PropertyName="Text" Expression="[CESS_RATE]" />
+              </ExpressionBindings>
+              <StylePriority Ref="328" UseFont="false" UseBorders="false" />
+            </Item11>
+            <Item12 Ref="329" ControlType="XRLabel" Name="label93" TextFormatString="{0:#.00}" Multiline="true" Text="label69" TextAlignment="TopRight" SizeF="81.01428,20" LocationFloat="719.9857, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="Left, Right">
+              <ExpressionBindings>
+                <Item1 Ref="330" EventName="BeforePrint" PropertyName="Text" Expression="[CESS_AMOUNT]" />
+              </ExpressionBindings>
+              <StylePriority Ref="331" UseFont="false" UseBorders="false" />
+            </Item12>
+          </Controls>
+        </Item1>
+        <Item2 Ref="332" ControlType="GroupHeaderBand" Name="GroupHeader4" RepeatEveryPage="true" HeightF="36.1666374" KeepTogether="true">
+          <Controls>
+            <Item1 Ref="333" ControlType="XRLabel" Name="label127" Multiline="true" Text="HSN" TextAlignment="TopLeft" SizeF="127.783638,36.16662" LocationFloat="0, 0" Font="Arial, 8pt, style=Bold" BackColor="Gainsboro" Padding="2,2,0,0,100" Borders="All" BorderWidth="1">
+              <StylePriority Ref="334" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="335" ControlType="XRLabel" Name="label126" TextFormatString="{0:0.00}" Multiline="true" Text="Taxable Amount" TextAlignment="TopRight" SizeF="94.40712,36.1666222" LocationFloat="127.783646, 0" Font="Arial, 8pt, style=Bold" BackColor="Gainsboro" Padding="2,2,0,0,100" Borders="All" BorderWidth="1">
+              <StylePriority Ref="336" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="337" ControlType="XRLabel" Name="label125" TextFormatString="{0:0.000}" Multiline="true" Text="Quantity" TextAlignment="TopRight" SizeF="69.01633,36.16662" LocationFloat="222.190765, 0" Font="Arial, 8pt, style=Bold" BackColor="Gainsboro" Padding="2,2,0,0,100" Borders="All" BorderWidth="1">
+              <StylePriority Ref="338" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="339" ControlType="XRLabel" Name="label124" Multiline="true" Text="UOM" TextAlignment="TopCenter" SizeF="47.6265564,36.1666222" LocationFloat="291.207, 0" Font="Arial, 8pt, style=Bold" BackColor="Gainsboro" Padding="2,2,0,0,100" Borders="All" BorderWidth="1">
+              <StylePriority Ref="340" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+            </Item4>
+            <Item5 Ref="341" ControlType="XRLabel" Name="label123" TextFormatString="{0:0.00}" Multiline="true" Text="IGST" TextAlignment="TopCenter" SizeF="105.18277,15" LocationFloat="338.833557, 0" Font="Arial, 8pt, style=Bold" BackColor="Gainsboro" Padding="2,2,0,0,100" Borders="All" BorderWidth="1">
+              <StylePriority Ref="342" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+            </Item5>
+            <Item6 Ref="343" ControlType="XRLabel" Name="label122" TextFormatString="{0:0.00}" Multiline="true" Text="Rate" TextAlignment="TopRight" SizeF="49.62668,21.16661" LocationFloat="338.833557, 15.0000257" Font="Arial, 8pt, style=Bold" BackColor="Gainsboro" Padding="2,2,0,0,100" Borders="All" BorderWidth="1">
+              <StylePriority Ref="344" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+            </Item6>
+            <Item7 Ref="345" ControlType="XRLabel" Name="label121" TextFormatString="{0:0.00}" Multiline="true" Text="Amt." TextAlignment="TopRight" SizeF="55.55606,21" LocationFloat="388.4603, 15.000001" Font="Arial, 8pt, style=Bold" BackColor="Gainsboro" Padding="2,2,0,0,100" Borders="All" BorderWidth="1">
+              <StylePriority Ref="346" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+            </Item7>
+            <Item8 Ref="347" ControlType="XRLabel" Name="label120" TextFormatString="{0:0.00}" Multiline="true" Text="CGST" TextAlignment="TopCenter" SizeF="108.489716,15" LocationFloat="444.016327, 0" Font="Arial, 8pt, style=Bold" BackColor="Gainsboro" Padding="2,2,0,0,100" Borders="All" BorderWidth="1">
+              <StylePriority Ref="348" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+            </Item8>
+            <Item9 Ref="349" ControlType="XRLabel" Name="label119" TextFormatString="{0:0.00}" Multiline="true" Text="Rate" TextAlignment="TopRight" SizeF="52.9336243,21" LocationFloat="444.016357, 15.000001" Font="Arial, 8pt, style=Bold" BackColor="Gainsboro" Padding="2,2,0,0,100" Borders="All" BorderWidth="1">
+              <StylePriority Ref="350" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+            </Item9>
+            <Item10 Ref="351" ControlType="XRLabel" Name="label118" TextFormatString="{0:0.00}" Multiline="true" Text="Amt." TextAlignment="TopRight" SizeF="55.55609,21" LocationFloat="496.95, 15.000001" Font="Arial, 8pt, style=Bold" BackColor="Gainsboro" Padding="2,2,0,0,100" Borders="All" BorderWidth="1">
+              <StylePriority Ref="352" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+            </Item10>
+            <Item11 Ref="353" ControlType="XRLabel" Name="label113" TextFormatString="{0:0.00}" Multiline="true" Text="SGST" TextAlignment="TopCenter" SizeF="111.828674,15" LocationFloat="552.5061, 0" Font="Arial, 8pt, style=Bold" BackColor="Gainsboro" Padding="2,2,0,0,100" Borders="All" BorderWidth="1">
+              <StylePriority Ref="354" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+            </Item11>
+            <Item12 Ref="355" ControlType="XRLabel" Name="label112" TextFormatString="{0:0.00}" Multiline="true" Text="Rate" TextAlignment="TopRight" SizeF="55.96173,21" LocationFloat="552.5061, 15.000001" Font="Arial, 8pt, style=Bold" BackColor="Gainsboro" Padding="2,2,0,0,100" Borders="All" BorderWidth="1">
+              <StylePriority Ref="356" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+            </Item12>
+            <Item13 Ref="357" ControlType="XRLabel" Name="label111" TextFormatString="{0:0.00}" Multiline="true" Text="Amt." TextAlignment="TopRight" SizeF="55.55609,21" LocationFloat="608.467834, 15.000001" Font="Arial, 8pt, style=Bold" BackColor="Gainsboro" Padding="2,2,0,0,100" Borders="All" BorderWidth="1">
+              <StylePriority Ref="358" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+            </Item13>
+            <Item14 Ref="359" ControlType="XRLabel" Name="label110" TextFormatString="{0:0.00}" Multiline="true" Text="CESS" TextAlignment="TopCenter" SizeF="136.665161,15" LocationFloat="664.334839, 0" Font="Arial, 8pt, style=Bold" BackColor="Gainsboro" Padding="2,2,0,0,100" Borders="All" BorderWidth="1">
+              <StylePriority Ref="360" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+            </Item14>
+            <Item15 Ref="361" ControlType="XRLabel" Name="label81" TextFormatString="{0:0.00}" Multiline="true" Text="Rate" TextAlignment="TopRight" SizeF="55.96173,21" LocationFloat="664.0239, 15.000001" Font="Arial, 8pt, style=Bold" BackColor="Gainsboro" Padding="2,2,0,0,100" Borders="All" BorderWidth="1">
+              <StylePriority Ref="362" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+            </Item15>
+            <Item16 Ref="363" ControlType="XRLabel" Name="label106" TextFormatString="{0:0.00}" Multiline="true" Text="Amt." TextAlignment="TopRight" SizeF="79.4281,20.9999962" LocationFloat="719.985657, 15.0000238" Font="Arial, 8pt, style=Bold" BackColor="Gainsboro" Padding="2,2,0,0,100" Borders="All" BorderWidth="1">
+              <StylePriority Ref="364" UseFont="false" UseBackColor="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+            </Item16>
+          </Controls>
+        </Item2>
+        <Item3 Ref="365" ControlType="GroupFooterBand" Name="GroupFooter3" HeightF="20">
+          <Controls>
+            <Item1 Ref="366" ControlType="XRLabel" Name="label95" TextFormatString="{0:#0.00}" Multiline="true" Text="label59" TextAlignment="TopRight" SizeF="94.40712,20" LocationFloat="127.783676, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Top">
+              <Summary Ref="367" Running="Report" />
+              <ExpressionBindings>
+                <Item1 Ref="368" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([TAXABLE_AMOUNT])" />
+              </ExpressionBindings>
+              <StylePriority Ref="369" UseFont="false" UseBorders="false" />
+            </Item1>
+            <Item2 Ref="370" ControlType="XRLabel" Name="label96" TextFormatString="{0:#0.00}" Multiline="true" Text="label69" TextAlignment="TopRight" SizeF="79.4281,20" LocationFloat="719.9857, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Top">
+              <Summary Ref="371" Running="Report" />
+              <ExpressionBindings>
+                <Item1 Ref="372" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([CESS_AMOUNT])" />
+              </ExpressionBindings>
+              <StylePriority Ref="373" UseFont="false" UseBorders="false" />
+            </Item2>
+            <Item3 Ref="374" ControlType="XRLabel" Name="label98" Multiline="true" TextAlignment="TopRight" SizeF="55.65088,20" LocationFloat="664.334839, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="Top">
+              <StylePriority Ref="375" UseFont="false" UseBorders="false" />
+            </Item3>
+            <Item4 Ref="376" ControlType="XRLabel" Name="label99" TextFormatString="{0:#0.00}" Multiline="true" Text="label67" TextAlignment="TopRight" SizeF="55.3156128,20" LocationFloat="608.7083, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Top">
+              <Summary Ref="377" Running="Report" />
+              <ExpressionBindings>
+                <Item1 Ref="378" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([SGST_AMOUNT])" />
+              </ExpressionBindings>
+              <StylePriority Ref="379" UseFont="false" UseBorders="false" />
+            </Item4>
+            <Item5 Ref="380" ControlType="XRLabel" Name="label104" TextFormatString="{0:#.00}" Multiline="true" TextAlignment="TopRight" SizeF="55.1333,20" LocationFloat="553.575, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="Top">
+              <StylePriority Ref="381" UseFont="false" UseBorders="false" />
+            </Item5>
+            <Item6 Ref="382" ControlType="XRLabel" Name="label105" TextFormatString="{0:#0.00}" Multiline="true" Text="label65" TextAlignment="TopRight" SizeF="56.625,20" LocationFloat="496.95, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Top">
+              <Summary Ref="383" Running="Report" />
+              <ExpressionBindings>
+                <Item1 Ref="384" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([CGST_AMOUNT])" />
+              </ExpressionBindings>
+              <StylePriority Ref="385" UseFont="false" UseBorders="false" />
+            </Item6>
+            <Item7 Ref="386" ControlType="XRLabel" Name="label108" TextFormatString="{0:#.00}" Multiline="true" TextAlignment="TopRight" SizeF="52.9336243,20" LocationFloat="444.016357, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="Top">
+              <StylePriority Ref="387" UseFont="false" UseBorders="false" />
+            </Item7>
+            <Item8 Ref="388" ControlType="XRLabel" Name="label109" TextFormatString="{0:#0.00}" Multiline="true" Text="label63" TextAlignment="TopRight" SizeF="55.55612,20" LocationFloat="388.4603, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Top">
+              <Summary Ref="389" Running="Report" />
+              <ExpressionBindings>
+                <Item1 Ref="390" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([IGST_AMOUNT])" />
+              </ExpressionBindings>
+              <StylePriority Ref="391" UseFont="false" UseBorders="false" />
+            </Item8>
+            <Item9 Ref="392" ControlType="XRLabel" Name="label114" Multiline="true" TextAlignment="TopRight" SizeF="102.846069,20" LocationFloat="285.614227, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="Top">
+              <StylePriority Ref="393" UseFont="false" UseBorders="false" />
+            </Item9>
+            <Item10 Ref="394" ControlType="XRLabel" Name="label115" Multiline="true" Text="Total  :" TextAlignment="TopRight" SizeF="127.783638,20" LocationFloat="0, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Top">
+              <StylePriority Ref="395" UseFont="false" UseBorders="false" />
+            </Item10>
+            <Item11 Ref="396" ControlType="XRLabel" Name="label116" TextFormatString="{0:#0.000}" Multiline="true" Text="label60" TextAlignment="TopRight" SizeF="63.42343,20" LocationFloat="222.1908, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Top">
+              <Summary Ref="397" Running="Report" />
+              <ExpressionBindings>
+                <Item1 Ref="398" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([INVOICED_QUANTITY])" />
+              </ExpressionBindings>
+              <StylePriority Ref="399" UseFont="false" UseBorders="false" />
+            </Item11>
+          </Controls>
+        </Item3>
+      </Bands>
+    </Item7>
+    <Item8 Ref="400" ControlType="DetailReportBand" Name="DetailReport3" Level="3" DataMember="LV_SALINV_HEADER_1.LV_SALINV_HEADER_1LV_SALINV_REF_DOCS" DataSource="#Ref-0">
+      <Bands>
+        <Item1 Ref="401" ControlType="DetailBand" Name="Detail4" HeightF="18">
+          <Controls>
+            <Item1 Ref="402" ControlType="XRLabel" Name="label150" Multiline="true" Text="label78" SizeF="149.615982,18" LocationFloat="149.61586, 0" Font="Arial, 9pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="403" EventName="BeforePrint" PropertyName="Text" Expression="[DC_NO]" />
+              </ExpressionBindings>
+              <StylePriority Ref="404" UseFont="false" />
+            </Item1>
+            <Item2 Ref="405" ControlType="XRLabel" Name="label151" TextFormatString="{0:dd-MM-yyyy}" Multiline="true" Text="label36" SizeF="149.615921,18" LocationFloat="0, 0" Font="Arial, 9pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="406" EventName="BeforePrint" PropertyName="Text" Expression="[DC_DATE]" />
+              </ExpressionBindings>
+              <StylePriority Ref="407" UseFont="false" />
+            </Item2>
+            <Item3 Ref="408" ControlType="XRLabel" Name="label152" TextFormatString="{0:dd-MM-yyyy}" Multiline="true" Text="label84" SizeF="149.615936,18" LocationFloat="299.231842, 0" Font="Arial, 9pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="409" EventName="BeforePrint" PropertyName="Text" Expression="[SO_DATE]" />
+              </ExpressionBindings>
+              <StylePriority Ref="410" UseFont="false" />
+            </Item3>
+            <Item4 Ref="411" ControlType="XRLabel" Name="label153" Multiline="true" Text="label92" SizeF="177.828125,18" LocationFloat="448.847778, 0" Font="Arial, 9pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="412" EventName="BeforePrint" PropertyName="Text" Expression="[SO_NO]" />
+              </ExpressionBindings>
+              <StylePriority Ref="413" UseFont="false" />
+            </Item4>
+            <Item5 Ref="414" ControlType="XRLabel" Name="label154" TextFormatString="{0:#0.000}" Multiline="true" Text="label93" TextAlignment="TopLeft" SizeF="172.737732,18" LocationFloat="626.676, 0" Font="Arial, 9pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="415" EventName="BeforePrint" PropertyName="Text" Expression="[INVOICE_QUANTITY]" />
+              </ExpressionBindings>
+              <StylePriority Ref="416" UseFont="false" UseTextAlignment="false" />
+            </Item5>
+          </Controls>
+        </Item1>
+        <Item2 Ref="417" ControlType="GroupHeaderBand" Name="GroupHeader5" RepeatEveryPage="true" HeightF="22.0000114">
+          <Controls>
+            <Item1 Ref="418" ControlType="XRLabel" Name="label142" Multiline="true" Text="Challan Date" SizeF="149.615921,20" LocationFloat="0, 2.0000124" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100" Borders="Top, Bottom">
+              <StylePriority Ref="419" UseFont="false" UseBorders="false" />
+            </Item1>
+            <Item2 Ref="420" ControlType="XRLabel" Name="label143" Multiline="true" Text="Challan No." SizeF="149.615921,20" LocationFloat="149.615921, 2.0000124" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100" Borders="Top, Bottom">
+              <StylePriority Ref="421" UseFont="false" UseBorders="false" />
+            </Item2>
+            <Item3 Ref="422" ControlType="XRLabel" Name="label146" Multiline="true" Text="SO Date" SizeF="149.615921,20" LocationFloat="299.231842, 2.0000124" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100" Borders="Top, Bottom">
+              <StylePriority Ref="423" UseFont="false" UseBorders="false" />
+            </Item3>
+            <Item4 Ref="424" ControlType="XRLabel" Name="label148" Multiline="true" Text="SO No." SizeF="177.828247,20" LocationFloat="448.847778, 2.0000124" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100" Borders="Top, Bottom">
+              <StylePriority Ref="425" UseFont="false" UseBorders="false" />
+            </Item4>
+            <Item5 Ref="426" ControlType="XRLabel" Name="label149" Multiline="true" Text="SO Qty." SizeF="172.737732,20.0000019" LocationFloat="626.676, 1.99996078" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100" Borders="Top, Bottom">
+              <StylePriority Ref="427" UseFont="false" UseBorders="false" />
+            </Item5>
+          </Controls>
+        </Item2>
+      </Bands>
+    </Item8>
+    <Item9 Ref="428" ControlType="PageFooterBand" Name="PageFooter" HeightF="17.7495327">
+      <Controls>
+        <Item1 Ref="429" ControlType="XRPageInfo" Name="pageInfo2" PageInfo="DateTime" TextFormatString="{0:dd MMMM yyyy HH:mm}" SizeF="506.416962,16.666666" LocationFloat="0, 0" Padding="2,2,0,0,100" Borders="Top">
+          <StylePriority Ref="430" UseBorders="false" />
+        </Item1>
+        <Item2 Ref="431" ControlType="XRPageInfo" Name="pageInfo1" TextAlignment="TopRight" SizeF="292.9969,15.70832" LocationFloat="506.416931, 0" Padding="2,2,0,0,100" Borders="Top">
+          <StylePriority Ref="432" UseBorders="false" UseTextAlignment="false" />
+        </Item2>
+      </Controls>
+    </Item9>
+    <Item10 Ref="433" ControlType="GroupFooterBand" Name="GroupFooter4" HeightF="113.541634" KeepTogether="true">
+      <Controls>
+        <Item1 Ref="434" ControlType="XRLabel" Name="label2" Multiline="true" ProcessNullValues="SuppressAndShrink" Text="Remarks:" SizeF="67.7083359,23" LocationFloat="6.583353, 17.9012928" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="435" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([REMARKS]),'' ,[REMARKS] )" />
+          </ExpressionBindings>
+        </Item1>
+        <Item2 Ref="436" ControlType="XRLabel" Name="label3" Multiline="true" ProcessNullValues="SuppressAndShrink" Text="label17" SizeF="387.458466,22.9999542" LocationFloat="82.41668, 17.90133" Font="Arial, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="437" EventName="BeforePrint" PropertyName="Text" Expression="[REMARKS]" />
+          </ExpressionBindings>
+          <StylePriority Ref="438" UseFont="false" />
+        </Item2>
+        <Item3 Ref="439" ControlType="XRLine" Name="line8" SizeF="799.247131,2.19295621" LocationFloat="0.1666634, 0" />
+        <Item4 Ref="440" ControlType="XRLabel" Name="label4" Multiline="true" Text="label73" TextAlignment="TopCenter" SizeF="167.7083,20" LocationFloat="25.2417278, 93.54163" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="441" EventName="BeforePrint" PropertyName="Text" Expression="Substring([CREATED_BY],0,CharIndex('[',[CREATED_BY])-1)" />
+          </ExpressionBindings>
+          <StylePriority Ref="442" UseTextAlignment="false" />
+        </Item4>
+        <Item5 Ref="443" ControlType="XRLabel" Name="label5" Multiline="true" Text="Prepared By :" TextAlignment="TopCenter" SizeF="96.25026,20" LocationFloat="54.624733, 73.54175" Padding="2,2,0,0,100">
+          <StylePriority Ref="444" UseTextAlignment="false" />
+        </Item5>
+        <Item6 Ref="445" ControlType="XRLine" Name="line15" SizeF="182.950027,6.166649" LocationFloat="9.999993, 67.37506" />
+        <Item7 Ref="446" ControlType="XRLine" Name="line16" SizeF="132.699036,6.166649" LocationFloat="622.342651, 67.37506" />
+        <Item8 Ref="447" ControlType="XRLabel" Name="label6" Multiline="true" Text="Authorised Signatory" SizeF="102.716614,20.9999771" LocationFloat="639.8251, 73.54175" Padding="2,2,0,0,100" />
+        <Item9 Ref="448" ControlType="XRLabel" Name="label7" Multiline="true" Text="label70" TextAlignment="TopCenter" SizeF="278.164368,23.0000038" LocationFloat="495.8357, 17.90133" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="449" EventName="BeforePrint" PropertyName="Text" Expression="' For : '+[NAME]" />
+          </ExpressionBindings>
+          <StylePriority Ref="450" UseFont="false" UseTextAlignment="false" />
+        </Item9>
+        <Item10 Ref="451" ControlType="XRLabel" Name="label8" Multiline="true" CanShrink="true" ProcessNullValues="SuppressAndShrink" Text="label2" SizeF="799.4138,15.70831" LocationFloat="0, 2.19295621" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="452" EventName="BeforePrint" PropertyName="Text" Expression="?ReportsFooter" />
+          </ExpressionBindings>
+        </Item10>
+        <Item11 Ref="453" ControlType="XRLabel" Name="label49" Multiline="true" Text="Delivered By" SizeF="105.088287,19.9999924" LocationFloat="454.153442, 74.54184" Padding="2,2,0,0,100" />
+        <Item12 Ref="454" ControlType="XRLine" Name="line17" SizeF="152.3935,6.166649" LocationFloat="421.071136, 67.37517" />
+        <Item13 Ref="455" ControlType="XRLabel" Name="label72" Multiline="true" Text="Checked  By" SizeF="86.19035,19.9999924" LocationFloat="255.309753, 74.54184" Padding="2,2,0,0,100" />
+        <Item14 Ref="456" ControlType="XRLine" Name="line18" SizeF="145.811188,6.166649" LocationFloat="225.355469, 67.37506" />
+      </Controls>
+    </Item10>
+  </Bands>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v19.2" Name="sqlDataSource1" Base64="PFNxbERhdGFTb3VyY2UgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxDb25uZWN0aW9uIE5hbWU9IkNvbm5lY3Rpb24iIENvbm5lY3Rpb25TdHJpbmc9Inhwb3Byb3ZpZGVyPU9EUE1hbmFnZWQ7ZGF0YSBzb3VyY2U9JnF1b3Q7KERFU0NSSVBUSU9OPShBRERSRVNTPShQUk9UT0NPTD1UQ1ApKEhPU1Q9YmEtMDIpKFBPUlQ9MTUyMSkpKENPTk5FQ1RfREFUQT0oU0VSVklDRV9OQU1FPWdpbmVzeXMpKSkmcXVvdDsiIC8+PFF1ZXJ5IFR5cGU9IlNlbGVjdFF1ZXJ5IiBOYW1lPSJMVl9TQUxJTlZfSFNOIj48UGFyYW1ldGVyIE5hbWU9IkNvZGUiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkludDMyKSg/Q29kZSk8L1BhcmFtZXRlcj48VGFibGVzPjxUYWJsZSBOYW1lPSJMVl9TQUxJTlZfSFNOIiBYPSIzMCIgWT0iMzAiIFdpZHRoPSIxMjUiIEhlaWdodD0iMzQ4IiAvPjwvVGFibGVzPjxDb2x1bW5zPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9IU04iIE5hbWU9IklOVkNPREUiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0hTTiIgTmFtZT0iSU5WT0lDRURfUVVBTlRJVFkiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0hTTiIgTmFtZT0iSU5WQU1UIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9IU04iIE5hbWU9IkhTTl9DT0RFIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9IU04iIE5hbWU9IkhTTl9ERVNDUklQVElPTiIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfSFNOIiBOYW1lPSJVT00iIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0hTTiIgTmFtZT0iVEFYQUJMRV9BTU9VTlQiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0hTTiIgTmFtZT0iQ0dTVF9SQVRFIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9IU04iIE5hbWU9IkNHU1RfQU1PVU5UIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9IU04iIE5hbWU9IlNHU1RfUkFURSIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfSFNOIiBOYW1lPSJTR1NUX0FNT1VOVCIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfSFNOIiBOYW1lPSJJR1NUX1JBVEUiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0hTTiIgTmFtZT0iSUdTVF9BTU9VTlQiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0hTTiIgTmFtZT0iQ0VTU19SQVRFIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9IU04iIE5hbWU9IkNFU1NfQU1PVU5UIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9IU04iIE5hbWU9IlVLIiAvPjwvQ29sdW1ucz48RmlsdGVyPltMVl9TQUxJTlZfSFNOLklOVkNPREVdIEluICg/Q29kZSk8L0ZpbHRlcj48R3JvdXBGaWx0ZXI+PC9Hcm91cEZpbHRlcj48TWV0YSBYPSIyMCIgWT0iMjAiIFdpZHRoPSIxNDIiIEhlaWdodD0iMzEzIiAvPjwvUXVlcnk+PFF1ZXJ5IFR5cGU9IlNlbGVjdFF1ZXJ5IiBOYW1lPSJMVl9TQUxJTlZfQ0hBUkdFIj48UGFyYW1ldGVyIE5hbWU9IkNvZGUiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkludDMyKSg/Q29kZSk8L1BhcmFtZXRlcj48VGFibGVzPjxUYWJsZSBOYW1lPSJMVl9TQUxJTlZfQ0hBUkdFIiBYPSIzMCIgWT0iMzAiIFdpZHRoPSIxMjUiIEhlaWdodD0iMzMwIiAvPjwvVGFibGVzPjxDb2x1bW5zPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9DSEFSR0UiIE5hbWU9IklOVkNPREUiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0NIQVJHRSIgTmFtZT0iRElTUExBWV9TRVFVRU5DRSIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfQ0hBUkdFIiBOYW1lPSJTQUxFU19DSEFSR0VfTkFNRSIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfQ0hBUkdFIiBOYW1lPSJDSEFSR0VfUkFURSIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfQ0hBUkdFIiBOYW1lPSJDSEFSR0VfU0lHTiIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfQ0hBUkdFIiBOYW1lPSJDSEFSR0VfQU1PVU5UIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9DSEFSR0UiIE5hbWU9IkNIQVJHRV9MRURHRVIiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0NIQVJHRSIgTmFtZT0iVUsiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0NIQVJHRSIgTmFtZT0iQ0hBUkdFX1NVQl9MRURHRVIiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0NIQVJHRSIgTmFtZT0iQ0hBUkdFX0JBU0lTIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9DSEFSR0UiIE5hbWU9IkNIQVJHRV9BUFBMSUNBQkxFX09OIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9DSEFSR0UiIE5hbWU9Ik9QRVJBVElPTl9MRVZFTCIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfQ0hBUkdFIiBOYW1lPSJUQVhBQkxFIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9DSEFSR0UiIE5hbWU9IkNIQVJHRV9TT1VSQ0UiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0NIQVJHRSIgTmFtZT0iR1NUX0NPTVBPTkVOVCIgLz48L0NvbHVtbnM+PEZpbHRlcj5bTFZfU0FMSU5WX0NIQVJHRS5JTlZDT0RFXSBJbiAoP0NvZGUpPC9GaWx0ZXI+PEdyb3VwRmlsdGVyPjwvR3JvdXBGaWx0ZXI+PE1ldGEgWD0iMTgyIiBZPSIyMCIgV2lkdGg9IjE2NiIgSGVpZ2h0PSIyOTYiIC8+PC9RdWVyeT48UXVlcnkgVHlwZT0iU2VsZWN0UXVlcnkiIE5hbWU9IkxWX1NBTElOVl9SRUZfRE9DUyI+PFBhcmFtZXRlciBOYW1lPSJDb2RlIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5JbnQzMikoP0NvZGUpPC9QYXJhbWV0ZXI+PFRhYmxlcz48VGFibGUgTmFtZT0iTFZfU0FMSU5WX1JFRl9ET0NTIiBYPSIzMCIgWT0iMzAiIFdpZHRoPSIxMjUiIEhlaWdodD0iMjQwIiAvPjwvVGFibGVzPjxDb2x1bW5zPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9SRUZfRE9DUyIgTmFtZT0iSU5WQ09ERSIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfUkVGX0RPQ1MiIE5hbWU9IkRDX05PIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9SRUZfRE9DUyIgTmFtZT0iRENfREFURSIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfUkVGX0RPQ1MiIE5hbWU9IklOVk9JQ0VfUVVBTlRJVFkiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX1JFRl9ET0NTIiBOYW1lPSJTT19OTyIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfUkVGX0RPQ1MiIE5hbWU9IlNPX0RBVEUiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX1JFRl9ET0NTIiBOYW1lPSJEQ19SRU1BUktTIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9SRUZfRE9DUyIgTmFtZT0iRENRVFkiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX1JFRl9ET0NTIiBOYW1lPSJVSyIgLz48L0NvbHVtbnM+PEZpbHRlcj5bTFZfU0FMSU5WX1JFRl9ET0NTLklOVkNPREVdIEluICg/Q29kZSk8L0ZpbHRlcj48R3JvdXBGaWx0ZXI+PC9Hcm91cEZpbHRlcj48TWV0YSBYPSIzNjgiIFk9IjIwIiBXaWR0aD0iMTQ5IiBIZWlnaHQ9IjE5NCIgLz48L1F1ZXJ5PjxRdWVyeSBUeXBlPSJTZWxlY3RRdWVyeSIgTmFtZT0iTFZfU0FMSU5WX0hFQURFUl8xIj48UGFyYW1ldGVyIE5hbWU9IkNvZGUiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkludDMyKSg/Q29kZSk8L1BhcmFtZXRlcj48VGFibGVzPjxUYWJsZSBOYW1lPSJMVl9TQUxJTlZfSEVBREVSIiBYPSIzMCIgWT0iMzAiIFdpZHRoPSIxMjUiIEhlaWdodD0iMjAwNCIgLz48VGFibGUgTmFtZT0iTFZfU0lURSIgWD0iMTg1IiBZPSIzMCIgV2lkdGg9IjEyNSIgSGVpZ2h0PSIyMzY0IiAvPjxUYWJsZSBOYW1lPSJMVl9SRUZTSVRFIiBYPSIzNDAiIFk9IjMwIiBXaWR0aD0iMTI1IiBIZWlnaHQ9IjIzNjQiIC8+PFRhYmxlIE5hbWU9IkNWX0NVU1RPTUVSX1NVUFBMSUVSIiBYPSI2NTAiIFk9IjMwIiBXaWR0aD0iMTI1IiBIZWlnaHQ9IjQwMiIgLz48UmVsYXRpb24gVHlwZT0iSW5uZXIiIFBhcmVudD0iTFZfU0FMSU5WX0hFQURFUiIgTmVzdGVkPSJMVl9TSVRFIj48S2V5Q29sdW1uIFBhcmVudD0iQURNU0lURV9DT0RFX09XTkVSIiBOZXN0ZWQ9IlNJVEVDT0RFIiAvPjwvUmVsYXRpb24+PFJlbGF0aW9uIFR5cGU9IklubmVyIiBQYXJlbnQ9IkxWX1NBTElOVl9IRUFERVIiIE5lc3RlZD0iTFZfUkVGU0lURSI+PEtleUNvbHVtbiBQYXJlbnQ9IkFETVNJVEVfQ09ERSIgTmVzdGVkPSJTSVRFQ09ERSIgLz48L1JlbGF0aW9uPjxSZWxhdGlvbiBUeXBlPSJJbm5lciIgUGFyZW50PSJMVl9TQUxJTlZfSEVBREVSIiBOZXN0ZWQ9IkNWX0NVU1RPTUVSX1NVUFBMSUVSIj48S2V5Q29sdW1uIFBhcmVudD0iUENPREUiIE5lc3RlZD0iQ09ERSIgLz48L1JlbGF0aW9uPjwvVGFibGVzPjxDb2x1bW5zPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9IRUFERVIiIE5hbWU9IkVfSU5WT0lDRV9BQ0tfTk8iIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0hFQURFUiIgTmFtZT0iRV9JTlZPSUNFX0lSTiIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfSEVBREVSIiBOYW1lPSJFX0lOVk9JQ0VfQUNLX0RBVEVUSU1FIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9IRUFERVIiIE5hbWU9IkVfSU5WT0lDRV9TSUdORURfUVJfREFUQSIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfSEVBREVSIiBOYW1lPSJJTlZPSUNFX05PIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9IRUFERVIiIE5hbWU9IlRSQU5TUE9SVEVSX05BTUUiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0hFQURFUiIgTmFtZT0iQURNT1VfQ09ERSIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfSEVBREVSIiBOYW1lPSJJTlZDT0RFIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9IRUFERVIiIE5hbWU9IklOVk9JQ0VfREFURSIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfSEVBREVSIiBOYW1lPSJDVVNUT01FUl9OQU1FIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9IRUFERVIiIE5hbWU9Ik9XTkVSX0dTVElOX05PIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9IRUFERVIiIE5hbWU9Ik9XTkVSX0dTVElOX1NUQVRFX0NPREUiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0hFQURFUiIgTmFtZT0iT1dORVJfR1NUSU5fU1RBVEVfTkFNRSIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfSEVBREVSIiBOYW1lPSJET0NVTUVOVF9OTyIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfSEVBREVSIiBOYW1lPSJEVUVfREFURSIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfSEVBREVSIiBOYW1lPSJORVRfQU1PVU5UIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9IRUFERVIiIE5hbWU9IkRPQ1VNRU5UX0RBVEUiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0hFQURFUiIgTmFtZT0iTE9HSVNUSUNfTk8iIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0hFQURFUiIgTmFtZT0iTE9HSVNUSUNfRE9DVU1FTlRfTk8iIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0hFQURFUiIgTmFtZT0iTE9HSVNUSUNfRE9DVU1FTlRfREFURSIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfSEVBREVSIiBOYW1lPSJMT0dJU1RJQ19EQVRFIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9IRUFERVIiIE5hbWU9IkNSRUFURURfQlkiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0hFQURFUiIgTmFtZT0iQ1JFQVRFRF9PTiIgLz48Q29sdW1uIFRhYmxlPSJMVl9TSVRFIiBOYW1lPSJOQU1FIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NJVEUiIE5hbWU9IkFERFJFU1MiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0lURSIgTmFtZT0iQ0lUWSIgLz48Q29sdW1uIFRhYmxlPSJMVl9TSVRFIiBOYW1lPSJQSU5DT0RFIiAvPjxDb2x1bW4gVGFibGU9IkxWX1JFRlNJVEUiIE5hbWU9IlNISVBQSU5HX0FERFJFU1MiIC8+PENvbHVtbiBUYWJsZT0iTFZfUkVGU0lURSIgTmFtZT0iU0hJUFBJTkdfQ0lUWSIgLz48Q29sdW1uIFRhYmxlPSJMVl9SRUZTSVRFIiBOYW1lPSJTSElQUElOR19TVEFURSIgLz48Q29sdW1uIFRhYmxlPSJMVl9SRUZTSVRFIiBOYW1lPSJTSElQUElOR19QSU5DT0RFIiAvPjxDb2x1bW4gVGFibGU9IkxWX1JFRlNJVEUiIE5hbWU9IlNISVBQSU5HX0VNQUlMMSIgLz48Q29sdW1uIFRhYmxlPSJMVl9SRUZTSVRFIiBOYW1lPSJTSElQUElOR19HU1RfSURFTlRJRklDQVRJT05fTk8iIC8+PENvbHVtbiBUYWJsZT0iTFZfUkVGU0lURSIgTmFtZT0iU0hJUFBJTkdfR1NUX1NUQVRFX0NPREUiIC8+PENvbHVtbiBUYWJsZT0iTFZfUkVGU0lURSIgTmFtZT0iU0hJUFBJTkdfR1NUX1NUQVRFX05BTUUiIC8+PENvbHVtbiBUYWJsZT0iTFZfUkVGU0lURSIgTmFtZT0iTkFNRSIgQWxpYXM9IkxWX1JFRlNJVEVfTkFNRSIgLz48Q29sdW1uIFRhYmxlPSJMVl9TSVRFIiBOYW1lPSJTVEFURSIgLz48Q29sdW1uIFRhYmxlPSJMVl9TSVRFIiBOYW1lPSJQSE9ORTEiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0lURSIgTmFtZT0iUEhPTkUyIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NJVEUiIE5hbWU9IlBIT05FMyIgLz48Q29sdW1uIFRhYmxlPSJMVl9TSVRFIiBOYW1lPSJFTUFJTDEiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0lURSIgTmFtZT0iTU9CSUxFIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NJVEUiIE5hbWU9IldFQlNJVEUiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0lURSIgTmFtZT0iQ09OVEFDVF9QRVJTT04iIC8+PENvbHVtbiBUYWJsZT0iTFZfUkVGU0lURSIgTmFtZT0iU0hJUFBJTkdfUEhPTkUxIiAvPjxDb2x1bW4gVGFibGU9IkxWX1JFRlNJVEUiIE5hbWU9IlNISVBQSU5HX1BIT05FMiIgLz48Q29sdW1uIFRhYmxlPSJMVl9SRUZTSVRFIiBOYW1lPSJTSElQUElOR19QSE9ORTMiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0hFQURFUiIgTmFtZT0iUkVNQVJLUyIgLz48Q29sdW1uIFRhYmxlPSJMVl9TQUxJTlZfSEVBREVSIiBOYW1lPSJBR0NPREUiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0hFQURFUiIgTmFtZT0iUENPREUiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfQ1VTVE9NRVJfU1VQUExJRVIiIE5hbWU9IkJJTExJTkdfQUREUkVTUyIgQWxpYXM9IkNWX0JJTExJTkdfQUREUkVTUyIgLz48Q29sdW1uIFRhYmxlPSJDVl9DVVNUT01FUl9TVVBQTElFUiIgTmFtZT0iQklMTElOR19DSVRZIiBBbGlhcz0iQ1ZfQklMTElOR19DSVRZIiAvPjxDb2x1bW4gVGFibGU9IkNWX0NVU1RPTUVSX1NVUFBMSUVSIiBOYW1lPSJCSUxMSU5HX0VNQUlMMSIgQWxpYXM9IkNWX0VNQUlMMSIgLz48Q29sdW1uIFRhYmxlPSJDVl9DVVNUT01FUl9TVVBQTElFUiIgTmFtZT0iQklMTElOR19PRkZJQ0VfUEhPTkUyIiBBbGlhcz0iQ1ZfT0ZGSUNFX1BIT05FMiIgLz48Q29sdW1uIFRhYmxlPSJDVl9DVVNUT01FUl9TVVBQTElFUiIgTmFtZT0iQklMTElOR19PRkZJQ0VfUEhPTkUxIiBBbGlhcz0iQ1ZfQklMTElOR19PRkZJQ0VfUEhPTkUxIiAvPjxDb2x1bW4gVGFibGU9IkNWX0NVU1RPTUVSX1NVUFBMSUVSIiBOYW1lPSJCSUxMSU5HX09GRklDRV9QSE9ORTMiIEFsaWFzPSJDVl9CSUxMSU5HX09GRklDRV9QSE9ORTMiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfQ1VTVE9NRVJfU1VQUExJRVIiIE5hbWU9IkJJTExJTkdfUElOQ09ERSIgQWxpYXM9IkNWX19CSUxMSU5HX1BJTkNPREUiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfQ1VTVE9NRVJfU1VQUExJRVIiIE5hbWU9IkdTVF9DQVRFR09SWSIgQWxpYXM9IkNWX0dTVF9DQVRFR09SWSIgLz48Q29sdW1uIFRhYmxlPSJDVl9DVVNUT01FUl9TVVBQTElFUiIgTmFtZT0iTkFNRSIgQWxpYXM9IkNWX0NVU1RPTUVSX1NVUFBMSUVSX05BTUUiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfQ1VTVE9NRVJfU1VQUExJRVIiIE5hbWU9IkdTVF9JREVOVElGSUNBVElPTl9OTyIgQWxpYXM9IkNWX0dTVF9JREVOVElGSUNBVElPTl9OTyIgLz48Q29sdW1uIFRhYmxlPSJDVl9DVVNUT01FUl9TVVBQTElFUiIgTmFtZT0iR1NUX1JFR0lTVFJBVElPTl9EQVRFIiBBbGlhcz0iQ1ZfR1NUX1JFR0lTVFJBVElPTl9EQVRFIiAvPjxDb2x1bW4gVGFibGU9IkNWX0NVU1RPTUVSX1NVUFBMSUVSIiBOYW1lPSJHU1RfU1RBVEVfQ09ERSIgQWxpYXM9IkNWX0dTVF9TVEFURV9DT0RFIiAvPjxDb2x1bW4gVGFibGU9IkNWX0NVU1RPTUVSX1NVUFBMSUVSIiBOYW1lPSJHU1RfU1RBVEVfTkFNRSIgQWxpYXM9IkNWX0dTVF9TVEFURV9OQU1FIiAvPjwvQ29sdW1ucz48RmlsdGVyPltMVl9TQUxJTlZfSEVBREVSLklOVkNPREVdIEluICg/Q29kZSk8L0ZpbHRlcj48R3JvdXBGaWx0ZXI+PC9Hcm91cEZpbHRlcj48TWV0YSBYPSI1MzciIFk9IjIwIiBXaWR0aD0iMjI4IiBIZWlnaHQ9IjExMTIiIC8+PC9RdWVyeT48UXVlcnkgVHlwZT0iU2VsZWN0UXVlcnkiIE5hbWU9IkxWX1NBTElOVl9JVEVNIj48UGFyYW1ldGVyIE5hbWU9IkNvZGUiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkludDMyKSg/Q29kZSk8L1BhcmFtZXRlcj48VGFibGVzPjxUYWJsZSBOYW1lPSJMVl9TQUxJTlZfSVRFTSIgWD0iNTAiIFk9IjMwIiBXaWR0aD0iMTI1IiBIZWlnaHQ9IjYwMCIgLz48VGFibGUgTmFtZT0iTFZfSVRFTSIgWD0iMTg1IiBZPSIzMCIgV2lkdGg9IjEyNSIgSGVpZ2h0PSIxNTkwIiAvPjxSZWxhdGlvbiBUeXBlPSJJbm5lciIgUGFyZW50PSJMVl9TQUxJTlZfSVRFTSIgTmVzdGVkPSJMVl9JVEVNIj48S2V5Q29sdW1uIFBhcmVudD0iSUNPREUiIE5lc3RlZD0iQ09ERSIgLz48L1JlbGF0aW9uPjwvVGFibGVzPjxDb2x1bW5zPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9JVEVNIiBOYW1lPSJJTlZPSUNFX1FVQU5USVRZIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9JVEVNIiBOYW1lPSJJTlZPSUNFX1JBVEUiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0lURU0iIE5hbWU9IklURU1fR1JPU1NfQU1PVU5UIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NBTElOVl9JVEVNIiBOYW1lPSJJTlZDT0RFIiAvPjxDb2x1bW4gVGFibGU9IkxWX0lURU0iIE5hbWU9IkRJVklTSU9OIiAvPjxDb2x1bW4gVGFibGU9IkxWX0lURU0iIE5hbWU9IlNFQ1RJT04iIC8+PENvbHVtbiBUYWJsZT0iTFZfSVRFTSIgTmFtZT0iQ0FURUdPUlkxIiAvPjxDb2x1bW4gVGFibGU9IkxWX0lURU0iIE5hbWU9IkNBVEVHT1JZNiIgLz48Q29sdW1uIFRhYmxlPSJMVl9JVEVNIiBOYW1lPSJIU05fQ09ERSIgLz48Q29sdW1uIFRhYmxlPSJMVl9JVEVNIiBOYW1lPSJJVEVNX0NPREUiIC8+PENvbHVtbiBUYWJsZT0iTFZfSVRFTSIgTmFtZT0iVU9NIiAvPjxDb2x1bW4gVGFibGU9IkxWX0lURU0iIE5hbWU9IkJBUkNPREUiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0FMSU5WX0lURU0iIE5hbWU9IklURU1fVEFYX1JBVEUiIC8+PC9Db2x1bW5zPjxGaWx0ZXI+W0xWX1NBTElOVl9JVEVNLklOVkNPREVdIEluICg/Q29kZSk8L0ZpbHRlcj48R3JvdXBGaWx0ZXI+PC9Hcm91cEZpbHRlcj48TWV0YSBYPSI3ODUiIFk9IjIwIiBXaWR0aD0iMTUzIiBIZWlnaHQ9IjI0NSIgLz48L1F1ZXJ5PjxRdWVyeSBUeXBlPSJTZWxlY3RRdWVyeSIgTmFtZT0iTFZfT1JHQU5JWkFUSU9OX1VOSVQiPjxUYWJsZXM+PFRhYmxlIE5hbWU9IkxWX09SR0FOSVpBVElPTl9VTklUIiBYPSIzMCIgWT0iMzAiIFdpZHRoPSIxMjUiIEhlaWdodD0iOTc4IiAvPjwvVGFibGVzPjxDb2x1bW5zPjxDb2x1bW4gVGFibGU9IkxWX09SR0FOSVpBVElPTl9VTklUIiBOYW1lPSJDT0RFIiAvPjxDb2x1bW4gVGFibGU9IkxWX09SR0FOSVpBVElPTl9VTklUIiBOYW1lPSJOQU1FIiAvPjxDb2x1bW4gVGFibGU9IkxWX09SR0FOSVpBVElPTl9VTklUIiBOYW1lPSJDSU4iIC8+PC9Db2x1bW5zPjxNZXRhIFg9Ijk1OCIgWT0iMjAiIFdpZHRoPSIxNjUiIEhlaWdodD0iOTIiIC8+PC9RdWVyeT48UXVlcnkgVHlwZT0iU2VsZWN0UXVlcnkiIE5hbWU9IkNWX1RFSk9PX0VSUF9PVVRTVEFORElORyI+PFRhYmxlcz48VGFibGUgTmFtZT0iQ1ZfVEVKT09fRVJQX09VVFNUQU5ESU5HIiBYPSIzMCIgWT0iMzAiIFdpZHRoPSIxMjUiIEhlaWdodD0iOTYiIC8+PC9UYWJsZXM+PENvbHVtbnM+PEFsbENvbHVtbnMgVGFibGU9IkNWX1RFSk9PX0VSUF9PVVRTVEFORElORyIgLz48L0NvbHVtbnM+PE1ldGEgWD0iMTE0MyIgWT0iMjAiIFdpZHRoPSIxOTYiIEhlaWdodD0iNzUiIC8+PC9RdWVyeT48UmVsYXRpb24gTWFzdGVyPSJMVl9TQUxJTlZfSEVBREVSXzEiIERldGFpbD0iTFZfT1JHQU5JWkFUSU9OX1VOSVQiPjxLZXlDb2x1bW4gTWFzdGVyPSJBRE1PVV9DT0RFIiBEZXRhaWw9IkNPREUiIC8+PC9SZWxhdGlvbj48UmVsYXRpb24gTWFzdGVyPSJMVl9TQUxJTlZfSEVBREVSXzEiIERldGFpbD0iTFZfU0FMSU5WX0lURU0iPjxLZXlDb2x1bW4gTWFzdGVyPSJJTlZDT0RFIiBEZXRhaWw9IklOVkNPREUiIC8+PC9SZWxhdGlvbj48UmVsYXRpb24gTWFzdGVyPSJMVl9TQUxJTlZfSEVBREVSXzEiIERldGFpbD0iTFZfU0FMSU5WX1JFRl9ET0NTIj48S2V5Q29sdW1uIE1hc3Rlcj0iSU5WQ09ERSIgRGV0YWlsPSJJTlZDT0RFIiAvPjwvUmVsYXRpb24+PFJlbGF0aW9uIE1hc3Rlcj0iTFZfU0FMSU5WX0hFQURFUl8xIiBEZXRhaWw9IkxWX1NBTElOVl9DSEFSR0UiPjxLZXlDb2x1bW4gTWFzdGVyPSJJTlZDT0RFIiBEZXRhaWw9IklOVkNPREUiIC8+PC9SZWxhdGlvbj48UmVsYXRpb24gTWFzdGVyPSJMVl9TQUxJTlZfSEVBREVSXzEiIERldGFpbD0iTFZfU0FMSU5WX0hTTiI+PEtleUNvbHVtbiBNYXN0ZXI9IklOVkNPREUiIERldGFpbD0iSU5WQ09ERSIgLz48L1JlbGF0aW9uPjxSZWxhdGlvbiBNYXN0ZXI9IkxWX1NBTElOVl9IRUFERVJfMSIgRGV0YWlsPSJDVl9URUpPT19FUlBfT1VUU1RBTkRJTkciIE5hbWU9IkxWX1NBTElOVl9IRUFERVJfMUNWX1RFSk9PX0VSUF9PVVRTVEFORElORyI+PEtleUNvbHVtbiBNYXN0ZXI9IlBDT0RFIiBEZXRhaWw9IlBDT0RFIiAvPjwvUmVsYXRpb24+PFJlc3VsdFNjaGVtYT48RGF0YVNldCBOYW1lPSJzcWxEYXRhU291cmNlMSI+PFZpZXcgTmFtZT0iTFZfU0FMSU5WX0hTTiI+PEZpZWxkIE5hbWU9IklOVkNPREUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IklOVk9JQ0VEX1FVQU5USVRZIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJJTlZBTVQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkhTTl9DT0RFIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJIU05fREVTQ1JJUFRJT04iIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlVPTSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iVEFYQUJMRV9BTU9VTlQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkNHU1RfUkFURSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQ0dTVF9BTU9VTlQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlNHU1RfUkFURSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iU0dTVF9BTU9VTlQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IklHU1RfUkFURSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iSUdTVF9BTU9VTlQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkNFU1NfUkFURSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQ0VTU19BTU9VTlQiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlVLIiBUeXBlPSJVbmtub3duIiAvPjwvVmlldz48VmlldyBOYW1lPSJMVl9TQUxJTlZfQ0hBUkdFIj48RmllbGQgTmFtZT0iSU5WQ09ERSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iRElTUExBWV9TRVFVRU5DRSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iU0FMRVNfQ0hBUkdFX05BTUUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkNIQVJHRV9SQVRFIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJDSEFSR0VfU0lHTiIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQ0hBUkdFX0FNT1VOVCIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQ0hBUkdFX0xFREdFUiIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iVUsiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkNIQVJHRV9TVUJfTEVER0VSIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJDSEFSR0VfQkFTSVMiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkNIQVJHRV9BUFBMSUNBQkxFX09OIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJPUEVSQVRJT05fTEVWRUwiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlRBWEFCTEUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkNIQVJHRV9TT1VSQ0UiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkdTVF9DT01QT05FTlQiIFR5cGU9IlVua25vd24iIC8+PC9WaWV3PjxWaWV3IE5hbWU9IkxWX1NBTElOVl9SRUZfRE9DUyI+PEZpZWxkIE5hbWU9IklOVkNPREUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkRDX05PIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJEQ19EQVRFIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJJTlZPSUNFX1FVQU5USVRZIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJTT19OTyIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iU09fREFURSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iRENfUkVNQVJLUyIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iRENRVFkiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlVLIiBUeXBlPSJVbmtub3duIiAvPjwvVmlldz48VmlldyBOYW1lPSJMVl9TQUxJTlZfSEVBREVSXzEiPjxGaWVsZCBOYW1lPSJFX0lOVk9JQ0VfQUNLX05PIiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJFX0lOVk9JQ0VfSVJOIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkVfSU5WT0lDRV9BQ0tfREFURVRJTUUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJFX0lOVk9JQ0VfU0lHTkVEX1FSX0RBVEEiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSU5WT0lDRV9OTyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJUUkFOU1BPUlRFUl9OQU1FIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkFETU9VX0NPREUiIFR5cGU9IkludDY0IiAvPjxGaWVsZCBOYW1lPSJJTlZDT0RFIiBUeXBlPSJJbnQ2NCIgLz48RmllbGQgTmFtZT0iSU5WT0lDRV9EQVRFIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iQ1VTVE9NRVJfTkFNRSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJPV05FUl9HU1RJTl9OTyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJPV05FUl9HU1RJTl9TVEFURV9DT0RFIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9XTkVSX0dTVElOX1NUQVRFX05BTUUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRE9DVU1FTlRfTk8iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRFVFX0RBVEUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJORVRfQU1PVU5UIiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJET0NVTUVOVF9EQVRFIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iTE9HSVNUSUNfTk8iIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJMT0dJU1RJQ19ET0NVTUVOVF9OTyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJMT0dJU1RJQ19ET0NVTUVOVF9EQVRFIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iTE9HSVNUSUNfREFURSIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IkNSRUFURURfQlkiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQ1JFQVRFRF9PTiIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9Ik5BTUUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQUREUkVTUyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDSVRZIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlBJTkNPREUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU0hJUFBJTkdfQUREUkVTUyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJTSElQUElOR19DSVRZIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlNISVBQSU5HX1NUQVRFIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlNISVBQSU5HX1BJTkNPREUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU0hJUFBJTkdfRU1BSUwxIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlNISVBQSU5HX0dTVF9JREVOVElGSUNBVElPTl9OTyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJTSElQUElOR19HU1RfU1RBVEVfQ09ERSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJTSElQUElOR19HU1RfU1RBVEVfTkFNRSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJMVl9SRUZTSVRFX05BTUUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU1RBVEUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iUEhPTkUxIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlBIT05FMiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJQSE9ORTMiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRU1BSUwxIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik1PQklMRSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJXRUJTSVRFIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkNPTlRBQ1RfUEVSU09OIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlNISVBQSU5HX1BIT05FMSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJTSElQUElOR19QSE9ORTIiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU0hJUFBJTkdfUEhPTkUzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlJFTUFSS1MiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQUdDT0RFIiBUeXBlPSJJbnQ2NCIgLz48RmllbGQgTmFtZT0iUENPREUiIFR5cGU9IkludDY0IiAvPjxGaWVsZCBOYW1lPSJDVl9CSUxMSU5HX0FERFJFU1MiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQ1ZfQklMTElOR19DSVRZIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkNWX0VNQUlMMSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDVl9PRkZJQ0VfUEhPTkUyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkNWX0JJTExJTkdfT0ZGSUNFX1BIT05FMSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDVl9CSUxMSU5HX09GRklDRV9QSE9ORTMiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQ1ZfX0JJTExJTkdfUElOQ09ERSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDVl9HU1RfQ0FURUdPUlkiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQ1ZfQ1VTVE9NRVJfU1VQUExJRVJfTkFNRSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDVl9HU1RfSURFTlRJRklDQVRJT05fTk8iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQ1ZfR1NUX1JFR0lTVFJBVElPTl9EQVRFIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iQ1ZfR1NUX1NUQVRFX0NPREUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQ1ZfR1NUX1NUQVRFX05BTUUiIFR5cGU9IlN0cmluZyIgLz48L1ZpZXc+PFZpZXcgTmFtZT0iTFZfU0FMSU5WX0lURU0iPjxGaWVsZCBOYW1lPSJJTlZPSUNFX1FVQU5USVRZIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJJTlZPSUNFX1JBVEUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IklURU1fR1JPU1NfQU1PVU5UIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJJTlZDT0RFIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJESVZJU0lPTiIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iU0VDVElPTiIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQ0FURUdPUlkxIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJDQVRFR09SWTYiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IkhTTl9DT0RFIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJJVEVNX0NPREUiIFR5cGU9IlVua25vd24iIC8+PEZpZWxkIE5hbWU9IlVPTSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iQkFSQ09ERSIgVHlwZT0iVW5rbm93biIgLz48RmllbGQgTmFtZT0iSVRFTV9UQVhfUkFURSIgVHlwZT0iVW5rbm93biIgLz48L1ZpZXc+PFZpZXcgTmFtZT0iTFZfT1JHQU5JWkFUSU9OX1VOSVQiPjxGaWVsZCBOYW1lPSJDT0RFIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJOQU1FIiBUeXBlPSJVbmtub3duIiAvPjxGaWVsZCBOYW1lPSJDSU4iIFR5cGU9IlVua25vd24iIC8+PC9WaWV3PjxWaWV3IE5hbWU9IkNWX1RFSk9PX0VSUF9PVVRTVEFORElORyIgLz48UmVsYXRpb24gTWFzdGVyPSJMVl9TQUxJTlZfSEVBREVSXzEiIERldGFpbD0iTFZfT1JHQU5JWkFUSU9OX1VOSVQiPjxLZXlDb2x1bW4gTWFzdGVyPSJBRE1PVV9DT0RFIiBEZXRhaWw9IkNPREUiIC8+PC9SZWxhdGlvbj48UmVsYXRpb24gTWFzdGVyPSJMVl9TQUxJTlZfSEVBREVSXzEiIERldGFpbD0iTFZfU0FMSU5WX0lURU0iPjxLZXlDb2x1bW4gTWFzdGVyPSJJTlZDT0RFIiBEZXRhaWw9IklOVkNPREUiIC8+PC9SZWxhdGlvbj48UmVsYXRpb24gTWFzdGVyPSJMVl9TQUxJTlZfSEVBREVSXzEiIERldGFpbD0iTFZfU0FMSU5WX1JFRl9ET0NTIj48S2V5Q29sdW1uIE1hc3Rlcj0iSU5WQ09ERSIgRGV0YWlsPSJJTlZDT0RFIiAvPjwvUmVsYXRpb24+PFJlbGF0aW9uIE1hc3Rlcj0iTFZfU0FMSU5WX0hFQURFUl8xIiBEZXRhaWw9IkxWX1NBTElOVl9DSEFSR0UiPjxLZXlDb2x1bW4gTWFzdGVyPSJJTlZDT0RFIiBEZXRhaWw9IklOVkNPREUiIC8+PC9SZWxhdGlvbj48UmVsYXRpb24gTWFzdGVyPSJMVl9TQUxJTlZfSEVBREVSXzEiIERldGFpbD0iTFZfU0FMSU5WX0hTTiI+PEtleUNvbHVtbiBNYXN0ZXI9IklOVkNPREUiIERldGFpbD0iSU5WQ09ERSIgLz48L1JlbGF0aW9uPjxSZWxhdGlvbiBNYXN0ZXI9IkxWX1NBTElOVl9IRUFERVJfMSIgRGV0YWlsPSJDVl9URUpPT19FUlBfT1VUU1RBTkRJTkciPjxLZXlDb2x1bW4gTWFzdGVyPSJQQ09ERSIgRGV0YWlsPSJQQ09ERSIgLz48L1JlbGF0aW9uPjwvRGF0YVNldD48L1Jlc3VsdFNjaGVtYT48Q29ubmVjdGlvbk9wdGlvbnMgQ2xvc2VDb25uZWN0aW9uPSJ0cnVlIiAvPjwvU3FsRGF0YVNvdXJjZT4=" />
+  </ComponentStorage>
+  <ObjectStorage>
+    <Item1 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v19.2" Ref="2" Content="System.Int32" Type="System.Type" />
+  </ObjectStorage>
+</XtraReportsLayoutSerializer>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          

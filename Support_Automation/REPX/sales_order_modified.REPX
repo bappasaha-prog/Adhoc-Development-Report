@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="19.2.4.0" Ref="0" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v19.2, Version=19.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Report1" ScriptsSource="private int serialNumber = 1;&#xD;&#xA;&#xD;&#xA;private void label21_BeforePrint_1(object sender, System.Drawing.Printing.PrintEventArgs e) {&#xD;&#xA;    ((XRLabel)sender).Text = serialNumber.ToString();&#xD;&#xA;    serialNumber++;&#xD;&#xA;&#xD;&#xA;}&#xD;&#xA;" SnapGridSize="25" ReportUnit="TenthsOfAMillimeter" Margins="5, 5, 353, 0" PaperKind="Custom" PageWidth="1379" PageHeight="1961" Version="19.2" DataMember="v_Report_POSOrder" XmlDataPath="D:\Reference\CONFIG\POSOrderDocumentData (1) (2) (1).xml" Dpi="254" Font="Arial, 8pt">
+  <CalculatedFields>
+    <Item1 Ref="1" Name="FMOPRefund" Expression="IIF([MOPType]=='CSH',Iif([BaseBalance]=0, '0.00', [BaseBalance]),'0.00')" DataMember="v_Report_POSBillMOP" />
+  </CalculatedFields>
+  <Bands>
+    <Item1 Ref="2" ControlType="TopMarginBand" Name="TopMargin" HeightF="353" Dpi="254" />
+    <Item2 Ref="3" ControlType="DetailBand" Name="Detail" HeightF="0" Dpi="254" Font="Arial, 8pt">
+      <StylePriority Ref="4" UseFont="false" />
+    </Item2>
+    <Item3 Ref="5" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="0" Dpi="254" />
+    <Item4 Ref="6" ControlType="PageHeaderBand" Name="PageHeader" HeightF="253.33139" Dpi="254" Font="Arial, 8pt">
+      <Controls>
+        <Item1 Ref="7" ControlType="XRLabel" Name="label25" TextFormatString="{0:dd/MM/yyyy HH:mm}" Text="label25" SizeF="326.583252,25.0000153" LocationFloat="982.416138, 221.36972" Dpi="254" Padding="5,5,0,0,254">
+          <ExpressionBindings>
+            <Item1 Ref="8" EventName="BeforePrint" PropertyName="Text" Expression="[CreatedOn]" />
+          </ExpressionBindings>
+        </Item1>
+        <Item2 Ref="9" ControlType="XRLabel" Name="label33" Multiline="true" SizeF="309.53125,24.99999" LocationFloat="88.1842346, 0" Dpi="254" Font="Calibri, 10pt, style=Bold" Padding="5,5,0,0,254">
+          <ExpressionBindings>
+            <Item1 Ref="10" EventName="BeforePrint" PropertyName="Text" Expression="'Sales Order'" />
+          </ExpressionBindings>
+          <StylePriority Ref="11" UseFont="false" />
+        </Item2>
+        <Item3 Ref="12" ControlType="XRLabel" Name="label2" Multiline="true" TextAlignment="TopRight" SizeF="831.77,24.99997" LocationFloat="479.8755, 0" Dpi="254" Font="Calibri, 10pt, style=Bold" Padding="5,5,0,0,254">
+          <ExpressionBindings>
+            <Item1 Ref="13" EventName="BeforePrint" PropertyName="Text" Expression="[v_Store].[StoreName]" />
+          </ExpressionBindings>
+          <StylePriority Ref="14" UseFont="false" UseTextAlignment="false" />
+        </Item3>
+        <Item4 Ref="15" ControlType="XRLabel" Name="label11" Multiline="true" Text="Order No:" SizeF="155.80365,25" LocationFloat="826.6125, 196.36972" Dpi="254" Font="Calibri, 8pt" Padding="5,5,0,0,254">
+          <StylePriority Ref="16" UseFont="false" />
+        </Item4>
+        <Item5 Ref="17" ControlType="XRLabel" Name="label12" Multiline="true" Text="Order Date:" SizeF="155.80365,25.0000153" LocationFloat="826.6125, 221.36972" Dpi="254" Font="Calibri, 8pt" Padding="5,5,0,0,254">
+          <StylePriority Ref="18" UseFont="false" />
+        </Item5>
+        <Item6 Ref="19" ControlType="XRLabel" Name="label9" Multiline="true" Text="label9" SizeF="328.0658,25.00003" LocationFloat="982.416138, 196.36969" Dpi="254" Font="Calibri, 8pt" Padding="5,5,0,0,254">
+          <ExpressionBindings>
+            <Item1 Ref="20" EventName="BeforePrint" PropertyName="Text" Expression="[OrderNo]" />
+          </ExpressionBindings>
+          <StylePriority Ref="21" UseFont="false" />
+        </Item6>
+        <Item7 Ref="22" ControlType="XRLabel" Name="label8" Multiline="true" Text="Customer Number:" SizeF="254,25" LocationFloat="88.18428, 221.36972" Dpi="254" Font="Calibri, 8pt" Padding="5,5,0,0,254">
+          <StylePriority Ref="23" UseFont="false" />
+        </Item7>
+        <Item8 Ref="24" ControlType="XRLabel" Name="label7" Multiline="true" Text="Customer Name:" SizeF="254,25" LocationFloat="88.1842957, 196.36972" Dpi="254" Font="Calibri, 8pt" Padding="5,5,0,0,254">
+          <StylePriority Ref="25" UseFont="false" />
+        </Item8>
+        <Item9 Ref="26" ControlType="XRLabel" Name="label6" Multiline="true" Text="label6" SizeF="484.428284,25" LocationFloat="342.184265, 221.369736" Dpi="254" Font="Calibri, 8pt" Padding="5,5,0,0,254">
+          <ExpressionBindings>
+            <Item1 Ref="27" EventName="BeforePrint" PropertyName="Text" Expression="[v_Customer].[Mobile]" />
+          </ExpressionBindings>
+          <StylePriority Ref="28" UseFont="false" />
+        </Item9>
+        <Item10 Ref="29" ControlType="XRLabel" Name="label5" Multiline="true" Text="label5" SizeF="484.428284,25" LocationFloat="342.184265, 196.369751" Dpi="254" Font="Calibri, 8pt, style=Bold" Padding="5,5,0,0,254">
+          <ExpressionBindings>
+            <Item1 Ref="30" EventName="BeforePrint" PropertyName="Text" Expression="[v_Customer].[CustomerName]" />
+          </ExpressionBindings>
+          <StylePriority Ref="31" UseFont="false" />
+        </Item10>
+        <Item11 Ref="32" ControlType="XRLabel" Name="label3" Multiline="true" CanGrow="false" TextAlignment="TopRight" SizeF="646.5772,151.848846" LocationFloat="663.905151, 25.0000076" Dpi="254" Font="Calibri, 8pt" Padding="5,5,0,0,254">
+          <ExpressionBindings>
+            <Item1 Ref="33" EventName="BeforePrint" PropertyName="Text" Expression="[v_Store].[Address]" />
+          </ExpressionBindings>
+          <StylePriority Ref="34" UseFont="false" UseTextAlignment="false" />
+        </Item11>
+      </Controls>
+      <StylePriority Ref="35" UseFont="false" />
+    </Item4>
+    <Item5 Ref="36" ControlType="DetailReportBand" Name="ItemDetail" Level="0" DataMember="v_Report_ItemGroup" Dpi="254">
+      <Bands>
+        <Item1 Ref="37" ControlType="DetailBand" Name="Detail1" HeightF="0" Dpi="254" />
+        <Item2 Ref="38" ControlType="GroupHeaderBand" Name="GroupHeader1" RepeatEveryPage="true" HeightF="59.5869637" Dpi="254">
+          <Controls>
+            <Item1 Ref="39" ControlType="XRLine" Name="line1" SizeF="1220.81531,5" LocationFloat="88.1842346, 41.5070343" Dpi="254" />
+            <Item2 Ref="40" ControlType="XRLabel" Name="label19" Multiline="true" Text="Amount" TextAlignment="TopRight" SizeF="212.115112,24.9999962" LocationFloat="1096.8844, 16.5070572" Dpi="254" Font="Calibri, 7pt, style=Bold" Padding="5,5,0,0,254">
+              <StylePriority Ref="41" UseFont="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="42" ControlType="XRLabel" Name="label17" Multiline="true" Text="Rate" TextAlignment="TopRight" SizeF="144.076538,25" LocationFloat="952.8078, 16.5069866" Dpi="254" Font="Calibri, 7pt, style=Bold" Padding="5,5,0,0,254">
+              <StylePriority Ref="43" UseFont="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="44" ControlType="XRLabel" Name="label16" Multiline="true" Text="Qty" TextAlignment="TopCenter" SizeF="128.9798,24.9999981" LocationFloat="823.828, 15.3141489" Dpi="254" Font="Calibri, 7pt, style=Bold" Padding="5,5,0,0,254">
+              <StylePriority Ref="45" UseFont="false" UseTextAlignment="false" />
+            </Item4>
+            <Item5 Ref="46" ControlType="XRLabel" Name="label15" Multiline="true" Text="Barcode" SizeF="210.802826,25.0000019" LocationFloat="613.025146, 15.3141489" Dpi="254" Font="Calibri, 7pt, style=Bold" Padding="5,5,0,0,254">
+              <StylePriority Ref="47" UseFont="false" />
+            </Item5>
+            <Item6 Ref="48" ControlType="XRLabel" Name="label14" Multiline="true" Text="Product" SizeF="428.708923,25.0000019" LocationFloat="184.316208, 16.5069866" Dpi="254" Font="Calibri, 7pt, style=Bold" Padding="5,5,0,0,254">
+              <StylePriority Ref="49" UseFont="false" />
+            </Item6>
+            <Item7 Ref="50" ControlType="XRLabel" Name="label13" Multiline="true" Text="S.No" TextAlignment="TopCenter" SizeF="96.13196,25.0000019" LocationFloat="88.1842346, 16.5069485" Dpi="254" Font="Calibri, 7pt, style=Bold" Padding="5,5,0,0,254">
+              <StylePriority Ref="51" UseFont="false" UseTextAlignment="false" />
+            </Item7>
+          </Controls>
+        </Item2>
+        <Item3 Ref="52" ControlType="DetailReportBand" Name="DetailReport1" Level="0" DataMember="v_Report_ItemGroup.v_Report_ItemGroup_v_Report_Item" Dpi="254">
+          <Bands>
+            <Item1 Ref="53" ControlType="DetailBand" Name="Detail2" HeightF="34.2517052" Dpi="254">
+              <HierarchyPrintOptions Ref="54" Indent="50.8" />
+              <Controls>
+                <Item1 Ref="55" ControlType="XRLabel" Name="label21" Multiline="true" Text="0" TextAlignment="TopCenter" SizeF="96.13199,25" LocationFloat="88.1842346, 0" Dpi="254" Font="Arial, 7.5pt" Padding="5,5,0,0,254">
+                  <Scripts Ref="56" OnBeforePrint="label21_BeforePrint_1" />
+                  <Summary Ref="57" Running="Group" />
+                  <ExpressionBindings>
+                    <Item1 Ref="58" EventName="BeforePrint" PropertyName="Text" Expression="[DataSource.CurrentRowIndex]+1" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="59" UseFont="false" UseTextAlignment="false" />
+                </Item1>
+                <Item2 Ref="60" ControlType="XRLabel" Name="label26" Multiline="true" Text="label26" TextAlignment="TopRight" SizeF="188.302612,24.9999847" LocationFloat="1120.6969, 0" Dpi="254" Font="Arial, 7.5pt" Padding="5,5,0,0,254">
+                  <ExpressionBindings>
+                    <Item1 Ref="61" EventName="BeforePrint" PropertyName="Text" Expression="Round([v_Report_POSOrderItem_v_Report_Item].[Qty]*[v_Report_POSOrderItem_v_Report_Item].[Rate], 2)" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="62" UseFont="false" />
+                </Item2>
+                <Item3 Ref="63" ControlType="XRLabel" Name="label1" Text="label1" SizeF="427.970459,25.0000076" LocationFloat="184.316208, 0" Dpi="254" Font="Arial, 7.5pt" Padding="5,5,0,0,254">
+                  <ExpressionBindings>
+                    <Item1 Ref="64" EventName="BeforePrint" PropertyName="Text" Expression="[v_Report_ItemGroup].[Section]" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="65" UseFont="false" />
+                </Item3>
+                <Item4 Ref="66" ControlType="XRLabel" Name="label20" Multiline="true" Text="label20" SizeF="210.802826,25" LocationFloat="612.2867, 0" Dpi="254" Font="Arial, 7.5pt" Padding="5,5,0,0,254">
+                  <Scripts Ref="67" OnBeforePrint="label20_BeforePrint" />
+                  <ExpressionBindings>
+                    <Item1 Ref="68" EventName="BeforePrint" PropertyName="Text" Expression="[Barcode]" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="69" UseFont="false" />
+                </Item4>
+                <Item5 Ref="70" ControlType="XRLabel" Name="label18" Text="label18" TextAlignment="TopCenter" SizeF="129.718323,25.0000076" LocationFloat="823.0895, 0" Dpi="254" Font="Arial, 7.5pt" Padding="5,5,0,0,254">
+                  <ExpressionBindings>
+                    <Item1 Ref="71" EventName="BeforePrint" PropertyName="Text" Expression="[v_Report_POSOrderItem_v_Report_Item].[Qty]" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="72" UseFont="false" UseTextAlignment="false" />
+                </Item5>
+                <Item6 Ref="73" ControlType="XRLabel" Name="label10" Text="label10" TextAlignment="TopRight" SizeF="138.280762,24.999979" LocationFloat="982.416138, 0" Dpi="254" Font="Arial, 7.5pt" Padding="5,5,0,0,254">
+                  <ExpressionBindings>
+                    <Item1 Ref="74" EventName="BeforePrint" PropertyName="Text" Expression="[v_Report_POSOrderItem_v_Report_Item].[Rate]" />
+                  </ExpressionBindings>
+                  <StylePriority Ref="75" UseFont="false" UseTextAlignment="false" />
+                </Item6>
+              </Controls>
+            </Item1>
+          </Bands>
+        </Item3>
+        <Item4 Ref="76" ControlType="GroupFooterBand" Name="GroupFooter1" HeightF="72.4133" Dpi="254">
+          <Controls>
+            <Item1 Ref="77" ControlType="XRLabel" Name="label23" Multiline="true" Text="label27" SizeF="236.669373,24.9999924" LocationFloat="88.1842957, 29.9999771" Dpi="254" Font="Calibri, 8pt" Padding="5,5,0,0,254">
+              <ExpressionBindings>
+                <Item1 Ref="78" EventName="BeforePrint" PropertyName="Text" Expression="'You were served by '" />
+              </ExpressionBindings>
+              <StylePriority Ref="79" UseFont="false" />
+            </Item1>
+            <Item2 Ref="80" ControlType="XRLabel" Name="label24" SizeF="540.97644,24.9999924" LocationFloat="324.853668, 29.9999771" Dpi="254" Font="Calibri, 8pt, style=Bold">
+              <ExpressionBindings>
+                <Item1 Ref="81" EventName="BeforePrint" PropertyName="Text" Expression="[v_Report_POSOrderItem_v_SalesPerson].[FName]" />
+              </ExpressionBindings>
+              <StylePriority Ref="82" UseFont="false" />
+            </Item2>
+            <Item3 Ref="83" ControlType="XRLabel" Name="label27" Text="Grand Total :" SizeF="223.0238,24.9999943" LocationFloat="917.860962, 29.9999447" Dpi="254" Font="Calibri, 7.5pt, style=Bold" Padding="5,5,0,0,254">
+              <StylePriority Ref="84" UseFont="false" />
+            </Item3>
+            <Item4 Ref="85" ControlType="XRLabel" Name="label22" Text="label51" TextAlignment="TopRight" SizeF="168.114624,24.9999924" LocationFloat="1140.88477, 29.9999447" Dpi="254" Font="Calibri, 7.5pt, style=Bold" Padding="5,5,0,0,254">
+              <Summary Ref="86" Running="Group" />
+              <ExpressionBindings>
+                <Item1 Ref="87" EventName="BeforePrint" PropertyName="Text" Expression="sumSum(Round([v_Report_ItemGroup_v_Report_Item].[v_Report_POSOrderItem_v_Report_Item].[Qty]&#xA;*[v_Report_ItemGroup_v_Report_Item].[v_Report_POSOrderItem_v_Report_Item].[Rate]&#xA;,2)&#xA;)" />
+              </ExpressionBindings>
+              <StylePriority Ref="88" UseFont="false" UseTextAlignment="false" />
+            </Item4>
+          </Controls>
+        </Item4>
+      </Bands>
+    </Item5>
+  </Bands>
+  <CrossBandControls>
+    <Item1 Ref="89" ControlType="XRCrossBandBox" Name="crossBandBox2" BorderWidth="1" WidthF="688.842041" StartPointFloat="84.20303, 1" EndPointFloat="84.20303, 24" Dpi="254" />
+    <Item2 Ref="90" ControlType="XRCrossBandBox" Name="crossBandBox1" BorderWidth="1" AnchorVertical="Top" WidthF="1226.107" StartBand="#Ref-38" EndBand="#Ref-76" StartPointFloat="85.53841, 0" EndPointFloat="85.53841, 12.7901611" Dpi="254" />
+  </CrossBandControls>
+  <DefaultPrinterSettingsUsing Ref="91" UsePaperKind="true" />
+</XtraReportsLayoutSerializer>

@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="24.1.3.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v24.1, Version=24.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Report2" Landscape="true" Margins="14, 77, 27.8846226, 100" PageWidth="1100" PageHeight="850" Version="24.1" DataMember="CQ_PICK_LIST_SIZE_HEADER.CQ_PICK_LIST_SIZE_HEADERCQ_PICK_LIST" DataSource="#Ref-0" Font="Arial, 9.75pt">
+  <Parameters>
+    <Item1 Ref="3" Description="Code" MultiValue="true" Name="Code" Type="#Ref-2" />
+  </Parameters>
+  <CalculatedFields>
+    <Item1 Ref="4" Name="Size1Qty" Expression="Sum([size1])" DataMember="CQ_PICK_LIST_SIZE_HEADER.CQ_PICK_LIST_SIZE_HEADERCQ_PICK_LIST" />
+    <Item2 Ref="5" Name="Size10Qty" Expression="Sum([size10])" DataMember="CQ_PICK_LIST_SIZE_HEADER.CQ_PICK_LIST_SIZE_HEADERCQ_PICK_LIST" />
+    <Item3 Ref="6" Name="Size2Qty" Expression="Sum([size2])" DataMember="CQ_PICK_LIST_SIZE_HEADER.CQ_PICK_LIST_SIZE_HEADERCQ_PICK_LIST" />
+    <Item4 Ref="7" Name="Size3Qty" Expression="Sum([size3])" DataMember="CQ_PICK_LIST_SIZE_HEADER.CQ_PICK_LIST_SIZE_HEADERCQ_PICK_LIST" />
+    <Item5 Ref="8" Name="Size4Qty" Expression="Sum([size4])" DataMember="CQ_PICK_LIST_SIZE_HEADER.CQ_PICK_LIST_SIZE_HEADERCQ_PICK_LIST" />
+    <Item6 Ref="9" Name="Size5Qty" Expression="Sum([size5])" DataMember="CQ_PICK_LIST_SIZE_HEADER.CQ_PICK_LIST_SIZE_HEADERCQ_PICK_LIST" />
+    <Item7 Ref="10" Name="Size6Qty" Expression="Sum([size6])" DataMember="CQ_PICK_LIST_SIZE_HEADER.CQ_PICK_LIST_SIZE_HEADERCQ_PICK_LIST" />
+    <Item8 Ref="11" Name="Size7Qty" Expression="Sum([size7])" DataMember="CQ_PICK_LIST_SIZE_HEADER.CQ_PICK_LIST_SIZE_HEADERCQ_PICK_LIST" />
+    <Item9 Ref="12" Name="Size8Qty" Expression="Sum([size8])" DataMember="CQ_PICK_LIST_SIZE_HEADER.CQ_PICK_LIST_SIZE_HEADERCQ_PICK_LIST" />
+    <Item10 Ref="13" Name="Size9Qty" Expression="Sum([size9])" DataMember="CQ_PICK_LIST_SIZE_HEADER.CQ_PICK_LIST_SIZE_HEADERCQ_PICK_LIST" />
+    <Item11 Ref="14" Name="TotalQtySum" Expression="Sum([total_qty])" DataMember="CQ_PICK_LIST_SIZE_HEADER.CQ_PICK_LIST_SIZE_HEADERCQ_PICK_LIST" />
+  </CalculatedFields>
+  <Bands>
+    <Item1 Ref="15" ControlType="TopMarginBand" Name="TopMargin" HeightF="27.8846226" />
+    <Item2 Ref="16" ControlType="DetailBand" Name="Detail" HeightF="23">
+      <Controls>
+        <Item1 Ref="17" ControlType="XRLabel" Name="label3" Multiline="true" Text="label3" SizeF="111.852341,23" LocationFloat="82.48096,0" Font="Arial, 7pt" Padding="2,2,0,0,100" Borders="Left, Top, Right">
+          <ExpressionBindings>
+            <Item1 Ref="18" EventName="BeforePrint" PropertyName="Text" Expression="[picklist_no]" />
+          </ExpressionBindings>
+          <StylePriority Ref="19" UseFont="false" UseBorders="false" />
+        </Item1>
+        <Item2 Ref="20" ControlType="XRLabel" Name="label1" Multiline="true" SizeF="81.58142,23" LocationFloat="2.08324575,0" Padding="2,2,0,0,100" Borders="Left">
+          <StylePriority Ref="21" UseBorders="false" />
+        </Item2>
+        <Item3 Ref="22" ControlType="XRLabel" Name="label59" TextFormatString="{0:N0}" Multiline="true" ProcessNullValues="Suppress" Text="label29" TextAlignment="TopRight" SizeF="55.41449,23" LocationFloat="953.5855,0" Padding="2,2,0,0,100" Borders="Top, Right">
+          <ExpressionBindings>
+            <Item1 Ref="23" EventName="BeforePrint" PropertyName="Borders" Expression="!IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADERCQ_PICK_LIST].[size10])" />
+            <Item2 Ref="24" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col9]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col10]), [total_qty], Iif(IsNullOrEmpty([Size10Qty]),'',IsNull([size10],0))))&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="25" UseBorders="false" />
+        </Item3>
+        <Item4 Ref="26" ControlType="XRLabel" Name="label60" TextFormatString="{0:N0}" Multiline="true" ProcessNullValues="Suppress" Text="label28" TextAlignment="TopRight" SizeF="49.5192261,23" LocationFloat="904.0662,0" Padding="2,2,0,0,100" Borders="Top, Right">
+          <ExpressionBindings>
+            <Item1 Ref="27" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col8]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col9]), [total_qty], Iif(IsNullOrEmpty([Size9Qty]),'',IsNull([size9],0))))&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="28" UseBorders="false" />
+        </Item4>
+        <Item5 Ref="29" ControlType="XRLabel" Name="label61" TextFormatString="{0:N0}" Multiline="true" ProcessNullValues="Suppress" Text="label27" TextAlignment="TopRight" SizeF="50,23" LocationFloat="854.0662,0" Padding="2,2,0,0,100" Borders="Top, Right">
+          <ExpressionBindings>
+            <Item1 Ref="30" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col7]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col8]), [total_qty], Iif(IsNullOrEmpty([Size8Qty]),'',IsNull([size8],0))))&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="31" UseBorders="false" />
+        </Item5>
+        <Item6 Ref="32" ControlType="XRLabel" Name="label62" TextFormatString="{0:N0}" Multiline="true" ProcessNullValues="Suppress" Text="label26" TextAlignment="TopRight" SizeF="47.916626,23" LocationFloat="806.1495,0" Padding="2,2,0,0,100" Borders="Top, Right">
+          <ExpressionBindings>
+            <Item1 Ref="33" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col6]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col7]), [total_qty], Iif(IsNullOrEmpty([Size7Qty]),'',IsNull([size7],0))))&#xA;&#xA;&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="34" UseBorders="false" />
+        </Item6>
+        <Item7 Ref="35" ControlType="XRLabel" Name="label63" TextFormatString="{0:N0}" Multiline="true" ProcessNullValues="Suppress" Text="label25" TextAlignment="TopRight" SizeF="52.083374,23" LocationFloat="754.0661,0" Padding="2,2,0,0,100" Borders="Top, Right">
+          <ExpressionBindings>
+            <Item1 Ref="36" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col5]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col6]), [total_qty], Iif(IsNullOrEmpty([Size6Qty]),'',IsNull([size6],0))))&#xA;&#xA;&#xA;&#xA;&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="37" UseBorders="false" />
+        </Item7>
+        <Item8 Ref="38" ControlType="XRLabel" Name="label64" TextFormatString="{0:N0}" Multiline="true" ProcessNullValues="Suppress" Text="label24" TextAlignment="TopRight" SizeF="50,23" LocationFloat="704.0661,0" Padding="2,2,0,0,100" Borders="Top, Right">
+          <ExpressionBindings>
+            <Item1 Ref="39" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col4]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col5]), [total_qty], Iif(IsNullOrEmpty([Size5Qty]),'',IsNull([size5],0))))&#xA;&#xA;&#xA;&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="40" UseBorders="false" />
+        </Item8>
+        <Item9 Ref="41" ControlType="XRLabel" Name="label65" TextFormatString="{0:N0}" Multiline="true" ProcessNullValues="Suppress" Text="label23" TextAlignment="TopRight" SizeF="43.75,23" LocationFloat="660.3161,0" Padding="2,2,0,0,100" Borders="Top, Right">
+          <ExpressionBindings>
+            <Item1 Ref="42" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col3]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col4]), [total_qty], Iif(IsNullOrEmpty([Size4Qty]),'',IsNull([size4],0))))&#xA;&#xA;&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="43" UseBorders="false" />
+        </Item9>
+        <Item10 Ref="44" ControlType="XRLabel" Name="label66" TextFormatString="{0:N0}" Multiline="true" CanShrink="true" ProcessNullValues="Suppress" Text="label22" TextAlignment="TopRight" SizeF="50,23" LocationFloat="610.3161,0" Padding="2,2,0,0,100" Borders="Top, Right">
+          <ExpressionBindings>
+            <Item1 Ref="45" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col2]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col3]), [total_qty], Iif(IsNullOrEmpty([Size3Qty]),'',IsNull([size3],0))))&#xA;&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="46" UseBorders="false" />
+        </Item10>
+        <Item11 Ref="47" ControlType="XRLabel" Name="label67" TextFormatString="{0:N0}" Multiline="true" Text="label21" TextAlignment="TopRight" SizeF="55.0480957,23" LocationFloat="555.2679,0" Padding="2,2,0,0,100" Borders="Top, Right">
+          <ExpressionBindings>
+            <Item1 Ref="48" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col2]),[total_qty],&#xA;Iif(IsNullOrEmpty([Size2Qty]),'',IsNull([size2],0)))&#xA;&#xA;&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="49" UseBorders="false" />
+        </Item11>
+        <Item12 Ref="50" ControlType="XRLabel" Name="label68" TextFormatString="{0:N0}" Multiline="true" Text="label20" TextAlignment="TopRight" SizeF="54.1666565,23" LocationFloat="501.101227,0" Padding="2,2,0,0,100" Borders="Top, Right">
+          <ExpressionBindings>
+            <Item1 Ref="51" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([size1]),0 ,[size1])&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="52" UseBorders="false" />
+        </Item12>
+        <Item13 Ref="53" ControlType="XRLabel" Name="label69" Multiline="true" Text="label19" SizeF="98.1836243,23" LocationFloat="402.9176,0" Font="Arial, 7pt" Padding="2,2,0,0,100" Borders="Top, Right">
+          <ExpressionBindings>
+            <Item1 Ref="54" EventName="BeforePrint" PropertyName="Text" Expression="[binno]" />
+          </ExpressionBindings>
+          <StylePriority Ref="55" UseFont="false" UseBorders="false" />
+        </Item13>
+        <Item14 Ref="56" ControlType="XRLabel" Name="label70" Multiline="true" CanGrow="false" Text="label18" SizeF="115.464752,23" LocationFloat="287.4529,0" Font="Arial, 7pt" Padding="2,2,0,0,100" Borders="Top, Right">
+          <ExpressionBindings>
+            <Item1 Ref="57" EventName="BeforePrint" PropertyName="Text" Expression="[pattern_product]" />
+          </ExpressionBindings>
+          <StylePriority Ref="58" UseFont="false" UseBorders="false" />
+        </Item14>
+        <Item15 Ref="59" ControlType="XRLabel" Name="label71" Multiline="true" Text="label4" SizeF="94.578,23" LocationFloat="192.874908,0" Font="Arial, 7pt" Padding="2,2,0,0,100" Borders="Left, Top, Right">
+          <ExpressionBindings>
+            <Item1 Ref="60" EventName="BeforePrint" PropertyName="Text" Expression="[rfc]" />
+          </ExpressionBindings>
+          <StylePriority Ref="61" UseFont="false" UseBorders="false" />
+        </Item15>
+      </Controls>
+    </Item2>
+    <Item3 Ref="62" ControlType="BottomMarginBand" Name="BottomMargin" />
+    <Item4 Ref="63" ControlType="ReportHeaderBand" Name="ReportHeader" HeightF="0" />
+    <Item5 Ref="64" ControlType="GroupHeaderBand" Name="GroupHeader2" RepeatEveryPage="true" HeightF="46.95834">
+      <GroupFields>
+        <Item1 Ref="65" FieldName="invpicklistmain_code" />
+      </GroupFields>
+      <Controls>
+        <Item1 Ref="66" ControlType="XRLabel" Name="label2" Multiline="true" Text="PickList No." SizeF="110.668663,23.9583416" LocationFloat="83.6646652,0" BackColor="Gold" Padding="2,2,0,0,100" Borders="All">
+          <StylePriority Ref="67" UseBackColor="false" UseBorders="false" />
+        </Item1>
+        <Item2 Ref="68" ControlType="XRLabel" Name="label72" Multiline="true" ProcessDuplicatesMode="SuppressAndShrink" Text="label3" SizeF="499.017975,22.9999981" LocationFloat="2.08325362,23.9583416" Font="Arial, 7pt, style=Bold" Padding="2,2,0,0,100" Borders="Left, Top, Right">
+          <ExpressionBindings>
+            <Item1 Ref="69" EventName="BeforePrint" PropertyName="Text" Expression="[order_no]" />
+          </ExpressionBindings>
+          <StylePriority Ref="70" UseFont="false" UseBorders="false" />
+        </Item2>
+        <Item3 Ref="71" ControlType="XRLabel" Name="label44" TextFormatString="{0:#,#}" Multiline="true" ProcessNullValues="Suppress" Text="label16" TextAlignment="TopRight" SizeF="55.41449,23.9583359" LocationFloat="953.5855,1.90734863E-06" BackColor="Gold" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="72" EventName="BeforePrint" PropertyName="Visible" Expression="1=0" />
+            <Item2 Ref="73" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col9]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col10]), 'Total', [CQ_PICK_LIST_SIZE_HEADER].[col10]))&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="74" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item3>
+        <Item4 Ref="75" ControlType="XRLabel" Name="label45" TextFormatString="{0:#,#}" Multiline="true" ProcessNullValues="Suppress" Text="label15" TextAlignment="TopRight" SizeF="49.5192871,23.9583359" LocationFloat="904.0662,1.90734863E-06" BackColor="Gold" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="76" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col8]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col9]), 'Total', [CQ_PICK_LIST_SIZE_HEADER].[col9]))&#xA;&#xA;&#xA;&#xA;&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="77" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item4>
+        <Item5 Ref="78" ControlType="XRLabel" Name="label46" TextFormatString="{0:#,#}" Multiline="true" ProcessNullValues="Suppress" Text="label14" TextAlignment="TopRight" SizeF="50,23.9583359" LocationFloat="854.0662,1.90734863E-06" BackColor="Gold" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="79" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col7]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col8]), 'Total', [CQ_PICK_LIST_SIZE_HEADER].[col8]))&#xA;&#xA;&#xA;&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="80" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item5>
+        <Item6 Ref="81" ControlType="XRLabel" Name="label47" TextFormatString="{0:#,#}" Multiline="true" ProcessNullValues="Suppress" Text="label13" TextAlignment="TopRight" SizeF="47.916748,23.9583378" LocationFloat="806.1495,0" BackColor="Gold" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="82" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col6]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col7]), 'Total', [CQ_PICK_LIST_SIZE_HEADER].[col7]))&#xA;&#xA;&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="83" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item6>
+        <Item7 Ref="84" ControlType="XRLabel" Name="label48" TextFormatString="{0:#,#}" Multiline="true" ProcessNullValues="Suppress" Text="label12" TextAlignment="TopRight" SizeF="52.083313,23.9583378" LocationFloat="754.066162,0" BackColor="Gold" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="85" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col5]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col6]), 'Total', [CQ_PICK_LIST_SIZE_HEADER].[col6]))&#xA;&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="86" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item7>
+        <Item8 Ref="87" ControlType="XRLabel" Name="label49" TextFormatString="{0:#,#}" Multiline="true" ProcessNullValues="Suppress" Text="label11" TextAlignment="TopRight" SizeF="50.00006,23.9583378" LocationFloat="704.0661,0" BackColor="Gold" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="88" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col4]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col5]), 'Total', [CQ_PICK_LIST_SIZE_HEADER].[col5]))&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="89" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item8>
+        <Item9 Ref="90" ControlType="XRLabel" Name="label50" TextFormatString="{0:#,#}" Multiline="true" ProcessNullValues="Suppress" Text="label10" TextAlignment="TopRight" SizeF="43.74994,23.9583378" LocationFloat="660.316162,0" BackColor="Gold" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="91" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col3]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col4]), 'Total', [CQ_PICK_LIST_SIZE_HEADER].[col4]))&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="92" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item9>
+        <Item10 Ref="93" ControlType="XRLabel" Name="label51" TextFormatString="{0:#,#}" Multiline="true" ProcessNullValues="Suppress" Text="label9" TextAlignment="TopRight" SizeF="50.0001221,23.9583378" LocationFloat="610.316,0" BackColor="Gold" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="94" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col2]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col3]), 'Total', [CQ_PICK_LIST_SIZE_HEADER].[col3]))" />
+          </ExpressionBindings>
+          <StylePriority Ref="95" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item10>
+        <Item11 Ref="96" ControlType="XRLabel" Name="label52" TextFormatString="{0:#,#}" Multiline="true" ProcessNullValues="Suppress" Text="label8" TextAlignment="TopRight" SizeF="55.0480957,23.9583378" LocationFloat="555.2679,0" BackColor="Gold" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="97" EventName="BeforePrint" PropertyName="Text" Expression="Iif(!IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col2]), [CQ_PICK_LIST_SIZE_HEADER].[col2],'Total')&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="98" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item11>
+        <Item12 Ref="99" ControlType="XRLabel" Name="label53" TextFormatString="{0:#,#}" Multiline="true" Text="label7" TextAlignment="TopRight" SizeF="54.1665649,23.9583378" LocationFloat="501.101318,0" BackColor="Gold" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="100" EventName="BeforePrint" PropertyName="Text" Expression="[CQ_PICK_LIST_SIZE_HEADER].[col1]" />
+          </ExpressionBindings>
+          <StylePriority Ref="101" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item12>
+        <Item13 Ref="102" ControlType="XRLabel" Name="label54" Multiline="true" Text="Rack No." SizeF="98.1837158,23.9583378" LocationFloat="402.9176,0" BackColor="Gold" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <StylePriority Ref="103" UseBackColor="false" UseBorders="false" />
+        </Item13>
+        <Item14 Ref="104" ControlType="XRLabel" Name="label55" Multiline="true" Text="Pattern | Product" SizeF="115.464691,23.9583378" LocationFloat="287.4529,0" BackColor="Gold" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <StylePriority Ref="105" UseBackColor="false" UseBorders="false" />
+        </Item14>
+        <Item15 Ref="106" ControlType="XRLabel" Name="label56" Multiline="true" Text="RFC" SizeF="94.578,23.9583378" LocationFloat="192.874908,0" BackColor="Gold" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <StylePriority Ref="107" UseBackColor="false" UseBorders="false" />
+        </Item15>
+        <Item16 Ref="108" ControlType="XRLabel" Name="label57" Multiline="true" Text="Order No" SizeF="81.5814362,23.95834" LocationFloat="2.08322763,0" BackColor="Gold" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <StylePriority Ref="109" UseBackColor="false" UseBorders="false" />
+        </Item16>
+      </Controls>
+    </Item5>
+    <Item6 Ref="110" ControlType="GroupFooterBand" Name="GroupFooter2" HeightF="25">
+      <Controls>
+        <Item1 Ref="111" ControlType="XRLabel" Name="label74" TextFormatString="{0:#,#}" Multiline="true" ProcessNullValues="Suppress" Text="label32" TextAlignment="TopRight" SizeF="55.41449,25" LocationFloat="953.5855,0" BackColor="GreenYellow" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <Summary Ref="112" IgnoreNullValues="true" />
+          <ExpressionBindings>
+            <Item1 Ref="113" EventName="BeforePrint" PropertyName="Borders" Expression="!IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADERCQ_PICK_LIST].[size10])" />
+            <Item2 Ref="114" EventName="BeforePrint" PropertyName="Visible" Expression="IsNullOrEmpty([label74])" />
+            <Item3 Ref="115" EventName="BeforePrint" PropertyName="BackColor" Expression="isnull(Sum([CQ_PICK_LIST_SIZE_HEADERCQ_PICK_LIST].[size10]))" />
+            <Item4 Ref="116" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col9]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col10]),[TotalQtySum],[Size10Qty]))&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="117" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item1>
+        <Item2 Ref="118" ControlType="XRLabel" Name="label75" TextFormatString="{0:#,#}" Multiline="true" ProcessNullValues="Suppress" Text="label32" TextAlignment="TopRight" SizeF="47.4359131,25" LocationFloat="906.149536,0" BackColor="GreenYellow" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="119" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col8]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col9]),[TotalQtySum],[Size9Qty]))&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="120" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="121" ControlType="XRLabel" Name="label76" TextFormatString="{0:#,#}" Multiline="true" ProcessNullValues="Suppress" Text="label32" TextAlignment="TopRight" SizeF="50,25" LocationFloat="856.1495,0" BackColor="GreenYellow" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="122" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col7]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col8]),[TotalQtySum],[Size8Qty]))&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="123" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item3>
+        <Item4 Ref="124" ControlType="XRLabel" Name="label77" TextFormatString="{0:#,#}" Multiline="true" ProcessNullValues="Suppress" Text="label32" TextAlignment="TopRight" SizeF="50,25" LocationFloat="806.1495,0" BackColor="GreenYellow" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="125" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col6]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col7]), [TotalQtySum], [Size7Qty]))&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="126" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item4>
+        <Item5 Ref="127" ControlType="XRLabel" Name="label78" TextFormatString="{0:#,#}" Multiline="true" ProcessNullValues="Suppress" Text="label32" TextAlignment="TopRight" SizeF="52.083374,25" LocationFloat="754.0661,0" BackColor="GreenYellow" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="128" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col5]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col6]),[TotalQtySum],[Size6Qty]))&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="129" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item5>
+        <Item6 Ref="130" ControlType="XRLabel" Name="label79" TextFormatString="{0:#,#}" Multiline="true" ProcessNullValues="Suppress" Text="label32" TextAlignment="TopRight" SizeF="50,25" LocationFloat="704.066162,0" BackColor="GreenYellow" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="131" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col4]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col5]), [TotalQtySum], [Size5Qty]))&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="132" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item6>
+        <Item7 Ref="133" ControlType="XRLabel" Name="label80" TextFormatString="{0:#,#}" Multiline="true" ProcessNullValues="Suppress" Text="label32" TextAlignment="TopRight" SizeF="43.74994,25" LocationFloat="660.316162,0" BackColor="GreenYellow" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="134" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col3]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col4]), [TotalQtySum], [Size4Qty]))&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="135" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item7>
+        <Item8 Ref="136" ControlType="XRLabel" Name="label81" TextFormatString="{0:#,#}" Multiline="true" ProcessNullValues="Suppress" Text="label32" TextAlignment="TopRight" SizeF="50,25" LocationFloat="610.3161,0" BackColor="GreenYellow" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="137" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col2]), '', Iif(IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col3]), [TotalQtySum], [Size3Qty]))&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="138" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item8>
+        <Item9 Ref="139" ControlType="XRLabel" Name="label82" TextFormatString="{0:#,#}" Multiline="true" Text="label32" TextAlignment="TopRight" SizeF="55.0480957,25" LocationFloat="555.2679,0" BackColor="GreenYellow" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="140" EventName="BeforePrint" PropertyName="Text" Expression="Iif(!IsNullOrEmpty([CQ_PICK_LIST_SIZE_HEADER].[col2]), [Size2Qty],[TotalQtySum])&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="141" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item9>
+        <Item10 Ref="142" ControlType="XRLabel" Name="label83" TextFormatString="{0:#,#}" Multiline="true" Text="label32" TextAlignment="TopRight" SizeF="54.1665649,25" LocationFloat="501.101318,0" BackColor="GreenYellow" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="143" EventName="BeforePrint" PropertyName="Text" Expression="[Size1Qty]" />
+          </ExpressionBindings>
+          <StylePriority Ref="144" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item10>
+        <Item11 Ref="145" ControlType="XRLabel" Name="label84" Multiline="true" Text="Total : " SizeF="501.101227,25" LocationFloat="0,0" BackColor="GreenYellow" Padding="2,2,0,0,100" Borders="Left, Top, Bottom">
+          <StylePriority Ref="146" UseBackColor="false" UseBorders="false" />
+        </Item11>
+      </Controls>
+    </Item6>
+    <Item7 Ref="147" ControlType="PageFooterBand" Name="PageFooter" HeightF="18.75">
+      <Controls>
+        <Item1 Ref="148" ControlType="XRPageInfo" Name="pageInfo1" AnchorVertical="Bottom" TextAlignment="TopRight" SizeF="102.850464,18.75" LocationFloat="830.149536,0" Padding="2,2,0,0,100">
+          <StylePriority Ref="149" UseTextAlignment="false" />
+        </Item1>
+      </Controls>
+    </Item7>
+  </Bands>
+  <ParameterPanelLayoutItems>
+    <Item1 Ref="150" LayoutItemType="Parameter" Parameter="#Ref-3" />
+  </ParameterPanelLayoutItems>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v24.1" Name="sqlDataSource1" Base64="PFNxbERhdGFTb3VyY2UgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxDb25uZWN0aW9uIE5hbWU9IkNvbm5lY3Rpb24iIENvbm5lY3Rpb25TdHJpbmc9Inhwb3Byb3ZpZGVyPU9EUE1hbmFnZWQ7ZGF0YSBzb3VyY2U9JnF1b3Q7KERFU0NSSVBUSU9OPShBRERSRVNTPShQUk9UT0NPTD1UQ1ApKEhPU1Q9YmEtMDIpKFBPUlQ9MTUyMSkpKENPTk5FQ1RfREFUQT0oU0VSVklDRV9OQU1FPWdpbmVzeXMpKSkmcXVvdDsiIC8+PFF1ZXJ5IFR5cGU9IkN1c3RvbVNxbFF1ZXJ5IiBOYW1lPSJDUV9QSUNLX0xJU1RfU0laRV9IRUFERVIiPjxQYXJhbWV0ZXIgTmFtZT0iQ29kZSIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uSW50MzIpKD9Db2RlKTwvUGFyYW1ldGVyPjxTcWw+U0VMRUNUIGdpbnZpZXcuZm5jX3VrKCkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVrLA0KICAgICAgICAgSU5WUElDS0xJU1RNQUlOX0NPREUsDQogICAgICAgICBNQVggKENBU0UgV0hFTiBzZXEgPSAxIFRIRU4gaV9zaXplIEVMU0UgTlVMTCBFTkQpIGNvbDEsDQogICAgICAgICBNQVggKENBU0UgV0hFTiBzZXEgPSAyIFRIRU4gaV9zaXplIEVMU0UgTlVMTCBFTkQpIGNvbDIsDQogICAgICAgICBNQVggKENBU0UgV0hFTiBzZXEgPSAzIFRIRU4gaV9zaXplIEVMU0UgTlVMTCBFTkQpIGNvbDMsDQogICAgICAgICBNQVggKENBU0UgV0hFTiBzZXEgPSA0IFRIRU4gaV9zaXplIEVMU0UgTlVMTCBFTkQpIGNvbDQsDQogICAgICAgICBNQVggKENBU0UgV0hFTiBzZXEgPSA1IFRIRU4gaV9zaXplIEVMU0UgTlVMTCBFTkQpIGNvbDUsDQogICAgICAgICBNQVggKENBU0UgV0hFTiBzZXEgPSA2IFRIRU4gaV9zaXplIEVMU0UgTlVMTCBFTkQpIGNvbDYsDQogICAgICAgICBNQVggKENBU0UgV0hFTiBzZXEgPSA3IFRIRU4gaV9zaXplIEVMU0UgTlVMTCBFTkQpIGNvbDcsDQogICAgICAgICBNQVggKENBU0UgV0hFTiBzZXEgPSA4IFRIRU4gaV9zaXplIEVMU0UgTlVMTCBFTkQpIGNvbDgsDQogICAgICAgICBNQVggKENBU0UgV0hFTiBzZXEgPSA5IFRIRU4gaV9zaXplIEVMU0UgTlVMTCBFTkQpIGNvbDksDQogICAgICAgICBNQVggKENBU0UgV0hFTiBzZXEgPSAxMCBUSEVOIGlfc2l6ZSBFTFNFIE5VTEwgRU5EKSBjb2wxMCwNCiAgICAgICAgIE1BWCAoQ0FTRSBXSEVOIHNlcSA9IDExIFRIRU4gaV9zaXplIEVMU0UgTlVMTCBFTkQpIGNvbDExLA0KICAgICAgICAgTUFYIChDQVNFIFdIRU4gc2VxID0gMTIgVEhFTiBpX3NpemUgRUxTRSBOVUxMIEVORCkgY29sMTIsDQogICAgICAgICBNQVggKENBU0UgV0hFTiBzZXEgPSAxMyBUSEVOIGlfc2l6ZSBFTFNFIE5VTEwgRU5EKSBjb2wxMywNCiAgICAgICAgIE1BWCAoQ0FTRSBXSEVOIHNlcSA9IDE0IFRIRU4gaV9zaXplIEVMU0UgTlVMTCBFTkQpIGNvbDE0LA0KICAgICAgICAgTUFYIChDQVNFIFdIRU4gc2VxID0gMTUgVEhFTiBpX3NpemUgRUxTRSBOVUxMIEVORCkgY29sMTUNCiAgICBGUk9NIChTRUxFQ1QgRElTVElOQ1QNCiAgICAgICAgICAgICAgICAgSU5WUElDS0xJU1RNQUlOX0NPREUsDQogICAgICAgICAgICAgICAgIFRSSU0gKGNhdGVnb3J5NCkgaV9zaXplLA0KICAgICAgICAgICAgICAgICBERU5TRV9SQU5LICgpDQogICAgICAgICAgICAgICAgICAgIE9WRVIgKFBBUlRJVElPTiBCWSBJTlZQSUNLTElTVE1BSU5fQ09ERSBPUkRFUiBCWSBUUklNIChjYXRlZ29yeTQpKQ0KICAgICAgICAgICAgICAgICAgICBzZXENCiAgICAgICAgICAgIEZST00gSU5WUElDS0xJU1RERVQgZCwgZ2ludmlldy5sdl9pdGVtIGkNCiAgICAgICAgICAgV0hFUkUgZC5pY29kZSA9IGkuY29kZQ0KICAgICAgICAgICBhbmQgKElOVlBJQ0tMSVNUTUFJTl9DT0RFID0gYW55KGFycmF5W0BDb2RlXTo6YmlnaW50W10pKQ0KKQ0KR1JPVVAgQlkgSU5WUElDS0xJU1RNQUlOX0NPREU8L1NxbD48TWV0YSBYPSIyMCIgWT0iMjAiIFdpZHRoPSIxODYiIEhlaWdodD0iMzgxIiAvPjwvUXVlcnk+PFF1ZXJ5IFR5cGU9IkN1c3RvbVNxbFF1ZXJ5IiBOYW1lPSJDUV9QSUNLX0xJU1QiPjxQYXJhbWV0ZXIgTmFtZT0iQ29kZSIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uSW50MzIpKD9Db2RlKTwvUGFyYW1ldGVyPjxTcWw+LyogRm9ybWF0dGVkIG9uIDE4LTA3LTIwMjQgMTg6NDc6MjUgKFFQNSB2NS4yOTQpICovDQpzZWxlY3QNCiAgICBHSU5WSUVXLkZOQ19VSygpIFVLLA0KICAgIElOVlBJQ0tMSVNUTUFJTl9DT0RFLA0KICAgIFBJQ0tMSVNUX05PLA0KICAgIG9yZGVyX25vLA0KICAgIHBhdHRlcm5fcHJvZHVjdCwNCiAgICBSRkMsDQogICAgYmlubm8gLA0KICAgIHN1bShxdHkpIGFzIHRvdGFsX3F0eSwNCiAgICBTVU0gKGNhc2UNCiAgICAgICAgd2hlbiBzZXEgPSAxIHRoZW4gcXR5DQogICAgICAgIGVsc2UgMA0KICAgIGVuZCkgc2l6ZTEsDQogICAgU1VNIChjYXNlDQogICAgICAgIHdoZW4gc2VxID0gMiB0aGVuIHF0eQ0KICAgICAgICBlbHNlIDANCiAgICBlbmQpIHNpemUyLA0KICAgIFNVTSAoY2FzZQ0KICAgICAgICB3aGVuIHNlcSA9IDMgdGhlbiBxdHkNCiAgICAgICAgZWxzZSAwDQogICAgZW5kKSBzaXplMywNCiAgICBTVU0gKGNhc2UNCiAgICAgICAgd2hlbiBzZXEgPSA0IHRoZW4gcXR5DQogICAgICAgIGVsc2UgMA0KICAgIGVuZCkgc2l6ZTQsDQogICAgU1VNIChjYXNlDQogICAgICAgIHdoZW4gc2VxID0gNSB0aGVuIHF0eQ0KICAgICAgICBlbHNlIDANCiAgICBlbmQpIHNpemU1LA0KICAgIFNVTSAoY2FzZQ0KICAgICAgICB3aGVuIHNlcSA9IDYgdGhlbiBxdHkNCiAgICAgICAgZWxzZSAwDQogICAgZW5kKSBzaXplNiwNCiAgICBTVU0gKGNhc2UNCiAgICAgICAgd2hlbiBzZXEgPSA3IHRoZW4gcXR5DQogICAgICAgIGVsc2UgMA0KICAgIGVuZCkgc2l6ZTcsDQogICAgU1VNIChjYXNlDQogICAgICAgIHdoZW4gc2VxID0gOCB0aGVuIHF0eQ0KICAgICAgICBlbHNlIDANCiAgICBlbmQpIHNpemU4LA0KICAgIFNVTSAoY2FzZQ0KICAgICAgICB3aGVuIHNlcSA9IDkgdGhlbiBxdHkNCiAgICAgICAgZWxzZSAwDQogICAgZW5kKSBzaXplOSwNCiAgICBTVU0gKGNhc2UNCiAgICAgICAgd2hlbiBzZXEgPSAxMCB0aGVuIHF0eQ0KICAgICAgICBlbHNlIDANCiAgICBlbmQpIHNpemUxMCwNCiAgICBTVU0gKGNhc2UNCiAgICAgICAgd2hlbiBzZXEgPSAxMSB0aGVuIHF0eQ0KICAgICAgICBlbHNlIDANCiAgICBlbmQpIHNpemUxMSwNCiAgICBTVU0gKGNhc2UNCiAgICAgICAgd2hlbiBzZXEgPSAxMiB0aGVuIHF0eQ0KICAgICAgICBlbHNlIDANCiAgICBlbmQpIHNpemUxMiwNCiAgICBTVU0gKGNhc2UNCiAgICAgICAgd2hlbiBzZXEgPSAxMyB0aGVuIHF0eQ0KICAgICAgICBlbHNlIDANCiAgICBlbmQpIHNpemUxMywNCiAgICBTVU0gKGNhc2UNCiAgICAgICAgd2hlbiBzZXEgPSAxNCB0aGVuIHF0eQ0KICAgICAgICBlbHNlIDANCiAgICBlbmQpIHNpemUxNCwNCiAgICBTVU0gKGNhc2UNCiAgICAgICAgd2hlbiBzZXEgPSAxNSB0aGVuIHF0eQ0KICAgICAgICBlbHNlIDANCiAgICBlbmQpIHNpemUxNQ0KZnJvbQ0KICAgICgNCiAgICBzZWxlY3QNCiAgICAgICAgSU5WUElDS0xJU1RNQUlOX0NPREUsDQogICAgICAgIG0uc2NoZW1lX2RvY25vIGFzIFBJQ0tMSVNUX05PLA0KICAgICAgICBjb25jYXRfd3MoJ3wnLA0KICAgICAgICBzbS5zY2hlbWVfZG9jbm8sDQogICAgICAgIG0uc2NoZW1lX2RvY25vLA0KICAgICAgICBmLnNsbmFtZSwNCiAgICAgICAgc3QyLm5hbWUpIGFzIG9yZGVyX25vLA0KICAgICAgICBjb25jYXRfd3MoJ3wnLA0KICAgICAgICBpLnN0cmluZ19kZXNjMiwNCiAgICAgICAgaS5kZXBhcnRtZW50KSBhcyBwYXR0ZXJuX3Byb2R1Y3QsDQogICAgICAgIGNvbmNhdF93cygnfCcsDQogICAgICAgIGkuY2F0ZWdvcnkyLA0KICAgICAgICBpLmNhdGVnb3J5MykgYXMgUkZDLA0KICAgICAgICBpbnYuYmlubm8gLA0KICAgICAgICBkZW5zZV9yYW5rICgpDQogICAgICAgICAgICAgICAgICAgICAgb3ZlciAocGFydGl0aW9uIGJ5IElOVlBJQ0tMSVNUTUFJTl9DT0RFDQogICAgb3JkZXIgYnkNCiAgICAgICAgVFJJTSAoY2F0ZWdvcnk0KSkNCiAgICAgICAgICAgICAgICAgICAgICBzZXEsDQogICAgICAgIFNVTSAoZC5QSUNLTElTVF9RVFkpIHF0eQ0KICAgIGZyb20NCiAgICAgICAgSU5WUElDS0xJU1RNQUlOIG0NCiAgICBpbm5lciBqb2luIElOVlBJQ0tMSVNUREVUIEQNCiAgICAgICAgICAgICAgICAgICAgICAgb24NCiAgICAgICAgKG0uQ09ERSA9IEQuSU5WUElDS0xJU1RNQUlOX0NPREUpDQogICAgaW5uZXIgam9pbiBnaW52aWV3Lmx2X2l0ZW0gaSBvbg0KICAgICAgICBkLmljb2RlID0gaS5jb2RlDQogICAgaW5uZXIgam9pbiBTQUxPUkRERVQgUyBvbg0KICAgICAgICAoZC5PUkRERVRfQ09ERSA9IFMuQ09ERSkNCiAgICBpbm5lciBqb2luIFNBTE9SRE1BSU4gU00gb24NCiAgICAgICAgKFNNLk9SRENPREUgPSBTLk9SRENPREUpDQogICAgbGVmdCBvdXRlciBqb2luIEZJTlNMIEYgb24NCiAgICAgICAgKFNNLlBDT0RFID0gRi5TTENPREUpDQogICAgbGVmdCBvdXRlciBqb2luIEFETVNJVEUgU1QyIG9uDQogICAgICAgIChTTS5BRE1TSVRFX0NPREUgPSBTVDIuQ09ERSkNCiAgICBpbm5lciBqb2luIElOVkJJTiBJTlYgb24NCiAgICAgICAgKEQuSU5WQklOX0NPREUgPSBJTlYuQ09ERSkNCiAgIHdoZXJlIChJTlZQSUNLTElTVE1BSU5fQ09ERSA9IGFueShhcnJheVtAQ29kZV06OmJpZ2ludFtdKSkNCiAgICBncm91cCBieQ0KICAgICAgICBJTlZQSUNLTElTVE1BSU5fQ09ERSwNCiAgICAgICAgbS5zY2hlbWVfZG9jbm8sDQogICAgICAgIGNvbmNhdF93cygnfCcsDQogICAgICAgIHNtLnNjaGVtZV9kb2NubywNCiAgICAgICAgbS5zY2hlbWVfZG9jbm8sDQogICAgICAgIGYuc2xuYW1lLA0KICAgICAgICBzdDIubmFtZSksDQogICAgICAgIGNvbmNhdF93cygnfCcsDQogICAgICAgIGkuc3RyaW5nX2Rlc2MyLA0KICAgICAgICBpLmRlcGFydG1lbnQpLA0KICAgICAgICBjb25jYXRfd3MoJ3wnLA0KICAgICAgICBpLmNhdGVnb3J5MiwNCiAgICAgICAgaS5jYXRlZ29yeTMpLA0KICAgICAgICBpbnYuYmlubm8sDQogICAgICAgIFRSSU0gKGNhdGVnb3J5NCkpDQpncm91cCBieQ0KICAgIElOVlBJQ0tMSVNUTUFJTl9DT0RFLA0KICAgIFBJQ0tMSVNUX05PLA0KICAgIG9yZGVyX25vLA0KICAgIHBhdHRlcm5fcHJvZHVjdCwNCiAgICBSRkMsDQogICAgYmlubm88L1NxbD48TWV0YSBYPSIyMjYiIFk9IjIwIiBXaWR0aD0iMTQyIiBIZWlnaHQ9IjQ4MSIgLz48L1F1ZXJ5PjxSZWxhdGlvbiBNYXN0ZXI9IkNRX1BJQ0tfTElTVF9TSVpFX0hFQURFUiIgRGV0YWlsPSJDUV9QSUNLX0xJU1QiPjxLZXlDb2x1bW4gTWFzdGVyPSJpbnZwaWNrbGlzdG1haW5fY29kZSIgRGV0YWlsPSJpbnZwaWNrbGlzdG1haW5fY29kZSIgLz48L1JlbGF0aW9uPjxSZXN1bHRTY2hlbWE+PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9IkNRX1BJQ0tfTElTVF9TSVpFX0hFQURFUiI+PEZpZWxkIE5hbWU9InVrIiBUeXBlPSJJbnQ2NCIgLz48RmllbGQgTmFtZT0iaW52cGlja2xpc3RtYWluX2NvZGUiIFR5cGU9IkludDY0IiAvPjxGaWVsZCBOYW1lPSJjb2wxIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9ImNvbDIiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iY29sMyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJjb2w0IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9ImNvbDUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iY29sNiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJjb2w3IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9ImNvbDgiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iY29sOSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJjb2wxMCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJjb2wxMSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJjb2wxMiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJjb2wxMyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJjb2wxNCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJjb2wxNSIgVHlwZT0iU3RyaW5nIiAvPjwvVmlldz48VmlldyBOYW1lPSJDUV9QSUNLX0xJU1QiPjxGaWVsZCBOYW1lPSJ1ayIgVHlwZT0iSW50NjQiIC8+PEZpZWxkIE5hbWU9ImludnBpY2tsaXN0bWFpbl9jb2RlIiBUeXBlPSJJbnQ2NCIgLz48RmllbGQgTmFtZT0icGlja2xpc3Rfbm8iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0ib3JkZXJfbm8iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0icGF0dGVybl9wcm9kdWN0IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9InJmYyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJiaW5ubyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJ0b3RhbF9xdHkiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9InNpemUxIiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJzaXplMiIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0ic2l6ZTMiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9InNpemU0IiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJzaXplNSIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0ic2l6ZTYiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9InNpemU3IiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJzaXplOCIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0ic2l6ZTkiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9InNpemUxMCIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0ic2l6ZTExIiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJzaXplMTIiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9InNpemUxMyIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0ic2l6ZTE0IiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJzaXplMTUiIFR5cGU9IkRlY2ltYWwiIC8+PC9WaWV3PjxSZWxhdGlvbiBNYXN0ZXI9IkNRX1BJQ0tfTElTVF9TSVpFX0hFQURFUiIgRGV0YWlsPSJDUV9QSUNLX0xJU1QiPjxLZXlDb2x1bW4gTWFzdGVyPSJpbnZwaWNrbGlzdG1haW5fY29kZSIgRGV0YWlsPSJpbnZwaWNrbGlzdG1haW5fY29kZSIgLz48L1JlbGF0aW9uPjwvRGF0YVNldD48L1Jlc3VsdFNjaGVtYT48Q29ubmVjdGlvbk9wdGlvbnMgQ2xvc2VDb25uZWN0aW9uPSJ0cnVlIiAvPjwvU3FsRGF0YVNvdXJjZT4=" />
+  </ComponentStorage>
+  <ObjectStorage>
+    <Item1 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v24.1" Ref="2" Content="System.Int32" Type="System.Type" />
+  </ObjectStorage>
+</XtraReportsLayoutSerializer>

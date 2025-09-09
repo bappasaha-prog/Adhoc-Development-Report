@@ -1,0 +1,583 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="19.2.4.0" Ref="0" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v19.2, Version=19.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="A5" ScriptsSource="private void FAmountInWords_GetValue(object sender, GetValueEventArgs e)&#xD;&#xA;{&#xD;&#xA;&#x9;e.Value = &quot;Rs. &quot; + AmountInWords_IndianFormat(Convert.ToInt32(e.GetColumnValue(&quot;NetAmt&quot;))) + &quot; Only.&quot;;&#xD;&#xA;}&#xD;&#xA;public string AmountInWords_IndianFormat(int number)&#xD;&#xA;        {&#xD;&#xA;            if (number == 0)&#xD;&#xA;                return &quot;Zero&quot;;&#xD;&#xA;&#xD;&#xA;            if (number &lt; 0)&#xD;&#xA;                return &quot;Minus &quot; + AmountInWords_IndianFormat(Math.Abs(number));&#xD;&#xA;&#xD;&#xA;            string words = &quot;&quot;;&#xD;&#xA;&#xD;&#xA;            if ((number / 10000000) &gt; 0)&#xD;&#xA;            {&#xD;&#xA;                words += AmountInWords_IndianFormat(number / 10000000) + &quot; Crore &quot;;&#xD;&#xA;                number %= 10000000;&#xD;&#xA;            }&#xD;&#xA;&#xD;&#xA;            if ((number / 100000) &gt; 0)&#xD;&#xA;            {&#xD;&#xA;                words += AmountInWords_IndianFormat(number / 100000) + &quot; Lakh &quot;;&#xD;&#xA;                number %= 100000;&#xD;&#xA;            }&#xD;&#xA;&#xD;&#xA;            if ((number / 1000) &gt; 0)&#xD;&#xA;            {&#xD;&#xA;                words += AmountInWords_IndianFormat(number / 1000) + &quot; Thousand &quot;;&#xD;&#xA;                number %= 1000;&#xD;&#xA;            }&#xD;&#xA;&#xD;&#xA;            if ((number / 100) &gt; 0)&#xD;&#xA;            {&#xD;&#xA;                words += AmountInWords_IndianFormat(number / 100) + &quot; Hundred &quot;;&#xD;&#xA;                number %= 100;&#xD;&#xA;            }&#xD;&#xA;&#xD;&#xA;            if (number &gt; 0)&#xD;&#xA;            {&#xD;&#xA;                if (words != &quot;&quot;)&#xD;&#xA;                    words += &quot;and &quot;;&#xD;&#xA;&#xD;&#xA;                var unitsMap = new[] { &quot;Zero&quot;, &quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;, &quot;Four&quot;, &quot;Five&quot;, &quot;Six&quot;, &quot;Seven&quot;, &quot;Eight&quot;, &quot;Nine&quot;, &quot;Ten&quot;, &quot;Eleven&quot;, &quot;Twelve&quot;, &quot;Thirteen&quot;, &quot;Fourteen&quot;, &quot;Fifteen&quot;, &quot;Sixteen&quot;, &quot;Seventeen&quot;, &quot;Eighteen&quot;, &quot;Nineteen&quot; };&#xD;&#xA;                var tensMap = new[] { &quot;zero&quot;, &quot;Ten&quot;, &quot;Twenty&quot;, &quot;Thirty&quot;, &quot;Forty&quot;, &quot;Fifty&quot;, &quot;Sixty&quot;, &quot;Seventy&quot;, &quot;Eighty&quot;, &quot;Ninety&quot; };&#xD;&#xA;&#xD;&#xA;                if (number &lt; 20)&#xD;&#xA;                    words += unitsMap[number];&#xD;&#xA;                else&#xD;&#xA;                {&#xD;&#xA;                    words += tensMap[number / 10];&#xD;&#xA;                    if ((number % 10) &gt; 0)&#xD;&#xA;                        words += &quot;-&quot; + unitsMap[number % 10];&#xD;&#xA;                }&#xD;&#xA;            }&#xD;&#xA;            &#xD;&#xA;            return words;&#xD;&#xA;        }&#xD;&#xA;private void f_Disc_GetValue(object sender, GetValueEventArgs e) {&#xD;&#xA;    object columnValue = e.GetColumnValue(&quot;f_DiscAmt&quot;);&#xD;&#xA;string disc = columnValue.ToString();&#xD;&#xA; e.Value =disc ;//e.GetColumnValue(&quot;Mdisc&quot;);&#xD;&#xA; //(int)((DateTime)columnValue).DayOfWeek;&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;private void f_DiscAmt_GetValue(object sender, DevExpress.XtraReports.UI.GetValueEventArgs e) {&#xD;&#xA;&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;private void Mdisc_GetValue(object sender, DevExpress.XtraReports.UI.GetValueEventArgs e) {&#xD;&#xA;&#xD;&#xA;object columnValue = e.GetColumnValue(&quot;Mdisc&quot;);&#xD;&#xA;string disc = columnValue.ToString();&#xD;&#xA; e.Value =disc ;&#xD;&#xA;}&#xD;&#xA;" Margins="41, 38, 25, 5" PaperKind="A5" PageWidth="583" PageHeight="827" Version="19.2" DataMember="v_Report_POSBill" XmlDataPath="C:\Users\ujjal.b\Downloads\POSBillDocumentData - Ogaan.xml" Font="Arial, 8pt">
+  <CalculatedFields>
+    <Item1 Ref="1" Name="F_Particulars" Expression="[v_Report_POSBillItem].[v_Report_Item_v_Report_POSBillItem].[Barcode] + ' - ' + [v_Report_Item].[v_Report_ItemGroup_v_Report_Item].[Department] +  ' - ' + [v_Report_POSBillItem].[v_Report_Item_v_Report_POSBillItem].[Cat1]" />
+    <Item2 Ref="2" Name="F_DiscPercent" FieldType="String" Expression="((([v_Report_POSBillItem].[IDiscountAmt]+[v_Report_POSBillItem].[LPDiscountAmt]+[v_Report_POSBillItem].[PromoAmt])/[v_Report_POSBillItem].[BasicAmt])*100) + ' %'" />
+    <Item3 Ref="3" Name="F_SumPosBillItemQty" Expression="Sum([v_Report_POSBillItem].[Qty])" />
+    <Item4 Ref="4" Name="f_ShowTotalDisc" Expression="[v_Report_POSBill].[DiscountAmt]" />
+    <Item5 Ref="5" Name="F_AmountInWords" DataMember="v_Report_POSBill">
+      <Scripts Ref="6" OnGetValue="FAmountInWords_GetValue" />
+    </Item5>
+    <Item6 Ref="7" Name="F_SumDeliverySlipCountItem" Expression="Sum([v_Report_DeliverySlipItem].[CountItem])" />
+    <Item7 Ref="8" Name="F_SumDeliverySlipQty" Expression="Sum([v_Report_DeliverySlipItem].[SumQty])" />
+    <Item8 Ref="9" Name="F_SumDeliverySlipTotValue" Expression="Sum([v_Report_DeliverySlipItem].[TotValue])" />
+    <Item9 Ref="10" Name="CalItem" Expression="Concat(Concat([Department],'-'),[v_Report_ItemGroup_v_Report_Item].[Cat1])" DataMember="v_Report_ItemGroup" />
+    <Item10 Ref="11" Name="calculatedField1" Expression="Concat(Concat(Concat([v_Report_ItemGroup_v_Report_Item].[Barcode],'-'),&#xA;Concat([Department],'')),[v_Report_ItemGroup_v_Report_Item].[Cat1])" DataMember="v_Report_ItemGroup" />
+    <Item11 Ref="12" Name="calculatedField2" Expression="[Qty] * [RSP]" DataMember="v_Report_POSBillItem" />
+    <Item12 Ref="13" Name="f_Qty" Expression="[Qty]" DataMember="v_Report_POSBillItem" />
+    <Item13 Ref="14" Name="StoreCity" Expression="Concat('Phone no: ', [OfficePhone1])" DataMember="v_Store" />
+    <Item14 Ref="15" Name="CtPin" Expression="Concat(Concat([v_Store].[City] , ' : ') , [v_Store].[Pin])" DataMember="v_Store" />
+    <Item15 Ref="16" Name="f_Discp" Expression="((([v_Report_POSBillItem].[IDiscountAmt]+[v_Report_POSBillItem].[LPDiscountAmt]+[v_Report_POSBillItem].[PromoAmt])/[v_Report_POSBillItem].[BasicAmt])*100)" DataMember="v_Report_POSBillItem" />
+    <Item16 Ref="17" Name="f_ConCatDisc" Expression="Iif([f_Discp],'' , Concat([f_Discp],'%' ))" DataMember="v_Report_POSBillItem" />
+    <Item17 Ref="18" Name="f_Disc" Expression="Sum([IDiscountAmt]+[PromoAmt]+[LPDiscountAmt])" DataMember="v_Report_POSBillItem" />
+    <Item18 Ref="19" Name="f_DiscAmt" FieldType="Decimal" Expression="[v_Report_POSBillItem].[calculatedField3]">
+      <Scripts Ref="20" OnGetValue="f_Disc_GetValue" />
+    </Item18>
+    <Item19 Ref="21" Name="TotDsc" Expression="[f_DiscAmt]+[Mdisc]" />
+    <Item20 Ref="22" Name="Mdisc" FieldType="Decimal" Expression="[v_Report_POSBill].[MDiscountAmt]">
+      <Scripts Ref="23" OnGetValue="Mdisc_GetValue" />
+    </Item20>
+    <Item21 Ref="24" Name="calculatedField3" Expression="[v_Report_POSBillItem].[IDiscountAmt]+[v_Report_POSBillItem].[PromoAmt]+[v_Report_POSBillItem].[LPDiscountAmt]" DataMember="v_Report_POSBillItem" />
+    <Item22 Ref="25" Name="CalLessDisc" Expression="100 *(([IDiscountAmt]+[LPDiscountAmt]+[PromoAmt])/[BasicAmt])" DataMember="v_Report_POSBillItem" />
+    <Item23 Ref="26" Name="CalLessDiscString" Expression="Iif(IsNullOrEmpty([CalLessDisc]), '', [CalLessDisc]+ '%')" DataMember="v_Report_POSBillItem" />
+    <Item24 Ref="27" Name="Sum_IDiscount" Expression="Sum([IDiscountAmt])" DataMember="v_Report_POSBillItem" />
+  </CalculatedFields>
+  <Bands>
+    <Item1 Ref="28" ControlType="TopMarginBand" Name="TopMargin" HeightF="25" Font="Arial, 9.75pt">
+      <StylePriority Ref="29" UseFont="false" />
+    </Item1>
+    <Item2 Ref="30" ControlType="DetailBand" Name="Detail" HeightF="0" Visible="false" />
+    <Item3 Ref="31" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="5" />
+    <Item4 Ref="32" ControlType="ReportFooterBand" Name="ReportFooter" PrintAtBottom="true" HeightF="82.08334">
+      <Controls>
+        <Item1 Ref="33" ControlType="XRBarCode" Name="barCode2" AutoModule="true" TextAlignment="BottomCenter" SizeF="485.1466,64.8293152" LocationFloat="8.088529, 9.99999" Padding="10,10,0,0,96">
+          <Symbology Ref="34" Name="Code128" />
+          <ExpressionBindings>
+            <Item1 Ref="35" EventName="BeforePrint" PropertyName="Text" Expression="'*'+[CNNo]+'*'" />
+            <Item2 Ref="36" EventName="BeforePrint" PropertyName="Visible" Expression="!IsNullOrEmpty([CNNo])" />
+          </ExpressionBindings>
+          <StylePriority Ref="37" UseTextAlignment="false" />
+        </Item1>
+      </Controls>
+    </Item4>
+    <Item5 Ref="38" ControlType="PageFooterBand" Name="PageFooter" PrintOn="NotWithReportHeader" HeightF="18.2499752" />
+    <Item6 Ref="39" ControlType="DetailReportBand" Name="DetailReport1" Level="2" DataMember="v_Report_POSBillMOP">
+      <Bands>
+        <Item1 Ref="40" ControlType="DetailBand" Name="Detail2" HeightF="12.0614023">
+          <Controls>
+            <Item1 Ref="41" ControlType="XRLabel" Name="label52" TextFormatString="{0:#.00}" Text="label52" TextAlignment="TopRight" SizeF="218.196045,12.0614023" LocationFloat="274.762238, 0" Font="Arial, 8pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="42" EventName="BeforePrint" PropertyName="Text" Expression="[BaseTender]" />
+              </ExpressionBindings>
+              <StylePriority Ref="43" UseFont="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="44" ControlType="XRLabel" Name="label51" Text="label51" TextAlignment="TopLeft" SizeF="264.590363,12.0614014" LocationFloat="10.1718788, 0" Font="Arial, 8pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="45" EventName="BeforePrint" PropertyName="Text" Expression="[MOPName]" />
+              </ExpressionBindings>
+              <StylePriority Ref="46" UseFont="false" UseTextAlignment="false" />
+            </Item2>
+          </Controls>
+        </Item1>
+        <Item2 Ref="47" ControlType="ReportHeaderBand" Name="ReportHeader2" HeightF="7.873492" />
+        <Item3 Ref="48" ControlType="ReportFooterBand" Name="ReportFooter2" HeightF="29">
+          <SubBands>
+            <Item1 Ref="49" ControlType="SubBand" Name="SubBand1" HeightF="8.52817249" />
+          </SubBands>
+          <Controls>
+            <Item1 Ref="50" ControlType="XRLabel" Name="label48" TextFormatString="{0:#.00}" CanShrink="true" Text="label46" TextAlignment="TopRight" SizeF="144.131409,12.0614033" LocationFloat="348.826874, 12.0613937" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+              <Summary Ref="51" Running="Report" />
+              <ExpressionBindings>
+                <Item1 Ref="52" EventName="BeforePrint" PropertyName="Text" Expression="sumSum(Iif([MOPType]='CSH', [BaseBalance], 0))" />
+              </ExpressionBindings>
+              <StylePriority Ref="53" UseFont="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="54" ControlType="XRLabel" Name="label45" CanShrink="true" Text="Balance Refund:" SizeF="338.655,12.0614023" LocationFloat="10.17188, 12.0613966" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <StylePriority Ref="55" UseFont="false" />
+            </Item2>
+            <Item3 Ref="56" ControlType="XRLabel" Name="label44" TextFormatString="{0:#.00}" CanShrink="true" Text="label46" TextAlignment="TopRight" SizeF="144.131409,12.0614014" LocationFloat="348.826874, 0" Font="Times New Roman, 8pt" Padding="2,2,0,0,100" Borders="Top">
+              <Summary Ref="57" TreatStringsAsNumerics="false" Running="Report" />
+              <ExpressionBindings>
+                <Item1 Ref="58" EventName="BeforePrint" PropertyName="Text" Expression="sumSum(Iif([MOPType] = 'CSH', [BaseTender], 0))" />
+              </ExpressionBindings>
+              <StylePriority Ref="59" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="60" ControlType="XRLabel" Name="label32" CanShrink="true" Text="Customer Paid:" SizeF="338.655,12.0614014" LocationFloat="10.17188, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Top">
+              <StylePriority Ref="61" UseFont="false" UseBorders="false" />
+            </Item4>
+          </Controls>
+        </Item3>
+      </Bands>
+    </Item6>
+    <Item7 Ref="62" ControlType="DetailReportBand" Name="DetailReport2" Level="3" DataMember="v_Report_POSBill">
+      <Bands>
+        <Item1 Ref="63" ControlType="DetailBand" Name="Detail3" HeightF="0" Visible="false" />
+        <Item2 Ref="64" ControlType="GroupFooterBand" Name="GroupFooter2" HeightF="59.39827">
+          <Controls>
+            <Item1 Ref="65" ControlType="XRLabel" Name="label18" CanShrink="true" Text="Bill Discount:" SizeF="337.776978,12.0614014" LocationFloat="6.249944, 6.000002" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="66" EventName="BeforePrint" PropertyName="Text" Expression="Iif(!IsNullOrEmpty([CNNo]), '', 'Total Sale:')" />
+              </ExpressionBindings>
+              <StylePriority Ref="67" UseFont="false" />
+            </Item1>
+            <Item2 Ref="68" ControlType="XRLabel" Name="label31" CanShrink="true" Text="label45" TextAlignment="TopRight" SizeF="150.249878,12.0614014" LocationFloat="344.026917, 6" Font="Arial, 10pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="69" EventName="BeforePrint" PropertyName="Text" Expression="Iif(!IsNullOrEmpty([CNNo]), '',[BasicAmt])" />
+              </ExpressionBindings>
+              <StylePriority Ref="70" UseFont="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="71" ControlType="XRLabel" Name="label46" CanShrink="true" Text="label46" TextAlignment="TopRight" SizeF="150.526733,12.0614014" LocationFloat="343.7501, 42.1841927" Font="Arial, 10pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="72" EventName="BeforePrint" PropertyName="Text" Expression="Iif(!IsNullOrEmpty([CNNo]), '', [NetPayable])" />
+              </ExpressionBindings>
+              <StylePriority Ref="73" UseFont="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="74" ControlType="XRLabel" Name="label42" CanShrink="true" Text="Net Amount:" SizeF="337.776947,12.0614014" LocationFloat="5.97310066, 42.1841927" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="75" EventName="BeforePrint" PropertyName="Text" Expression="Iif(!IsNullOrEmpty([CNNo]), '', 'Net Payable')" />
+              </ExpressionBindings>
+              <StylePriority Ref="76" UseFont="false" />
+            </Item4>
+            <Item5 Ref="77" ControlType="XRLabel" Name="label38" CanShrink="true" Text="Bill Discount:" SizeF="337.776947,12.0614014" LocationFloat="5.97310066, 30.1227951" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="78" EventName="BeforePrint" PropertyName="Text" Expression="Iif(!IsNullOrEmpty([CNNo]) Or [RoundOff]=0, '', 'Round Off:')" />
+              </ExpressionBindings>
+              <StylePriority Ref="79" UseFont="false" />
+            </Item5>
+            <Item6 Ref="80" ControlType="XRLabel" Name="label47" CanShrink="true" Text="label45" TextAlignment="TopRight" SizeF="150.526642,12.0614014" LocationFloat="343.7501, 30.1228046" Font="Arial, 10pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="81" EventName="BeforePrint" PropertyName="Text" Expression="Iif(!IsNullOrEmpty([CNNo]) Or [RoundOff]=0, '', [RoundOff])" />
+              </ExpressionBindings>
+              <StylePriority Ref="82" UseFont="false" UseTextAlignment="false" />
+            </Item6>
+            <Item7 Ref="83" ControlType="XRLabel" Name="label35" CanShrink="true" Text="label45" TextAlignment="TopRight" SizeF="150.526764,12.0614014" LocationFloat="343.750061, 18.0614" Font="Arial, 10pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="84" EventName="BeforePrint" PropertyName="Text" Expression="Iif(!IsNullOrEmpty([CNNo] or ([MDiscountAmt]+[LPDiscountAmt]+[PromoAmt]=0)), '', [DiscountAmt]+[PromoAmt])" />
+              </ExpressionBindings>
+              <StylePriority Ref="85" UseFont="false" UseTextAlignment="false" />
+            </Item7>
+            <Item8 Ref="86" ControlType="XRLabel" Name="label40" CanShrink="true" Text="Bill Discount:" SizeF="337.776947,12.0614014" LocationFloat="5.97310066, 18.0614" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="87" EventName="BeforePrint" PropertyName="Text" Expression="Iif(!IsNullOrEmpty([CNNo] or ([MDiscountAmt]+[LPDiscountAmt]+[PromoAmt]=0)), '', 'Total Saving:')" />
+              </ExpressionBindings>
+              <StylePriority Ref="88" UseFont="false" />
+            </Item8>
+          </Controls>
+        </Item2>
+      </Bands>
+    </Item7>
+    <Item8 Ref="89" ControlType="DetailReportBand" Name="DetailReport" Level="4" DataMember="v_Report_POSBillTaxSummary" XmlDataPath="D:\Others\Report_Dev\BKP\Reports\XtraInvoiceXML-DS\POSBillDocumentData.xml">
+      <Bands>
+        <Item1 Ref="90" ControlType="DetailBand" Name="Detail1" HeightF="13.188242">
+          <Controls>
+            <Item1 Ref="91" ControlType="XRLabel" Name="label3" Text="label56" TextAlignment="TopRight" SizeF="65.84308,12.0614014" LocationFloat="417.775482, 0" Font="Arial, 8pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="92" EventName="BeforePrint" PropertyName="Text" Expression="[CESSAmt]" />
+              </ExpressionBindings>
+              <StylePriority Ref="93" UseFont="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="94" ControlType="XRLabel" Name="label50" Text="label54" SizeF="133.982788,12.0614014" LocationFloat="11.2293062, 0" Font="Arial, 8pt" Padding="2,2,0,0,100">
+              <Summary Ref="95" Running="Report" />
+              <ExpressionBindings>
+                <Item1 Ref="96" EventName="BeforePrint" PropertyName="Text" Expression="[TaxDescription]" />
+              </ExpressionBindings>
+              <StylePriority Ref="97" UseFont="false" />
+            </Item2>
+            <Item3 Ref="98" ControlType="XRLabel" Name="label56" Text="label56" TextAlignment="TopRight" SizeF="64.3493652,12.0614014" LocationFloat="353.426117, 0" Font="Arial, 8pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="99" EventName="BeforePrint" PropertyName="Text" Expression="[CGSTAmt]" />
+              </ExpressionBindings>
+              <StylePriority Ref="100" UseFont="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="101" ControlType="XRLabel" Name="label55" Text="label55" TextAlignment="TopRight" SizeF="64.76007,12.0614014" LocationFloat="288.6661, 0" Font="Arial, 8pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="102" EventName="BeforePrint" PropertyName="Text" Expression="[SGSTAmt]" />
+              </ExpressionBindings>
+              <StylePriority Ref="103" UseFont="false" UseTextAlignment="false" />
+            </Item4>
+            <Item5 Ref="104" ControlType="XRLabel" Name="label54" Text="label54" TextAlignment="TopRight" SizeF="79.10469,12.0613947" LocationFloat="145.2121, 0" Font="Arial, 8pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="105" EventName="BeforePrint" PropertyName="Text" Expression="[Taxable]" />
+              </ExpressionBindings>
+              <StylePriority Ref="106" UseFont="false" UseTextAlignment="false" />
+            </Item5>
+            <Item6 Ref="107" ControlType="XRLabel" Name="label53" Text="label53" TextAlignment="TopRight" SizeF="64.34929,12.0614014" LocationFloat="224.316788, 0" Font="Arial, 8pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="108" EventName="BeforePrint" PropertyName="Text" Expression="[IGSTAmt]" />
+              </ExpressionBindings>
+              <StylePriority Ref="109" UseFont="false" UseTextAlignment="false" />
+            </Item6>
+          </Controls>
+        </Item1>
+        <Item2 Ref="110" ControlType="ReportFooterBand" Name="ReportFooter1" HeightF="42.1927567">
+          <Controls>
+            <Item1 Ref="111" ControlType="XRLabel" Name="label66" Text="Thank You Please Visit Again" TextAlignment="TopCenter" SizeF="483.828125,12.0614014" LocationFloat="9.13017, 29.6208839" Font="Arial, 8pt" Padding="2,2,0,0,100">
+              <StylePriority Ref="112" UseFont="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="113" ControlType="XRLabel" Name="label39" Text="label53" TextAlignment="TopRight" SizeF="64.34926,12.0614014" LocationFloat="224.316788, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Top">
+              <Summary Ref="114" Running="Report" />
+              <ExpressionBindings>
+                <Item1 Ref="115" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([IGSTAmt])" />
+              </ExpressionBindings>
+              <StylePriority Ref="116" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="117" ControlType="XRLabel" Name="label64" Text="label56" TextAlignment="TopRight" SizeF="64.3493652,12.0614014" LocationFloat="353.426117, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Top">
+              <Summary Ref="118" Running="Report" />
+              <ExpressionBindings>
+                <Item1 Ref="119" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([CGSTAmt])" />
+              </ExpressionBindings>
+              <StylePriority Ref="120" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="121" ControlType="XRLabel" Name="label65" Text="label54" TextAlignment="TopRight" SizeF="79.10469,12.0613947" LocationFloat="145.2121, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Top">
+              <Summary Ref="122" Running="Report" />
+              <ExpressionBindings>
+                <Item1 Ref="123" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([Taxable])" />
+              </ExpressionBindings>
+              <StylePriority Ref="124" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item4>
+            <Item5 Ref="125" ControlType="XRLabel" Name="label70" Text="label56" TextAlignment="TopRight" SizeF="65.84308,12.0614014" LocationFloat="417.775482, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Top">
+              <Summary Ref="126" Running="Report" />
+              <ExpressionBindings>
+                <Item1 Ref="127" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([CESSAmt])" />
+              </ExpressionBindings>
+              <StylePriority Ref="128" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item5>
+            <Item6 Ref="129" ControlType="XRLabel" Name="label71" Text="label55" TextAlignment="TopRight" SizeF="64.3493958,12.0614014" LocationFloat="288.6661, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Top">
+              <Summary Ref="130" Running="Report" />
+              <ExpressionBindings>
+                <Item1 Ref="131" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([SGSTAmt])" />
+              </ExpressionBindings>
+              <StylePriority Ref="132" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item6>
+            <Item7 Ref="133" ControlType="XRLabel" Name="label62" Text="Total:" SizeF="133.982788,12.0614014" LocationFloat="11.2293062, 0" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Top">
+              <StylePriority Ref="134" UseFont="false" UseBorders="false" />
+            </Item7>
+          </Controls>
+        </Item2>
+        <Item3 Ref="135" ControlType="ReportHeaderBand" Name="ReportHeader1" HeightF="31.0516949">
+          <Controls>
+            <Item1 Ref="136" ControlType="XRLabel" Name="label34" Text="GST Summary" SizeF="111.199844,12.0613937" LocationFloat="10.1718683, 2.93871021" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+              <StylePriority Ref="137" UseFont="false" />
+            </Item1>
+            <Item2 Ref="138" ControlType="XRLabel" Name="label49" Text="CESS" TextAlignment="TopRight" SizeF="65.84308,12.0614033" LocationFloat="417.775482, 17.0001183" Font="Arial, 8pt, style=Bold, Underline" Padding="2,2,0,0,100">
+              <StylePriority Ref="139" UseFont="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="140" ControlType="XRLine" Name="line4" LineStyle="Dash" SizeF="472.389282,2" LocationFloat="11.2293062, 15.000104" />
+            <Item4 Ref="141" ControlType="XRLabel" Name="label61" Text="CGST" TextAlignment="TopRight" SizeF="64.3493652,12.0614052" LocationFloat="353.426147, 17.0001831" Font="Arial, 8pt, style=Bold, Underline" Padding="2,2,0,0,100">
+              <StylePriority Ref="142" UseFont="false" UseTextAlignment="false" />
+            </Item4>
+            <Item5 Ref="143" ControlType="XRLabel" Name="label60" Text="SGST" TextAlignment="TopRight" SizeF="64.3493652,12.0613937" LocationFloat="288.666138, 17.0001183" Font="Arial, 8pt, style=Bold, Underline" Padding="2,2,0,0,100">
+              <StylePriority Ref="144" UseFont="false" UseTextAlignment="false" />
+            </Item5>
+            <Item6 Ref="145" ControlType="XRLabel" Name="label59" Text="IGST" TextAlignment="TopRight" SizeF="64.3493652,12.0613937" LocationFloat="224.316772, 17.000103" Font="Arial, 8pt, style=Bold, Underline" Padding="2,2,0,0,100">
+              <StylePriority Ref="146" UseFont="false" UseTextAlignment="false" />
+            </Item6>
+            <Item7 Ref="147" ControlType="XRLabel" Name="label58" Text="Taxable" TextAlignment="TopRight" SizeF="79.1046448,12.0613937" LocationFloat="145.2121, 17.0001183" Font="Arial, 8pt, style=Bold, Underline" Padding="2,2,0,0,100">
+              <StylePriority Ref="148" UseFont="false" UseTextAlignment="false" />
+            </Item7>
+            <Item8 Ref="149" ControlType="XRLabel" Name="label57" Text="Description" SizeF="133.982788,12.0613937" LocationFloat="11.2293062, 17.0001183" Font="Arial, 8pt, style=Bold, Underline" Padding="2,2,0,0,100">
+              <StylePriority Ref="150" UseFont="false" />
+            </Item8>
+          </Controls>
+        </Item3>
+      </Bands>
+    </Item8>
+    <Item9 Ref="151" ControlType="DetailReportBand" Name="DetailReport3" Level="0" DataMember="v_Report_POSBillItem">
+      <Bands>
+        <Item1 Ref="152" ControlType="DetailBand" Name="Detail4" HeightF="12.0614014">
+          <Controls>
+            <Item1 Ref="153" ControlType="XRLabel" Name="label76" CanShrink="true" Text="label8" TextAlignment="TopRight" SizeF="48.40103,12.0614014" LocationFloat="391.2916, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="None">
+              <ExpressionBindings>
+                <Item1 Ref="154" EventName="BeforePrint" PropertyName="Text" Expression="[v_Report_POSBillItem.IDiscountAmt]+[v_Report_POSBillItem.PromoAmt]" />
+              </ExpressionBindings>
+              <StylePriority Ref="155" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="156" ControlType="XRLabel" Name="label9" Text="label73" SizeF="81.03648,12.0614014" LocationFloat="110.156265, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="None">
+              <ExpressionBindings>
+                <Item1 Ref="157" EventName="BeforePrint" PropertyName="Text" Expression="[v_Report_Item_v_Report_POSBillItem].[Barcode]" />
+              </ExpressionBindings>
+              <StylePriority Ref="158" UseFont="false" UseBorders="false" />
+            </Item2>
+            <Item3 Ref="159" ControlType="XRLabel" Name="label73" Text="label73" SizeF="85.24579,12.0614014" LocationFloat="24.9104748, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="None">
+              <ExpressionBindings>
+                <Item1 Ref="160" EventName="BeforePrint" PropertyName="Text" Expression="[v_Report_Item_v_Report_POSBillItem].[v_Report_ItemGroup_v_Report_Item].[Department]" />
+              </ExpressionBindings>
+              <StylePriority Ref="161" UseFont="false" UseBorders="false" />
+            </Item3>
+            <Item4 Ref="162" ControlType="XRLabel" Name="label33" CanShrink="true" Text="label33" TextAlignment="TopCenter" SizeF="67.34982,12.0614014" LocationFloat="191.192749, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="None">
+              <ExpressionBindings>
+                <Item1 Ref="163" EventName="BeforePrint" PropertyName="Text" Expression="[HSNSACCode]" />
+              </ExpressionBindings>
+              <StylePriority Ref="164" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item4>
+            <Item5 Ref="165" ControlType="XRLabel" Name="label4" TextFormatString="{0:#,#}" Text="label4" TextAlignment="TopRight" SizeF="28.6552124,12.0614014" LocationFloat="307.4634, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="None">
+              <ExpressionBindings>
+                <Item1 Ref="166" EventName="BeforePrint" PropertyName="Text" Expression="[Qty]" />
+              </ExpressionBindings>
+              <StylePriority Ref="167" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item5>
+            <Item6 Ref="168" ControlType="XRLabel" Name="label8" CanShrink="true" Text="label8" TextAlignment="TopRight" SizeF="55.1730347,12.0614014" LocationFloat="336.118561, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="None">
+              <ExpressionBindings>
+                <Item1 Ref="169" EventName="BeforePrint" PropertyName="Text" Expression="[ESP]" />
+              </ExpressionBindings>
+              <StylePriority Ref="170" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item6>
+            <Item7 Ref="171" ControlType="XRLabel" Name="label37" CanShrink="true" TextAlignment="TopCenter" SizeF="48.9208374,12.0613966" LocationFloat="258.542572, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="None">
+              <ExpressionBindings>
+                <Item1 Ref="172" EventName="BeforePrint" PropertyName="Text" Expression="[v_SalesPerson_v_Report_POSBillItem].[SpNo]" />
+              </ExpressionBindings>
+              <StylePriority Ref="173" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item7>
+            <Item8 Ref="174" ControlType="XRLabel" Name="label36" TextFormatString="{0:#.00}" CanShrink="true" Text="label35" TextAlignment="TopRight" SizeF="62.2655334,12.0614014" LocationFloat="439.692627, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="None">
+              <ExpressionBindings>
+                <Item1 Ref="175" EventName="BeforePrint" PropertyName="Text" Expression="[NetAmt]" />
+              </ExpressionBindings>
+              <StylePriority Ref="176" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item8>
+            <Item9 Ref="177" ControlType="XRLabel" Name="label30" Text="label30" TextAlignment="TopCenter" SizeF="21.2490063,12.0614014" LocationFloat="3.6614635, 0" Font="Arial, 8pt" Padding="2,2,0,0,100" Borders="None">
+              <Summary Ref="178" Running="Report" />
+              <ExpressionBindings>
+                <Item1 Ref="179" EventName="BeforePrint" PropertyName="Text" Expression="[SerialNo]" />
+              </ExpressionBindings>
+              <StylePriority Ref="180" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item9>
+          </Controls>
+        </Item1>
+        <Item2 Ref="181" ControlType="GroupHeaderBand" Name="GroupHeader1" HeightF="14.1447926">
+          <GroupFields>
+            <Item1 Ref="182" />
+          </GroupFields>
+          <SortingSummary Ref="183" Enabled="true" FieldName="SerialNo" />
+          <Controls>
+            <Item1 Ref="184" ControlType="XRLabel" Name="label75" Text="Barcode" TextAlignment="TopLeft" SizeF="81.03645,12.0614033" LocationFloat="110.156265, 2.08338952" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Bottom">
+              <StylePriority Ref="185" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="186" ControlType="XRLabel" Name="label29" Text="Amount" TextAlignment="TopRight" SizeF="62.2655334,12.0614042" LocationFloat="439.692627, 2.083381" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Bottom">
+              <StylePriority Ref="187" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="188" ControlType="XRLabel" Name="label27" Text="Rate" TextAlignment="TopRight" SizeF="55.1730042,12.0614" LocationFloat="336.118561, 2.083381" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Bottom">
+              <StylePriority Ref="189" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="190" ControlType="XRLabel" Name="label22" Text="SI" TextAlignment="TopLeft" SizeF="21.24901,12.0614" LocationFloat="3.66146445, 2.08338952" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Bottom">
+              <StylePriority Ref="191" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item4>
+            <Item5 Ref="192" ControlType="XRLabel" Name="label26" Text="HSN Code" TextAlignment="TopCenter" SizeF="67.34982,12.0614023" LocationFloat="191.192719, 2.08338547" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Bottom">
+              <StylePriority Ref="193" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item5>
+            <Item6 Ref="194" ControlType="XRLabel" Name="label23" Text="Product" TextAlignment="TopLeft" SizeF="85.24579,12.0614033" LocationFloat="24.9104748, 2.08338952" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Bottom">
+              <StylePriority Ref="195" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item6>
+            <Item7 Ref="196" ControlType="XRLabel" Name="label25" Text="SM No." TextAlignment="TopCenter" SizeF="48.9208679,12.0614033" LocationFloat="258.542542, 2.08338952" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Bottom">
+              <StylePriority Ref="197" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item7>
+            <Item8 Ref="198" ControlType="XRLabel" Name="label28" Text="Disc." TextAlignment="TopRight" SizeF="48.401062,12.0614014" LocationFloat="391.291565, 2.08338952" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Bottom">
+              <StylePriority Ref="199" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item8>
+            <Item9 Ref="200" ControlType="XRLabel" Name="label24" Text="Qty." TextAlignment="TopRight" SizeF="28.6551819,12.0614023" LocationFloat="307.4634, 2.08338547" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Bottom">
+              <StylePriority Ref="201" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item9>
+          </Controls>
+        </Item2>
+        <Item3 Ref="202" ControlType="GroupFooterBand" Name="GroupFooter1" HeightF="12.0614023">
+          <Controls>
+            <Item1 Ref="203" ControlType="XRLabel" Name="label14" TextFormatString="{0:#.00}" CanShrink="true" Text="label35" TextAlignment="TopRight" SizeF="165.082977,12.0614014" LocationFloat="336.875183, 0" Font="Times New Roman, 10pt, style=Bold" Padding="2,2,0,0,100" Borders="Top, Bottom">
+              <Summary Ref="204" Running="Group" />
+              <ExpressionBindings>
+                <Item1 Ref="205" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([NetAmt])" />
+              </ExpressionBindings>
+              <StylePriority Ref="206" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="207" ControlType="XRLabel" Name="label13" TextFormatString="{0:#,#}" Text="label4" TextAlignment="TopRight" SizeF="48.2090759,12.0614014" LocationFloat="288.666138, 0" Font="Times New Roman, 10pt, style=Bold" Padding="2,2,0,0,100" Borders="Top, Bottom">
+              <Summary Ref="208" Running="Group" />
+              <ExpressionBindings>
+                <Item1 Ref="209" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([Qty])" />
+              </ExpressionBindings>
+              <StylePriority Ref="210" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="211" ControlType="XRLabel" Name="label12" Text="Total:" TextAlignment="TopLeft" SizeF="285.0047,12.0614014" LocationFloat="3.6614542, 0" Font="Times New Roman, 10pt, style=Bold" Padding="2,2,0,0,100" Borders="Top, Bottom">
+              <StylePriority Ref="212" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item3>
+          </Controls>
+        </Item3>
+      </Bands>
+    </Item9>
+    <Item10 Ref="213" ControlType="PageHeaderBand" Name="PageHeader" HeightF="137.721436" TextAlignment="TopCenter">
+      <Controls>
+        <Item1 Ref="214" ControlType="XRLabel" Name="label43" Text="Cashier:" TextAlignment="TopRight" SizeF="92.36859,12.0614014" LocationFloat="302.91922, 122.660019" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="215" UseFont="false" UseTextAlignment="false" />
+        </Item1>
+        <Item2 Ref="216" ControlType="XRLabel" Name="label41" Multiline="true" Text="label7" TextAlignment="TopRight" SizeF="106.67038,12.0614014" LocationFloat="395.2878, 122.660019" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="217" EventName="BeforePrint" PropertyName="Text" Expression="[v_Report_POSBill.CreatedBy]" />
+          </ExpressionBindings>
+          <StylePriority Ref="218" UseFont="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="219" ControlType="XRLine" Name="line2" SizeF="498.296722,3.00000381" LocationFloat="3.6614635, 134.721436" />
+        <Item4 Ref="220" ControlType="XRLabel" Name="label10" Text="GST Doc No:" TextAlignment="TopRight" SizeF="92.36859,12.0614014" LocationFloat="302.91922, 110.598656" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="221" UseFont="false" UseTextAlignment="false" />
+        </Item4>
+        <Item5 Ref="222" ControlType="XRLabel" Name="label7" Multiline="true" Text="label7" TextAlignment="TopRight" SizeF="106.670349,12.0614014" LocationFloat="395.2878, 110.598656" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="223" EventName="BeforePrint" PropertyName="Text" Expression="[GSTDOCno]" />
+          </ExpressionBindings>
+          <StylePriority Ref="224" UseFont="false" UseTextAlignment="false" />
+        </Item5>
+        <Item6 Ref="225" ControlType="XRLabel" Name="label82" Multiline="true" Text="label82" TextAlignment="TopCenter" SizeF="498.296631,19.0614014" LocationFloat="3.66145349, 91.5372543" Font="Arial, 12pt, style=Bold" Padding="2,2,0,0,100" Borders="Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="226" EventName="BeforePrint" PropertyName="Text" Expression="'TAX INVOICE'" />
+          </ExpressionBindings>
+          <StylePriority Ref="227" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+        </Item6>
+        <Item7 Ref="228" ControlType="XRLabel" Name="label96" Multiline="true" CanShrink="true" Text="label87" TextAlignment="TopCenter" SizeF="295.840363,12.0614014" LocationFloat="99.44745, 59.45172" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="229" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([v_Store.Email1]), '', 'E-Mail: '+[v_Store.Email1])" />
+          </ExpressionBindings>
+          <StylePriority Ref="230" UseFont="false" UseTextAlignment="false" />
+        </Item7>
+        <Item8 Ref="231" ControlType="XRLabel" Name="label95" Multiline="true" CanShrink="true" TextAlignment="TopCenter" SizeF="295.840424,12.0614014" LocationFloat="99.4472961, 22.0614014" Font="Cambria, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="232" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([v_Store.ParentName]), '', [v_Store.ParentName])" />
+          </ExpressionBindings>
+          <StylePriority Ref="233" UseFont="false" UseTextAlignment="false" />
+        </Item8>
+        <Item9 Ref="234" ControlType="XRLabel" Name="label85" TextFormatString="{0:dd-MMM-yy  hh:mm:ss tt}" Text="label11" TextAlignment="TopLeft" SizeF="146.250061,12.0613861" LocationFloat="97.49993, 122.660034" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="235" EventName="BeforePrint" PropertyName="Text" Expression="[BillDate]" />
+          </ExpressionBindings>
+          <StylePriority Ref="236" UseFont="false" UseTextAlignment="false" />
+        </Item9>
+        <Item10 Ref="237" ControlType="XRLabel" Name="label86" Text="Date:" TextAlignment="TopLeft" SizeF="91.24992,12.0613785" LocationFloat="6.250004, 122.660057" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="238" UseFont="false" UseTextAlignment="false" />
+        </Item10>
+        <Item11 Ref="239" ControlType="XRBarCode" Name="barCode1" AutoModule="true" TextAlignment="BottomCenter" ShowText="false" ProcessNullValues="SuppressAndShrink" SizeF="98.98892,84.4297943" LocationFloat="395.2878, 7.10745525" Padding="10,10,0,0,100" Borders="None">
+          <Symbology Ref="240" Name="QRCode" CompactionMode="Byte" ErrorCorrectionLevel="Q" />
+          <ExpressionBindings>
+            <Item1 Ref="241" EventName="BeforePrint" PropertyName="Text" Expression="[signedqrdata]" />
+          </ExpressionBindings>
+          <StylePriority Ref="242" UseBorders="false" UseTextAlignment="false" />
+        </Item11>
+        <Item12 Ref="243" ControlType="XRLabel" Name="label11" Text="label11" TextAlignment="TopLeft" SizeF="146.250061,12.0613861" LocationFloat="97.49995, 110.598671" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="244" EventName="BeforePrint" PropertyName="Text" Expression="[v_Report_POSBill].[BillNo]" />
+          </ExpressionBindings>
+          <StylePriority Ref="245" UseFont="false" UseTextAlignment="false" />
+        </Item12>
+        <Item13 Ref="246" ControlType="XRLabel" Name="label2" Text="Invoice No:" TextAlignment="TopLeft" SizeF="91.24992,12.0614014" LocationFloat="6.250004, 110.598656" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="247" UseFont="false" UseTextAlignment="false" />
+        </Item13>
+        <Item14 Ref="248" ControlType="XRLabel" Name="label89" Multiline="true" CanShrink="true" Text="label89" TextAlignment="TopCenter" SizeF="295.840363,12.0614014" LocationFloat="99.44736, 71.51312" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="249" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([v_Store].[GSTINNo]), 'GSTIN: N.A.', 'GSTIN: '+[v_Store].[GSTINNo]&#xA;)" />
+          </ExpressionBindings>
+          <StylePriority Ref="250" UseFont="false" UseTextAlignment="false" />
+        </Item14>
+        <Item15 Ref="251" ControlType="XRLabel" Name="label87" Multiline="true" CanShrink="true" Text="label87" TextAlignment="TopCenter" SizeF="295.840363,12.0614014" LocationFloat="99.44736, 47.39032" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="252" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([v_Store.Mobile]), '', 'Helpline No:   ' +[v_Store.Mobile])" />
+          </ExpressionBindings>
+          <StylePriority Ref="253" UseFont="false" UseTextAlignment="false" />
+        </Item15>
+        <Item16 Ref="254" ControlType="XRLabel" Name="label84" Multiline="true" CanShrink="true" TextAlignment="TopCenter" SizeF="295.840424,13.2675171" LocationFloat="99.44735, 34.1228027" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="255" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([v_Store.Address]), '', [v_Store.Address])+Iif(IsNullOrEmpty([v_Store.City]), '', ', '+[v_Store.City])+Iif(IsNullOrEmpty([v_Store.OfficePhone1]), '', ' PH: '+[v_Store.OfficePhone1]&#xA;)" />
+          </ExpressionBindings>
+          <StylePriority Ref="256" UseTextAlignment="false" />
+        </Item16>
+        <Item17 Ref="257" ControlType="XRLabel" Name="label83" Multiline="true" CanShrink="true" TextAlignment="TopCenter" SizeF="295.840424,12.0614014" LocationFloat="99.44736, 10" Font="Cambria, 15pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="258" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([v_Store].[StoreName]), '', [v_Store].[StoreName])" />
+          </ExpressionBindings>
+          <StylePriority Ref="259" UseFont="false" UseTextAlignment="false" />
+        </Item17>
+      </Controls>
+      <StylePriority Ref="260" UseTextAlignment="false" />
+    </Item10>
+    <Item11 Ref="261" ControlType="GroupHeaderBand" Name="GroupHeader2" Level="1" HeightF="36.1228371">
+      <Controls>
+        <Item1 Ref="262" ControlType="XRLine" Name="line6" SizeF="498.296722,3.00000381" LocationFloat="3.6614635, 33.1228333" />
+        <Item2 Ref="263" ControlType="XRLabel" Name="label15" Text="Customer Name:" SizeF="103.906319,12.0614023" LocationFloat="6.249944, 6.00001431" Font="Arial, 7.5pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="264" UseFont="false" />
+        </Item2>
+        <Item3 Ref="265" ControlType="XRLabel" Name="label17" Text="Mobile:" SizeF="103.906319,12.0614033" LocationFloat="6.249944, 18.0614128" Font="Arial, 7.5pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="266" UseFont="false" />
+        </Item3>
+        <Item4 Ref="267" ControlType="XRLabel" Name="label19" Text="label19" SizeF="182.307266,12.0614023" LocationFloat="110.156265, 6.00001431" Font="Times New Roman, 7.5pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="268" EventName="BeforePrint" PropertyName="Text" Expression="[v_Customer].[CustomerName]" />
+          </ExpressionBindings>
+          <StylePriority Ref="269" UseFont="false" />
+        </Item4>
+        <Item5 Ref="270" ControlType="XRLabel" Name="label21" Text="label21" SizeF="182.307266,12.0614014" LocationFloat="110.156265, 18.0614319" Font="Times New Roman, 7.5pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="271" EventName="BeforePrint" PropertyName="Text" Expression="[v_Customer].[Mobile]" />
+          </ExpressionBindings>
+          <StylePriority Ref="272" UseFont="false" />
+        </Item5>
+      </Controls>
+    </Item11>
+    <Item12 Ref="273" ControlType="GroupHeaderBand" Name="GroupHeader3" HeightF="51.6621628">
+      <Controls>
+        <Item1 Ref="274" ControlType="XRLabel" Name="label5" Multiline="true" CanShrink="true" ProcessNullValues="SuppressAndShrink" Text="e-Invoice Details :" SizeF="475.874939,12.0613937" LocationFloat="6.249944, 0" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="275" EventName="BeforePrint" PropertyName="Text" Expression="iif(IsNullOrEmpty([IRN]),'','e-Invoice Details :')" />
+          </ExpressionBindings>
+          <StylePriority Ref="276" UseFont="false" />
+        </Item1>
+        <Item2 Ref="277" ControlType="XRLabel" Name="label6" Multiline="true" CanShrink="true" ProcessNullValues="SuppressAndShrink" Text="IRN : " SizeF="75.18936,12.0614014" LocationFloat="6.250008, 12.0613976" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="278" EventName="BeforePrint" PropertyName="Text" Expression="iif(IsNullOrEmpty([IRN]),'','IRN :')" />
+          </ExpressionBindings>
+          <StylePriority Ref="279" UseFont="false" />
+        </Item2>
+        <Item3 Ref="280" ControlType="XRLabel" Name="label16" Multiline="true" CanShrink="true" ProcessNullValues="SuppressAndShrink" Text="label67" SizeF="400.685425,12.0614033" LocationFloat="81.43937, 12.4779587" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="281" EventName="BeforePrint" PropertyName="Text" Expression="iif(IsNullOrEmpty([IRN]),'',[IRN]&#xA;)" />
+          </ExpressionBindings>
+          <StylePriority Ref="282" UseFont="false" />
+        </Item3>
+        <Item4 Ref="283" ControlType="XRLabel" Name="label20" Multiline="true" CanShrink="true" ProcessNullValues="SuppressAndShrink" Text="Ack. Date :" SizeF="75.41665,12.0614014" LocationFloat="6.250008, 36.6007576" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="284" EventName="BeforePrint" PropertyName="Text" Expression="iif(IsNullOrEmpty([IRN]),'','Ack. Date :')" />
+          </ExpressionBindings>
+          <StylePriority Ref="285" UseFont="false" />
+        </Item4>
+        <Item5 Ref="286" ControlType="XRLabel" Name="label88" Multiline="true" CanShrink="true" ProcessNullValues="SuppressAndShrink" Text="Ack No :" SizeF="75.41665,12.0614014" LocationFloat="6.250008, 24.5393639" Font="Arial, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="287" EventName="BeforePrint" PropertyName="Text" Expression="iif(IsNullOrEmpty([IRN]),'','Ack. No. :')" />
+          </ExpressionBindings>
+          <StylePriority Ref="288" UseFont="false" />
+        </Item5>
+        <Item6 Ref="289" ControlType="XRLabel" Name="label92" Multiline="true" CanShrink="true" ProcessNullValues="SuppressAndShrink" Text="label70" TextAlignment="TopLeft" SizeF="400.4582,12.0614014" LocationFloat="81.66666, 24.5393639" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="290" EventName="BeforePrint" PropertyName="Text" Expression="iif(IsNullOrEmpty([IRN]),'',[AckNo])" />
+          </ExpressionBindings>
+          <StylePriority Ref="291" UseFont="false" UseTextAlignment="false" />
+        </Item6>
+        <Item7 Ref="292" ControlType="XRLabel" Name="label93" TextFormatString="{0:dd/MM/yyy hh:mm:ss tt}" Multiline="true" CanShrink="true" ProcessNullValues="SuppressAndShrink" Text="label69" SizeF="400.45816,12.0614014" LocationFloat="81.66669, 36.60079" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="293" EventName="BeforePrint" PropertyName="Text" Expression="iif(IsNullOrEmpty([IRN]),'',[AckDateTime])" />
+          </ExpressionBindings>
+          <StylePriority Ref="294" UseFont="false" />
+        </Item7>
+        <Item8 Ref="295" ControlType="XRLine" Name="line5" SizeF="498.296722,3.00000381" LocationFloat="3.6614635, 48.66216" />
+      </Controls>
+      <ExpressionBindings>
+        <Item1 Ref="296" EventName="BeforePrint" PropertyName="Visible" Expression="!IsNullOrEmpty([IRN])" />
+      </ExpressionBindings>
+    </Item12>
+    <Item13 Ref="297" ControlType="DetailReportBand" Name="DetailReport4" Level="1" DataMember="v_Report_POSBill">
+      <Bands>
+        <Item1 Ref="298" ControlType="DetailBand" Name="Detail5" HeightF="0" Visible="false" />
+        <Item2 Ref="299" ControlType="GroupFooterBand" Name="GroupFooter3" HeightF="29.0153084">
+          <Controls>
+            <Item1 Ref="300" ControlType="XRLabel" Name="label1" Multiline="true" CanShrink="true" Text="label1" SizeF="271.100769,10.9780235" LocationFloat="3.661452, 18.0372849" Padding="2,2,0,0,96">
+              <ExpressionBindings>
+                <Item1 Ref="301" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([CNNo]), '', 'Credit Note Issued: '+[CNNo]+' Amount: '+[ GlobalSettings].[BaseCurrencySymbol]+' '+[CNAmt])" />
+              </ExpressionBindings>
+            </Item1>
+            <Item2 Ref="302" ControlType="XRLabel" Name="label63" Text="label10" SizeF="490.615265,10.9780235" LocationFloat="3.661452, 5" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="303" EventName="BeforePrint" PropertyName="Text" Expression="[F_AmountInWords]" />
+              </ExpressionBindings>
+              <StylePriority Ref="304" UseFont="false" />
+            </Item2>
+          </Controls>
+        </Item2>
+      </Bands>
+    </Item13>
+  </Bands>
+  <CrossBandControls>
+    <Item1 Ref="305" ControlType="XRCrossBandBox" Name="crossBandBox2" BorderWidth="1" WidthF="485.1466" StartBand="#Ref-135" EndBand="#Ref-110" StartPointFloat="9.130209, 0" EndPointFloat="9.130209, 17.7094154" />
+    <Item2 Ref="306" ControlType="XRCrossBandBox" Name="crossBandBox1" BorderWidth="1" WidthF="484.869751" StartBand="#Ref-47" EndBand="#Ref-48" StartPointFloat="9.130201, 1.63887858" EndPointFloat="9.130201, 28.98581" />
+  </CrossBandControls>
+</XtraReportsLayoutSerializer>

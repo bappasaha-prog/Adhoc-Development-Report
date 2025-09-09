@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="19.2.4.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v19.2, Version=19.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="SubDSMainTerminalSummary" Margins="100, 100, 0, 2" PageWidth="850" PageHeight="1100" Version="19.2" DataMember="dsBillSummaryStatistics" DataSource="#Ref-0" Font="Arial, 9.75pt">
+  <CalculatedFields>
+    <Item1 Ref="2" Name="calCurrencySymbol" Expression="Concat(Concat('In ',[dtAppSetting.Symbol] ),'.')&#xA;" DataMember="dtAppSetting" />
+    <Item2 Ref="3" Name="calcProjClos" DataMember="dsBillSummaryStatistics" />
+    <Item3 Ref="4" Name="calcTotA" Expression="[ClosingAmt]-([OpeningAmt]+[calcTotB]+[calculatedField1])" DataMember="dsBillSummaryStatistics" />
+    <Item4 Ref="5" Name="calcTotB" Expression="[Tender]+[Change]+[Refund]+[Receipt]+[Payment]" DataMember="dsBillSummaryStatistics" />
+    <Item5 Ref="6" Name="calculatedField1" DisplayName="calcTotC" Expression="[PayIn] + [PayOut] + [PayDrop]&#xA;" DataMember="dsBillSummaryStatistics" />
+    <Item6 Ref="7" Name="calculatedField2" DataMember="dsBillSummaryStatistics" />
+  </CalculatedFields>
+  <Bands>
+    <Item1 Ref="8" ControlType="TopMarginBand" Name="TopMargin" HeightF="0" />
+    <Item2 Ref="9" ControlType="DetailBand" Name="Detail" HeightF="0" Visible="false" />
+    <Item3 Ref="10" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="2.45844531" />
+    <Item4 Ref="11" ControlType="GroupHeaderBand" Name="GroupHeader1" HeightF="411.375183" KeepTogether="true">
+      <Controls>
+        <Item1 Ref="12" ControlType="XRLabel" Name="label28" Multiline="true" Text="label28" TextAlignment="TopRight" SizeF="121.87854,15.625" LocationFloat="179.7952, 395.750183" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="13" EventName="BeforePrint" PropertyName="Text" Expression="Iif([calcTotA]&lt;0, '('+ToStr(ToDecimal(Abs([calcTotA])))+')', [calcTotA])" />
+          </ExpressionBindings>
+          <StylePriority Ref="14" UseFont="false" UseTextAlignment="false" />
+        </Item1>
+        <Item2 Ref="15" ControlType="XRLabel" Name="label24" Multiline="true" Text="Over/(Short) (E - D)" SizeF="105.208328,15.625" LocationFloat="0.00834465, 393.750183" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="16" UseFont="false" />
+        </Item2>
+        <Item3 Ref="17" ControlType="XRLabel" Name="label3" Multiline="true" Text="label3" TextAlignment="TopRight" SizeF="121.87854,15.625" LocationFloat="179.7952, 362.500183" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="18" EventName="BeforePrint" PropertyName="Text" Expression="[dsBillSummaryStatistics].[OpeningAmt]&#xA;+&#xA;((ToInt([dsBillSummaryStatistics].[Tender])) + [dsBillSummaryStatistics].[Change]+ (ToInt([dsBillSummaryStatistics].[Refund])) + ([dsBillSummaryStatistics].[Receipt]+[dsBillSummaryStatistics].[Payment])&#xA;)&#xA;+&#xA;([PayIn] + [PayOut] + [PayDrop])&#xA;" />
+          </ExpressionBindings>
+          <StylePriority Ref="19" UseFont="false" UseTextAlignment="false" />
+        </Item3>
+        <Item4 Ref="20" ControlType="XRLabel" Name="label1" Multiline="true" Text="label1" TextAlignment="TopRight" SizeF="152.083282,15.625" LocationFloat="149.585724, 268.750183" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="21" EventName="BeforePrint" PropertyName="Text" Expression="(ToInt([dsBillSummaryStatistics].[Tender])) + [dsBillSummaryStatistics].[Change]+ (ToInt([dsBillSummaryStatistics].[Refund])) + ([dsBillSummaryStatistics].[Receipt]+[dsBillSummaryStatistics].[Payment])" />
+          </ExpressionBindings>
+          <StylePriority Ref="22" UseFont="false" />
+        </Item4>
+        <Item5 Ref="23" ControlType="XRLabel" Name="label23" TextFormatString="{0:#.00}" Multiline="true" Text="label5" TextAlignment="TopRight" SizeF="152.083282,15.625" LocationFloat="149.585724, 346.875183" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="24" EventName="BeforePrint" PropertyName="Text" Expression="[PayIn] + [PayOut] + [PayDrop]" />
+          </ExpressionBindings>
+          <StylePriority Ref="25" UseFont="false" UseTextAlignment="false" />
+        </Item5>
+        <Item6 Ref="26" ControlType="XRLabel" Name="label4" Multiline="true" Text="label6" TextAlignment="TopRight" SizeF="68.75,13.5416679" LocationFloat="232.919, 143.750092" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="27" EventName="BeforePrint" PropertyName="Text" Expression="'In' + ' '+ [dtAppSetting].[Symbol] + '.'" />
+          </ExpressionBindings>
+          <StylePriority Ref="28" UseFont="false" UseTextAlignment="false" />
+        </Item6>
+        <Item7 Ref="29" ControlType="XRLabel" Name="label2" TextFormatString="{0:n2}" Multiline="true" Text="label2" TextAlignment="TopRight" SizeF="152.083282,15.625" LocationFloat="149.585724, 190.625183" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="30" EventName="BeforePrint" PropertyName="Text" Expression="[dsBillSummaryStatistics].[Tender]" />
+          </ExpressionBindings>
+          <StylePriority Ref="31" UseFont="false" />
+        </Item7>
+        <Item8 Ref="32" ControlType="XRLabel" Name="label84" TextFormatString="{0:n2}" Multiline="true" Text="label84" TextAlignment="TopRight" SizeF="109.375,15.625" LocationFloat="192.2987, 380.125183" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="33" EventName="BeforePrint" PropertyName="Text" Expression="[dsBillSummaryStatistics].[ClosingAmt]" />
+          </ExpressionBindings>
+          <StylePriority Ref="34" UseFont="false" />
+        </Item8>
+        <Item9 Ref="35" ControlType="XRLabel" Name="label56" Multiline="true" Text="Cash Summary" SizeF="133.958282,13.5416679" LocationFloat="0.00357627869, 141.7501" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="36" UseFont="false" />
+        </Item9>
+        <Item10 Ref="37" ControlType="XRLine" Name="line11" SizeF="301.667816,4.16670227" LocationFloat="0.00354448962, 157.291763" BorderColor="LightGray" BorderWidth="0.25">
+          <StylePriority Ref="38" UseBorderColor="false" UseBorderWidth="false" />
+        </Item10>
+        <Item11 Ref="39" ControlType="XRLine" Name="line12" SizeF="301.6678,4.166697" LocationFloat="0.00122388208, 137.5834" />
+        <Item12 Ref="40" ControlType="XRLabel" Name="label59" Multiline="true" Text="Bills In/Out" SizeF="83.33333,15.625" LocationFloat="0.00834465, 175.000183" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="41" UseFont="false" />
+        </Item12>
+        <Item13 Ref="42" ControlType="XRLabel" Name="label63" Multiline="true" Text="Payment" SizeF="83.33333,15.625" LocationFloat="0.00834465, 253.125183" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="43" UseFont="false" />
+        </Item13>
+        <Item14 Ref="44" ControlType="XRLabel" Name="label69" TextFormatString="{0:n2}" Multiline="true" Text="label69" TextAlignment="TopRight" SizeF="152.083282,15.625" LocationFloat="149.585724, 253.125183" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="45" EventName="BeforePrint" PropertyName="Text" Expression="[dsBillSummaryStatistics].[Payment]" />
+          </ExpressionBindings>
+          <StylePriority Ref="46" UseFont="false" />
+        </Item14>
+        <Item15 Ref="47" ControlType="XRLabel" Name="label68" TextFormatString="{0:n2}" Multiline="true" Text="label68" TextAlignment="TopRight" SizeF="152.083282,15.625" LocationFloat="149.585724, 237.500183" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="48" EventName="BeforePrint" PropertyName="Text" Expression="[dsBillSummaryStatistics].[Receipt]" />
+          </ExpressionBindings>
+          <StylePriority Ref="49" UseFont="false" />
+        </Item15>
+        <Item16 Ref="50" ControlType="XRLabel" Name="label77" TextFormatString="{0:n2}" Multiline="true" Text="label77" TextAlignment="TopRight" SizeF="152.083282,15.625" LocationFloat="149.585724, 300.000183" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="51" EventName="BeforePrint" PropertyName="Text" Expression="[dsBillSummaryStatistics].[PayIn]" />
+          </ExpressionBindings>
+          <StylePriority Ref="52" UseFont="false" />
+        </Item16>
+        <Item17 Ref="53" ControlType="XRLabel" Name="label73" Multiline="true" Text="PayIn" SizeF="83.33333,15.625" LocationFloat="0.00122388208, 300.000183" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="54" UseFont="false" />
+        </Item17>
+        <Item18 Ref="55" ControlType="XRLabel" Name="label71" Multiline="true" Text="Receipt" SizeF="83.33333,15.625" LocationFloat="0.00122388208, 237.500183" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="56" UseFont="false" />
+        </Item18>
+        <Item19 Ref="57" ControlType="XRLabel" Name="label70" Multiline="true" Text="Drawer In/Out" SizeF="83.33333,15.625" LocationFloat="0.00122388208, 284.375183" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="58" UseFont="false" />
+        </Item19>
+        <Item20 Ref="59" ControlType="XRLabel" Name="label64" Multiline="true" Text="Total(B)" SizeF="83.33333,15.625" LocationFloat="0.00834465, 268.750183" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="60" UseFont="false" />
+        </Item20>
+        <Item21 Ref="61" ControlType="XRLabel" Name="label67" TextFormatString="{0:n2}" Multiline="true" Text="label67" TextAlignment="TopRight" SizeF="152.083282,15.625" LocationFloat="149.585724, 221.875183" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="62" EventName="BeforePrint" PropertyName="Text" Expression="[dsBillSummaryStatistics].[Refund]" />
+          </ExpressionBindings>
+          <StylePriority Ref="63" UseFont="false" />
+        </Item21>
+        <Item22 Ref="64" ControlType="XRLabel" Name="label66" TextFormatString="{0:n2}" Multiline="true" Text="label66" TextAlignment="TopRight" SizeF="152.083282,15.625" LocationFloat="149.585724, 206.250183" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="65" EventName="BeforePrint" PropertyName="Text" Expression="[dsBillSummaryStatistics].[Change]" />
+          </ExpressionBindings>
+          <StylePriority Ref="66" UseFont="false" />
+        </Item22>
+        <Item23 Ref="67" ControlType="XRLabel" Name="label62" Multiline="true" Text="Refund" SizeF="83.33333,15.625" LocationFloat="0.00834465, 221.875183" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="68" UseFont="false" />
+        </Item23>
+        <Item24 Ref="69" ControlType="XRLabel" Name="label61" Multiline="true" Text="Change" SizeF="83.33333,15.625" LocationFloat="0.00834465, 206.250183" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="70" UseFont="false" />
+        </Item24>
+        <Item25 Ref="71" ControlType="XRLabel" Name="label60" Multiline="true" Text="Tender" SizeF="83.33333,15.625" LocationFloat="0.00122388208, 190.625183" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="72" UseFont="false" />
+        </Item25>
+        <Item26 Ref="73" ControlType="XRLabel" Name="label57" Multiline="true" Text="Opening (A)" SizeF="83.33333,13.5416679" LocationFloat="0.00834465, 161.458511" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="74" UseFont="false" />
+        </Item26>
+        <Item27 Ref="75" ControlType="XRLabel" Name="label58" TextFormatString="{0:n2}" Multiline="true" Text="label58" TextAlignment="TopRight" SizeF="152.083282,13.5416679" LocationFloat="149.585724, 161.458511" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="76" EventName="BeforePrint" PropertyName="Text" Expression="[dsBillSummaryStatistics].[OpeningAmt]" />
+          </ExpressionBindings>
+          <StylePriority Ref="77" UseFont="false" />
+        </Item27>
+        <Item28 Ref="78" ControlType="XRLabel" Name="label74" Multiline="true" Text="PayOut" SizeF="83.33333,15.625" LocationFloat="0.00834465, 315.625183" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="79" UseFont="false" />
+        </Item28>
+        <Item29 Ref="80" ControlType="XRLabel" Name="label78" TextFormatString="{0:n2}" Multiline="true" Text="label78" TextAlignment="TopRight" SizeF="152.083282,15.625" LocationFloat="149.585724, 315.625183" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="81" EventName="BeforePrint" PropertyName="Text" Expression="[dsBillSummaryStatistics].[PayOut]" />
+          </ExpressionBindings>
+          <StylePriority Ref="82" UseFont="false" />
+        </Item29>
+        <Item30 Ref="83" ControlType="XRLabel" Name="label75" Multiline="true" Text="PayDrop" SizeF="83.33333,15.625" LocationFloat="0.00834465, 331.250183" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="84" UseFont="false" />
+        </Item30>
+        <Item31 Ref="85" ControlType="XRLabel" Name="label79" TextFormatString="{0:n2}" Multiline="true" Text="label79" TextAlignment="TopRight" SizeF="152.083282,15.625" LocationFloat="149.585724, 331.250183" Font="Arial, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="86" EventName="BeforePrint" PropertyName="Text" Expression="[dsBillSummaryStatistics].[PayDrop]" />
+          </ExpressionBindings>
+          <StylePriority Ref="87" UseFont="false" />
+        </Item31>
+        <Item32 Ref="88" ControlType="XRLabel" Name="label76" Multiline="true" Text="Total(C)" SizeF="83.33333,15.625" LocationFloat="0.00834465, 346.875183" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="89" UseFont="false" />
+        </Item32>
+        <Item33 Ref="90" ControlType="XRLabel" Name="label81" Multiline="true" Text="Projected Closing (D=A+B+C)" SizeF="179.793991,15.625" LocationFloat="0.00120798743, 362.500183" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="91" UseFont="false" />
+        </Item33>
+        <Item34 Ref="92" ControlType="XRLabel" Name="label83" Multiline="true" Text="Closing (E)" SizeF="179.790451,15.625" LocationFloat="0.00120798743, 378.125183" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="93" UseFont="false" />
+        </Item34>
+        <Item35 Ref="94" ControlType="XRLine" Name="line2" SizeF="301.6594,2.08333325" LocationFloat="0.00834465, 0" />
+        <Item36 Ref="95" ControlType="XRLabel" Name="label20" Multiline="true" Text="Close By" SizeF="83.33218,13.5416679" LocationFloat="0.00236829114, 124.041733" Font="Arial, 7pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="96" UseFont="false" />
+        </Item36>
+        <Item37 Ref="97" ControlType="XRLabel" Name="label19" Multiline="true" Text="Close On" SizeF="83.33218,13.5416679" LocationFloat="0.00236829114, 110.500061" Font="Arial, 7pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="98" UseFont="false" />
+        </Item37>
+        <Item38 Ref="99" ControlType="XRLabel" Name="label17" Multiline="true" Text="Open By" SizeF="83.33218,13.5416679" LocationFloat="0.00236829114, 96.95839" Font="Arial, 7pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="100" UseFont="false" />
+        </Item38>
+        <Item39 Ref="101" ControlType="XRLabel" Name="label10" Multiline="true" Text="Open On" SizeF="83.3321457,13.5416679" LocationFloat="0.00236829114, 83.41672" Font="Arial, 7pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="102" UseFont="false" />
+        </Item39>
+        <Item40 Ref="103" ControlType="XRLabel" Name="label9" Multiline="true" Text="Session Status" SizeF="83.33218,13.5416679" LocationFloat="0.00236829114, 69.87505" Font="Arial, 7pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="104" UseFont="false" />
+        </Item40>
+        <Item41 Ref="105" ControlType="XRLabel" Name="label8" Multiline="true" Text="Session " SizeF="83.33218,13.5416679" LocationFloat="0.00236829114, 56.3333855" Font="Arial, 7pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="106" UseFont="false" />
+        </Item41>
+        <Item42 Ref="107" ControlType="XRLabel" Name="label7" Multiline="true" Text="Terminal" SizeF="83.33218,13.5416679" LocationFloat="0.00236829114, 42.7917175" Font="Arial, 7pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="108" UseFont="false" />
+        </Item42>
+        <Item43 Ref="109" ControlType="XRLabel" Name="label6" Multiline="true" Text="Report Time" SizeF="83.33218,13.5416679" LocationFloat="0.00236829114, 29.25005" Font="Arial, 7pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="110" UseFont="false" />
+        </Item43>
+        <Item44 Ref="111" ControlType="XRLine" Name="line1" SizeF="301.6678,3.12503433" LocationFloat="0.00122451782, 26.1250153" BorderColor="LightGray" BorderWidth="0.25">
+          <StylePriority Ref="112" UseBorderColor="false" UseBorderWidth="false" />
+        </Item44>
+        <Item45 Ref="113" ControlType="XRLabel" Name="label15" Multiline="true" Text="Terminal Summary" SizeF="301.667725,13.6250334" LocationFloat="0, 2.08333325" Font="Arial, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="114" UseFont="false" />
+        </Item45>
+        <Item46 Ref="115" ControlType="XRPageInfo" Name="pageInfo1" PageInfo="DateTime" TextFormatString="{0:dd-MMM-yyyy}" TextAlignment="TopRight" SizeF="90.625,13.5416679" LocationFloat="211.042786, 29.25005" Font="Arial Black, 7pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="116" UseFont="false" UseTextAlignment="false" />
+        </Item46>
+        <Item47 Ref="117" ControlType="XRLabel" Name="label11" Multiline="true" Text="Print Date:" TextAlignment="TopRight" SizeF="61.458313,13.5416679" LocationFloat="149.584488, 29.25005" Font="Arial, 7pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="118" UseFont="false" UseTextAlignment="false" />
+        </Item47>
+        <Item48 Ref="119" ControlType="XRLabel" Name="label12" TextFormatString="{0}" Multiline="true" Text="label12" TextAlignment="TopRight" SizeF="152.0833,13.5416679" LocationFloat="149.584488, 42.7917175" Font="Arial, 7pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="120" EventName="BeforePrint" PropertyName="Text" Expression="[dsBillSummaryStatistics].[TerminalInitial]" />
+          </ExpressionBindings>
+          <StylePriority Ref="121" UseFont="false" UseTextAlignment="false" />
+        </Item48>
+        <Item49 Ref="122" ControlType="XRLabel" Name="label13" TextFormatString="{0}" Multiline="true" Text="label13" TextAlignment="TopRight" SizeF="152.0833,13.5416679" LocationFloat="149.584488, 56.3333855" Font="Arial, 7pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="123" EventName="BeforePrint" PropertyName="Text" Expression="[dsBillSummaryStatistics].[SessionId]" />
+          </ExpressionBindings>
+          <StylePriority Ref="124" UseFont="false" UseTextAlignment="false" />
+        </Item49>
+        <Item50 Ref="125" ControlType="XRLabel" Name="label14" TextFormatString="{0}" Multiline="true" Text="label14" TextAlignment="TopRight" SizeF="152.083267,13.5416679" LocationFloat="149.584488, 69.87505" Font="Arial, 7pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="126" EventName="BeforePrint" PropertyName="Text" Expression="[dsBillSummaryStatistics].[SessionStatus]" />
+          </ExpressionBindings>
+          <StylePriority Ref="127" UseFont="false" UseTextAlignment="false" />
+        </Item50>
+        <Item51 Ref="128" ControlType="XRLabel" Name="label16" TextFormatString="{0:dd-MM-yyyy hh:mm tt}" Multiline="true" Text="label16" TextAlignment="TopRight" SizeF="152.0833,13.5416679" LocationFloat="149.584488, 83.41672" Font="Arial, 7pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="129" EventName="BeforePrint" PropertyName="Text" Expression="[dsBillSummaryStatistics].[OpenOn]" />
+          </ExpressionBindings>
+          <StylePriority Ref="130" UseFont="false" UseTextAlignment="false" />
+        </Item51>
+        <Item52 Ref="131" ControlType="XRLabel" Name="label18" TextFormatString="{0}" Multiline="true" Text="label18" TextAlignment="TopRight" SizeF="152.0833,13.5416679" LocationFloat="149.584488, 96.95839" Font="Arial, 7pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="132" EventName="BeforePrint" PropertyName="Text" Expression="[dsBillSummaryStatistics].[OpenBy]" />
+          </ExpressionBindings>
+          <StylePriority Ref="133" UseFont="false" UseTextAlignment="false" />
+        </Item52>
+        <Item53 Ref="134" ControlType="XRLabel" Name="label21" TextFormatString="{0:dd-MM-yyyy hh:mm tt}" Multiline="true" Text="label21" TextAlignment="TopRight" SizeF="152.0833,13.5416679" LocationFloat="149.584488, 110.500061" Font="Arial, 7pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="135" EventName="BeforePrint" PropertyName="Text" Expression="[dsBillSummaryStatistics].[ClosedOn]" />
+          </ExpressionBindings>
+          <StylePriority Ref="136" UseFont="false" UseTextAlignment="false" />
+        </Item53>
+        <Item54 Ref="137" ControlType="XRLabel" Name="label22" TextFormatString="{0}" Multiline="true" Text="label22" TextAlignment="TopRight" SizeF="152.0833,13.5416679" LocationFloat="149.584488, 124.041733" Font="Arial, 7pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="138" EventName="BeforePrint" PropertyName="Text" Expression="[dsBillSummaryStatistics].[ClosedBy]" />
+          </ExpressionBindings>
+          <StylePriority Ref="139" UseFont="false" UseTextAlignment="false" />
+        </Item54>
+      </Controls>
+    </Item4>
+  </Bands>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v19.2" Name="sqlDataSource1" Base64="PFNxbERhdGFTb3VyY2UgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxDb25uZWN0aW9uIE5hbWU9IkRyYXdlclN1bW1hcnlSZXBvcnREYXRhIiBQcm92aWRlcktleT0iSW5NZW1vcnlTZXRGdWxsIj48UGFyYW1ldGVycz48UGFyYW1ldGVyIE5hbWU9ImRhdGFiYXNlIiBWYWx1ZT0iRDpcRGV2XFhNTERhdGFcRHJhd2VyU3VtbWFyeVJlcG9ydERhdGEueG1sIiAvPjxQYXJhbWV0ZXIgTmFtZT0icmVhZCBvbmx5IiBWYWx1ZT0iMSIgLz48UGFyYW1ldGVyIE5hbWU9ImdlbmVyYXRlQ29ubmVjdGlvbkhlbHBlciIgVmFsdWU9ImZhbHNlIiAvPjwvUGFyYW1ldGVycz48L0Nvbm5lY3Rpb24+PFF1ZXJ5IFR5cGU9IlNlbGVjdFF1ZXJ5IiBOYW1lPSJkc0JpbGxTdW1tYXJ5U3RhdGlzdGljcyI+PFRhYmxlcz48VGFibGUgTmFtZT0iZHNCaWxsU3VtbWFyeVN0YXRpc3RpY3MiIC8+PC9UYWJsZXM+PENvbHVtbnM+PENvbHVtbiBUYWJsZT0iZHNCaWxsU3VtbWFyeVN0YXRpc3RpY3MiIE5hbWU9IlRlcm1pbmFsSW5pdGlhbCIgLz48Q29sdW1uIFRhYmxlPSJkc0JpbGxTdW1tYXJ5U3RhdGlzdGljcyIgTmFtZT0iU2Vzc2lvbklkIiAvPjxDb2x1bW4gVGFibGU9ImRzQmlsbFN1bW1hcnlTdGF0aXN0aWNzIiBOYW1lPSJTZXNzaW9uU3RhdHVzIiAvPjxDb2x1bW4gVGFibGU9ImRzQmlsbFN1bW1hcnlTdGF0aXN0aWNzIiBOYW1lPSJPcGVuT24iIC8+PENvbHVtbiBUYWJsZT0iZHNCaWxsU3VtbWFyeVN0YXRpc3RpY3MiIE5hbWU9Ik9wZW5CeSIgLz48Q29sdW1uIFRhYmxlPSJkc0JpbGxTdW1tYXJ5U3RhdGlzdGljcyIgTmFtZT0iQ2xvc2VkT24iIC8+PENvbHVtbiBUYWJsZT0iZHNCaWxsU3VtbWFyeVN0YXRpc3RpY3MiIE5hbWU9IkNsb3NlZEJ5IiAvPjxDb2x1bW4gVGFibGU9ImRzQmlsbFN1bW1hcnlTdGF0aXN0aWNzIiBOYW1lPSJPcGVuaW5nQW10IiAvPjxDb2x1bW4gVGFibGU9ImRzQmlsbFN1bW1hcnlTdGF0aXN0aWNzIiBOYW1lPSJDbG9zaW5nQW10IiAvPjxDb2x1bW4gVGFibGU9ImRzQmlsbFN1bW1hcnlTdGF0aXN0aWNzIiBOYW1lPSIgVGVuZGVyIiAvPjxDb2x1bW4gVGFibGU9ImRzQmlsbFN1bW1hcnlTdGF0aXN0aWNzIiBOYW1lPSJDaGFuZ2UiIC8+PENvbHVtbiBUYWJsZT0iZHNCaWxsU3VtbWFyeVN0YXRpc3RpY3MiIE5hbWU9IlJlZnVuZCIgLz48Q29sdW1uIFRhYmxlPSJkc0JpbGxTdW1tYXJ5U3RhdGlzdGljcyIgTmFtZT0iUGF5SW4iIC8+PENvbHVtbiBUYWJsZT0iZHNCaWxsU3VtbWFyeVN0YXRpc3RpY3MiIE5hbWU9IlBheU91dCIgLz48Q29sdW1uIFRhYmxlPSJkc0JpbGxTdW1tYXJ5U3RhdGlzdGljcyIgTmFtZT0iUGF5RHJvcCIgLz48Q29sdW1uIFRhYmxlPSJkc0JpbGxTdW1tYXJ5U3RhdGlzdGljcyIgTmFtZT0iUmVjZWlwdCIgLz48Q29sdW1uIFRhYmxlPSJkc0JpbGxTdW1tYXJ5U3RhdGlzdGljcyIgTmFtZT0iUGF5bWVudCIgLz48Q29sdW1uIFRhYmxlPSJkc0JpbGxTdW1tYXJ5U3RhdGlzdGljcyIgTmFtZT0iVGVuZGVyIiAvPjwvQ29sdW1ucz48L1F1ZXJ5PjxRdWVyeSBUeXBlPSJTZWxlY3RRdWVyeSIgTmFtZT0iZHRBcHBTZXR0aW5nIj48VGFibGVzPjxUYWJsZSBOYW1lPSJkdEFwcFNldHRpbmciIC8+PC9UYWJsZXM+PENvbHVtbnM+PENvbHVtbiBUYWJsZT0iZHRBcHBTZXR0aW5nIiBOYW1lPSJTeW1ib2wiIC8+PENvbHVtbiBUYWJsZT0iZHRBcHBTZXR0aW5nIiBOYW1lPSJEYXRlRm9ybWF0IiAvPjwvQ29sdW1ucz48L1F1ZXJ5PjxSZXN1bHRTY2hlbWE+PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9ImRzQmlsbFN1bW1hcnlTdGF0aXN0aWNzIj48RmllbGQgTmFtZT0iVGVybWluYWxJbml0aWFsIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlNlc3Npb25JZCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IlNlc3Npb25TdGF0dXMiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iT3Blbk9uIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iT3BlbkJ5IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkNsb3NlZE9uIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iQ2xvc2VkQnkiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iT3BlbmluZ0FtdCIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iQ2xvc2luZ0FtdCIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iIFRlbmRlciIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iQ2hhbmdlIiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJSZWZ1bmQiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IlBheUluIiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJQYXlPdXQiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IlBheURyb3AiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IlJlY2VpcHQiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IlBheW1lbnQiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IlRlbmRlciIgVHlwZT0iRGVjaW1hbCIgLz48L1ZpZXc+PFZpZXcgTmFtZT0iZHRBcHBTZXR0aW5nIj48RmllbGQgTmFtZT0iU3ltYm9sIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkRhdGVGb3JtYXQiIFR5cGU9IlN0cmluZyIgLz48L1ZpZXc+PC9EYXRhU2V0PjwvUmVzdWx0U2NoZW1hPjxDb25uZWN0aW9uT3B0aW9ucyBDbG9zZUNvbm5lY3Rpb249InRydWUiIC8+PC9TcWxEYXRhU291cmNlPg==" />
+  </ComponentStorage>
+</XtraReportsLayoutSerializer>

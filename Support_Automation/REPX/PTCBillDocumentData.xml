@@ -1,0 +1,825 @@
+<?xml version="1.0" standalone="yes"?>
+<PTCBillDocumentData xmlns="http://tempuri.org/PTCBillDocumentData.xsd">
+  <xs:schema id="PTCBillDocumentData" targetNamespace="http://tempuri.org/PTCBillDocumentData.xsd" xmlns:mstns="http://tempuri.org/PTCBillDocumentData.xsd" xmlns="http://tempuri.org/PTCBillDocumentData.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="qualified" elementFormDefault="qualified">
+    <xs:element name="PTCBillDocumentData" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="v_Report_PTCBill">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="PTCBillId" type="xs:int" />
+                <xs:element name="BillNo">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="25" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillDate" type="xs:dateTime" />
+                <xs:element name="TerminalId" type="xs:int" />
+                <xs:element name="TerminalName">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="50" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="TerminalInitial" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="5" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Remarks" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="500" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="PTCHeadId">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="50" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="PTCHeadMode">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="1" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="PTCHeadModeDisplay" msdata:ReadOnly="true" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="7" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Amount" type="xs:decimal" />
+                <xs:element name="NoOfPrints" type="xs:int" minOccurs="0" />
+                <xs:element name="CreatedOn" type="xs:dateTime" />
+                <xs:element name="CreatedById" type="xs:int" />
+                <xs:element name="CreatedBy">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="LastModifiedOn" type="xs:dateTime" />
+                <xs:element name="LastModifiedById" type="xs:int" />
+                <xs:element name="LastModifiedBy">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="DataVersion" msdata:ReadOnly="true" type="xs:base64Binary" minOccurs="0" />
+                <xs:element name="RefDocNo" type="xs:string" minOccurs="0" />
+                <xs:element name="RefDocDt" type="xs:dateTime" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="v_ptchead">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="ptcheadid">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="50" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="ptcheadname">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="ptcheadmode">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="1" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="ptcheadmodedisplay" msdata:ReadOnly="true" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="7" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="description" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="500" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="isextinct" type="xs:int" />
+                <xs:element name="lastmodifiedon" type="xs:dateTime" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="v_Store">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="StoreId">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="50" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="StoreName" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="ShortName" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="25" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="CUID" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="14" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="ParentCUID" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="10" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="ParentName" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="ModeOfOperation" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="1" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="OperationStartDate" type="xs:dateTime" />
+                <xs:element name="ModeOfOperationDisplay" msdata:ReadOnly="true" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="11" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Address" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="500" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="City" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="District" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="State" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Country" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="STD" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="10" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Pin" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="12" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="OfficePhone1" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="25" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="OfficePhone2" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="25" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="OfficePhone3" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="25" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="ResidencePhone" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="25" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Mobile" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="25" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Fax" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="25" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Email1" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="50" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Email2" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="50" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="WebSite" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="50" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="ContactPerson" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="LSTNo" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="50" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="LSTDate" type="xs:dateTime" minOccurs="0" />
+                <xs:element name="CSTNo" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="50" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="CSTDate" type="xs:dateTime" minOccurs="0" />
+                <xs:element name="TargetSales" type="xs:decimal" minOccurs="0" />
+                <xs:element name="SQFTSize" type="xs:int" minOccurs="0" />
+                <xs:element name="StartDate" type="xs:dateTime" minOccurs="0" />
+                <xs:element name="TaxGroup" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="PriceType">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="1" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="PriceTypeDisplay" msdata:ReadOnly="true" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="3" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="PriceFactor" type="xs:decimal" minOccurs="0" />
+                <xs:element name="SiteKey">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="50" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="LastModifiedOn" type="xs:dateTime" />
+                <xs:element name="TimeZone" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="200" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="CINNo" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="GSTStateCode" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="GSTINNo" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="15" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="GSTINDate" type="xs:dateTime" minOccurs="0" />
+                <xs:element name="SiteDocIN" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="3" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="LegalName" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingLegalName" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingCINNo" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingAddress" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="500" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingCity" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingDistrict" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingState" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingCountry" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingSTD" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="10" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingPin" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="12" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingOfficePhone1" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="25" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingOfficePhone2" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="25" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingOfficePhone3" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="25" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingResidencePhone" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="25" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingMobile" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="25" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingFax" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="25" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingEmail1" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="50" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingEmail2" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="50" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingWebsite" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="50" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingContactPerson" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingGSTINNo" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="15" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingGSTStateCode" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="BillingGSTINDate" type="xs:dateTime" minOccurs="0" />
+                <xs:element name="SiteType" form="unqualified" type="xs:string" minOccurs="0" />
+                <xs:element name="TaxGroupId" form="unqualified" type="xs:string" minOccurs="0" />
+                <xs:element name="IsCentrallyManaged" form="unqualified" type="xs:int" minOccurs="0" />
+                <xs:element name="IsSalesPersonManaged" form="unqualified" type="xs:int" minOccurs="0" />
+                <xs:element name="MDISDID" form="unqualified" type="xs:int" minOccurs="0" />
+                <xs:element name="ISDCode" form="unqualified" type="xs:string" minOccurs="0" />
+                <xs:element name="CountryName" form="unqualified" type="xs:string" minOccurs="0" />
+                <xs:element name="IsGlobalPOSReturnAllowed" form="unqualified" type="xs:int" minOccurs="0" />
+                <xs:element name="DataSyncMode" form="unqualified" type="xs:string" minOccurs="0" />
+                <xs:element name="LicenseSyncAckPending" form="unqualified" type="xs:boolean" minOccurs="0" />
+                <xs:element name="ItemBatchSeparator" form="unqualified" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="ReportHeaderFooter">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Category">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="50" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Header1" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Footer1" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Header2" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Footer2" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="2147483647" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="GlobalSettings">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="CurrentUserId" type="xs:int" minOccurs="0" />
+                <xs:element name="CurrentUserName" type="xs:string" minOccurs="0" />
+                <xs:element name="CurrentUserFullName" type="xs:string" minOccurs="0" />
+                <xs:element name="BaseCurrencyId" type="xs:int" minOccurs="0" />
+                <xs:element name="BaseCurrencyShortCode" type="xs:string" minOccurs="0" />
+                <xs:element name="BaseCurrencyName" type="xs:string" minOccurs="0" />
+                <xs:element name="BaseCurrencySymbol" type="xs:string" minOccurs="0" />
+                <xs:element name="CurrentUserRoleName" type="xs:string" minOccurs="0" />
+                <xs:element name="CurrentTerminalId" type="xs:int" minOccurs="0" />
+                <xs:element name="CurrentTerminalName" type="xs:string" minOccurs="0" />
+                <xs:element name="CurrentPOSStockPointId" type="xs:int" minOccurs="0" />
+                <xs:element name="CurrentPOSStockPointName" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyId" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyName" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyShortName" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyCUID" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyParentCUID" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyParentName" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyModeOfOperation" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyAddress" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyCity" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyDistrict" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyState" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyCountry" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanySTDCode" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyPIN" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyOfficePhone1" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyOfficePhone2" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyOfficePhone3" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyResidencePhone" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyMobile" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyFax" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyEmail1" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyEmail2" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyWebSite" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyContactPerson" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyLSTNo" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyLSTDate" type="xs:dateTime" minOccurs="0" />
+                <xs:element name="CompanyCSTNo" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanyCSTDate" type="xs:dateTime" minOccurs="0" />
+                <xs:element name="CompanyTargetSales" type="xs:decimal" minOccurs="0" />
+                <xs:element name="CompanySQFTSize" type="xs:int" minOccurs="0" />
+                <xs:element name="CompanyStartDate" type="xs:dateTime" minOccurs="0" />
+                <xs:element name="CompanyOperationStartDate" type="xs:dateTime" minOccurs="0" />
+                <xs:element name="CompanyTaxGroup" type="xs:string" minOccurs="0" />
+                <xs:element name="CompanySiteKey" type="xs:string" minOccurs="0" />
+                <xs:element name="CurrentDate" type="xs:dateTime" minOccurs="0" />
+                <xs:element name="StandardDateFormat" type="xs:string" minOccurs="0" />
+                <xs:element name="LongDateFormat" type="xs:string" minOccurs="0" />
+                <xs:element name="StandardDateTimeFormat" type="xs:string" minOccurs="0" />
+                <xs:element name="LongDateTimeFormat" type="xs:string" minOccurs="0" />
+                <xs:element name="AmountFormat" type="xs:string" minOccurs="0" />
+                <xs:element name="QuantityFormat" type="xs:string" minOccurs="0" />
+                <xs:element name="RateFormat" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="PrintCount">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="CurrentCopy" type="xs:int" minOccurs="0" />
+                <xs:element name="CurrentCopyLiteral" type="xs:string" minOccurs="0" />
+                <xs:element name="CurrentCopyLiteralOrgDup" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+      <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//mstns:v_Report_PTCBill" />
+        <xs:field xpath="mstns:PTCBillId" />
+      </xs:unique>
+      <xs:unique name="v_ptchead_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//mstns:v_ptchead" />
+        <xs:field xpath="mstns:ptcheadid" />
+      </xs:unique>
+      <xs:unique name="v_Store_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//mstns:v_Store" />
+        <xs:field xpath="mstns:StoreId" />
+      </xs:unique>
+    </xs:element>
+  </xs:schema>
+  <v_Report_PTCBill>
+    <PTCBillId>150000012</PTCBillId>
+    <BillNo>PCM/12/Jun-23</BillNo>
+    <BillDate>2023-06-29T13:48:54.253+05:30</BillDate>
+    <TerminalId>13</TerminalId>
+    <TerminalName>SRP-02</TerminalName>
+    <TerminalInitial>T14</TerminalInitial>
+    <Remarks>Being the amount paid to Mr. Md. Selim for Car parking</Remarks>
+    <PTCHeadId>3577</PTCHeadId>
+    <PTCHeadMode>P</PTCHeadMode>
+    <PTCHeadModeDisplay>Payment</PTCHeadModeDisplay>
+    <Amount>200.00</Amount>
+    <NoOfPrints>0</NoOfPrints>
+    <CreatedOn>2023-06-29T13:50:16.25+05:30</CreatedOn>
+    <CreatedById>6</CreatedById>
+    <CreatedBy>Soummya Dey</CreatedBy>
+    <LastModifiedOn>2023-06-29T13:50:16.25+05:30</LastModifiedOn>
+    <LastModifiedById>6</LastModifiedById>
+    <LastModifiedBy>Soummya Dey</LastModifiedBy>
+    <DataVersion>AAAAAADp62E=</DataVersion>
+  </v_Report_PTCBill>
+  <v_ptchead>
+    <ptcheadid>3577</ptcheadid>
+    <ptcheadname>Car  Expenses</ptcheadname>
+    <ptcheadmode>P</ptcheadmode>
+    <ptcheadmodedisplay>Payment</ptcheadmodedisplay>
+    <isextinct>0</isextinct>
+    <lastmodifiedon>2023-06-27T18:29:12+05:30</lastmodifiedon>
+  </v_ptchead>
+  <v_Store>
+    <StoreId>2</StoreId>
+    <StoreName>Samrajnee-Shreerampur</StoreName>
+    <ShortName>SHREERAMPUR</ShortName>
+    <CUID>SFPL01</CUID>
+    <ParentCUID>SFPL</ParentCUID>
+    <ParentName>SAMRAJNEE FASHIONS PRIVATE LIMITED</ParentName>
+    <ModeOfOperation>C</ModeOfOperation>
+    <OperationStartDate>2017-09-12T00:00:00+05:30</OperationStartDate>
+    <ModeOfOperationDisplay>Consignment</ModeOfOperationDisplay>
+    <Address>42/1, B.P.DEY STREET. SERAMPORE,
+HOOGHLY-712201</Address>
+    <OfficePhone1>2662-6369/ 2652-0288</OfficePhone1>
+    <Mobile>2662-6369/ 2652-0288</Mobile>
+    <ContactPerson>SUBHANKAR</ContactPerson>
+    <TargetSales>0.000</TargetSales>
+    <SQFTSize>0</SQFTSize>
+    <StartDate>2017-09-11T00:00:00+05:30</StartDate>
+    <TaxGroup>WEST BENGAL</TaxGroup>
+    <PriceType>R</PriceType>
+    <PriceTypeDisplay>RSP</PriceTypeDisplay>
+    <PriceFactor>0.00</PriceFactor>
+    <SiteKey>SFPL-01-2</SiteKey>
+    <LastModifiedOn>2023-04-21T00:00:00+05:30</LastModifiedOn>
+    <TimeZone />
+    <CINNo />
+    <GSTStateCode>19</GSTStateCode>
+    <GSTINNo>19AAOCS3514J1ZZ</GSTINNo>
+    <GSTINDate>2017-06-28T00:00:00+05:30</GSTINDate>
+    <SiteDocIN>A01</SiteDocIN>
+    <LegalName>SAMRAJNEE FASHIONS PRIVATE LIMITED</LegalName>
+    <BillingLegalName>SAMRAJNEE FASHIONS PRIVATE LIMITED</BillingLegalName>
+    <BillingAddress>42/1, B.P.DEY STREET. SERAMPORE,
+HOOGHLY-712201</BillingAddress>
+    <BillingOfficePhone1>2662-6369/ 2652-0288</BillingOfficePhone1>
+    <BillingMobile>2662-6369/ 2652-0288</BillingMobile>
+    <BillingContactPerson>SUBHANKAR</BillingContactPerson>
+    <BillingGSTINNo>19AAOCS3514J1ZZ</BillingGSTINNo>
+    <BillingGSTStateCode>19</BillingGSTStateCode>
+    <BillingGSTINDate>2017-06-28T00:00:00+05:30</BillingGSTINDate>
+    <SiteType xmlns="">MS-OO-CM</SiteType>
+    <TaxGroupId xmlns="">1</TaxGroupId>
+    <IsCentrallyManaged xmlns="">1</IsCentrallyManaged>
+    <IsSalesPersonManaged xmlns="">1</IsSalesPersonManaged>
+    <MDISDID xmlns="">234</MDISDID>
+    <ISDCode xmlns="">91</ISDCode>
+    <CountryName xmlns="">India</CountryName>
+    <IsGlobalPOSReturnAllowed xmlns="">1</IsGlobalPOSReturnAllowed>
+    <DataSyncMode xmlns="">W</DataSyncMode>
+    <LicenseSyncAckPending xmlns="">false</LicenseSyncAckPending>
+  </v_Store>
+  <GlobalSettings>
+    <CurrentUserId>6</CurrentUserId>
+    <CurrentUserName>sd</CurrentUserName>
+    <CurrentUserFullName>Soummya Dey</CurrentUserFullName>
+    <BaseCurrencyId>1</BaseCurrencyId>
+    <BaseCurrencyShortCode>INR</BaseCurrencyShortCode>
+    <BaseCurrencyName>Rupees</BaseCurrencyName>
+    <BaseCurrencySymbol>Rs</BaseCurrencySymbol>
+    <CurrentUserRoleName>Back Office</CurrentUserRoleName>
+    <CurrentTerminalId>13</CurrentTerminalId>
+    <CurrentTerminalName>SRP-02</CurrentTerminalName>
+    <CurrentPOSStockPointId>1</CurrentPOSStockPointId>
+    <CurrentPOSStockPointName>Showroom1</CurrentPOSStockPointName>
+    <CompanyId>2</CompanyId>
+    <CompanyName>Samrajnee-Shreerampur</CompanyName>
+    <CompanyShortName>SHREERAMPUR</CompanyShortName>
+    <CompanyCUID>SFPL01</CompanyCUID>
+    <CompanyParentCUID>SFPL</CompanyParentCUID>
+    <CompanyParentName>SAMRAJNEE FASHIONS PRIVATE LIMITED</CompanyParentName>
+    <CompanyModeOfOperation>C</CompanyModeOfOperation>
+    <CompanyAddress>42/1, B.P.DEY STREET. SERAMPORE,
+HOOGHLY-712201</CompanyAddress>
+    <CompanyCity />
+    <CompanyDistrict />
+    <CompanyState />
+    <CompanyCountry />
+    <CompanySTDCode />
+    <CompanyPIN />
+    <CompanyOfficePhone1>2662-6369/ 2652-0288</CompanyOfficePhone1>
+    <CompanyOfficePhone2 />
+    <CompanyOfficePhone3 />
+    <CompanyResidencePhone />
+    <CompanyMobile>2662-6369/ 2652-0288</CompanyMobile>
+    <CompanyFax />
+    <CompanyEmail1 />
+    <CompanyEmail2 />
+    <CompanyWebSite />
+    <CompanyContactPerson>SUBHANKAR</CompanyContactPerson>
+    <CompanyLSTNo />
+    <CompanyCSTNo />
+    <CompanyTargetSales>0.000</CompanyTargetSales>
+    <CompanySQFTSize>0</CompanySQFTSize>
+    <CompanyStartDate>2017-09-11T00:00:00+05:30</CompanyStartDate>
+    <CompanyOperationStartDate>2017-09-12T00:00:00+05:30</CompanyOperationStartDate>
+    <CompanyTaxGroup>WEST BENGAL</CompanyTaxGroup>
+    <CompanySiteKey>SFPL-01-2</CompanySiteKey>
+    <CurrentDate>2023-06-29T13:50:25.087+05:30</CurrentDate>
+    <StandardDateFormat>dd/MM/yyyy</StandardDateFormat>
+    <LongDateFormat>dd-MMM-yyyy</LongDateFormat>
+    <StandardDateTimeFormat>dd/MM/yyyy hh:mm:ss tt</StandardDateTimeFormat>
+    <LongDateTimeFormat>dd-MMM-yyyy hh:mm:ss tt</LongDateTimeFormat>
+    <AmountFormat>#######0.00</AmountFormat>
+    <QuantityFormat>######.###</QuantityFormat>
+    <RateFormat>######0.00</RateFormat>
+  </GlobalSettings>
+</PTCBillDocumentData>

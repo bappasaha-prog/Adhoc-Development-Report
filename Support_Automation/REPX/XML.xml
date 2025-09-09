@@ -1,0 +1,1753 @@
+<entity>
+    <id>SALINV_CHARGE_SQL_01</id>
+    <entity_name>SI Charge SQL</entity_name>
+    <affinity>Global</affinity>
+    <db_name>SALINV_CHARGE_SQL</db_name>
+    <sql_stmt>/* Formatted on 27-05-2022 15:57:05 (QP5 v5.294) */
+SELECT A.INVCODE                   INVCODE,
+       A.SEQ                       DISPLAY_SEQUENCE,
+       B.SALCHGNAME                SALES_CHARGE_NAME,
+       A.RATE                      CHARGE_RATE,
+       A.SIGN                      CHARGE_SIGN,
+       A.CHGAMT                    CHARGE_AMOUNT,
+       G.GLNAME                    CHARGE_LEDGER,
+       A.CODE                      UK,
+       S.SLNAME                    CHARGE_SUB_LEDGER,
+       INITCAP (A.BASIS)           CHARGE_BASIS,
+       A.APPAMT                    CHARGE_APPLICABLE_ON,
+       INITCAP (A.OPERATION_LEVEL) OPERATION_LEVEL,
+       INITCAP (A.ISTAX)           TAXABLE,
+       INITCAP (A.SOURCE)          CHARGE_SOURCE,
+       A.GST_COMPONENT             GST_COMPONENT
+  FROM (SELECT *
+          FROM SALINVCHG
+         WHERE (   INVCODE IN
+                      (    SELECT REGEXP_SUBSTR ('@DocumentId@',
+                                                 '[^|~|]+',
+                                                 1,
+                                                 LEVEL)
+                                     COL1
+                             FROM DUAL
+                       CONNECT BY LEVEL &lt;=
+                                     REGEXP_COUNT ('@DocumentId@', '|~|') + 1)
+                OR NVL (REGEXP_COUNT ('@DocumentId@', '|~|') + 1, 0) = 0)) A,
+       ginssot.DIM$SALCHG B,
+       ginssot.DIM$FINGL  G,
+       ginssot.DIM$FINSL  S
+ WHERE     A.SALCHGCODE = B.SALCHGCODE
+       AND A.GLCODE = G.GLCODE
+       AND A.SLCODE = S.SLCODE(+)
+       AND (   A.INVCODE IN
+                  (    SELECT REGEXP_SUBSTR ('@DocumentId@',
+                                             '[^|~|]+',
+                                             1,
+                                             LEVEL)
+                                 COL1
+                         FROM DUAL
+                   CONNECT BY LEVEL &lt;=
+                                 REGEXP_COUNT ('@DocumentId@', '|~|') + 1)
+            OR NVL (REGEXP_COUNT ('@DocumentId@', '|~|') + 1, 0) = 0)</sql_stmt>
+    <category>05-Sales and Distribution|*{*}*|02-Transaction|*{*}*|Sales Invoice</category>
+    <datasource_id>0</datasource_id>
+    <object_type>sql</object_type>
+    <schema_access_type>Metadata</schema_access_type>
+    <key>
+      <col_name>UK</col_name>
+    </key>
+    <column_metadata>
+      <col_name>CHARGE_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CHARGE_APPLICABLE_ON</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CHARGE_BASIS</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CHARGE_LEDGER</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CHARGE_RATE</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CHARGE_SIGN</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CHARGE_SOURCE</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CHARGE_SUB_LEDGER</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>DISPLAY_SEQUENCE</col_name>
+      <col_type>int</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>GST_COMPONENT</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>INVCODE</col_name>
+      <col_type>int</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>OPERATION_LEVEL</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALES_CHARGE_NAME</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>TAXABLE</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>UK</col_name>
+      <col_type>int</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+  </entity>
+  <entity>
+    <id>SALINV_HEADER_SQL_01</id>
+    <entity_name>SI Header SQL</entity_name>
+    <affinity>Global</affinity>
+    <db_name>SALINV_HEADER_SQL</db_name>
+    <sql_stmt>/* Formatted on 27-05-2022 16:44:46 (QP5 v5.294) */
+SELECT A.INVCODE                       UK,
+       -- || '-' || LEVEL_COPY.L1
+       A.INVCODE                       INVCODE,
+       A.INVDT                         INVOICE_DATE,
+       A.PCODE                         PCODE,
+       CUS.SLNAME                      CUSTOMER_NAME,
+       CUS.BEMAIL                      CUSTOMER_BILLING_EMAIL,
+       CUS.BEMAIL2                     CUSTOMER_BILLING_EMAIL2,
+       CUS.SEMAIL                      CUSTOMER_SHIPPING_EMAIL,
+       CUS.SEMAIL2                     CUSTOMER_SHIPPING_EMAIL2,
+       A.DOCNO                         DOCUMENT_NO,
+       A.DUEDT                         DUE_DATE,
+       A.AGCODE                        AGCODE,
+       NVL (AG.SLNAME, 'No Agent')     AGENT_NAME,
+       A.AGRATE                        AGENT_RATE,
+       A.GRSAMT                        GROSS_AMOUNT,
+       A.CHGAMT                        CHARGE_AMOUNT,
+       A.NETAMT                        NET_AMOUNT,
+       TAX.TAX_CHARGE_AMOUNT,
+       TAX.OTHER_CHARGE_AMOUNT,
+       A.ADJAMT                        ADJUSTMENT_AMOUNT,
+       G.GLNAME                        SALES_LEDGER,
+       A.REM                           REMARKS,
+       Y.YNAME                         YEAR_NAME,
+       C.FNAME || ' [' || C.ENO || ']' CREATED_BY,
+       A.TIME                          CREATED_ON,
+       T.SALTERMNAME                   SALES_TERM,
+       A.LAST_ACCESS_TIME              LAST_ACCESSED_ON,
+       M.FNAME || ' [' || M.ENO || ']' LAST_ACCESSED_BY,
+       L.LGTNO                         LOGISTIC_NO,
+       L.LGTDT                         LOGISTIC_DATE,
+       TR.SLNAME                       LOGISTIC_TRANSPORTER,
+       L.DOCNO                         LOGISTIC_DOCUMENT_NO,
+       L.DOCDT                         LOGISTIC_DOCUMENT_DATE,
+       L.STFR                          LOGISTIC_STATION_FROM,
+       L.STTO                          LOGISTIC_STATION_TO,
+       L.DECAMT                        LOGISTIC_DECLARED_AMOUNT,
+       A.DOCDT                         DOCUMENT_DATE,
+       D.DOCNAME                       NUMBERING_SCHEME,
+       A.SCHEME_DOCNO                  INVOICE_NO,
+       A.TRPCODE                       TRPCODE,
+       TRP.SLNAME                      TRANSPORTER_NAME,
+       G1.GLNAME                       ARAP_LEDGER,
+       S.SLNAME                        SALES_SUB_LEDGER,
+       A.TRANSITDAYS                   TRANSIT_DAYS,
+       INITCAP (A.ISSECONDARY)         SECONDARY_STOCK,
+       A.ADMOU_CODE,
+       A.ADMSITE_CODE                  ADMSITE_CODE,
+       ST.SHRTNAME                     REFERENCE_SITE,
+       U.FNAME || ' [' || U.ENO || ']' AUTHORIZED_BY,
+       A.AUTHORIZE_TIME                AUTHORIZED_ON,
+       A.TRANSIT_DUE_DATE              TRANSIT_DUE_DATE,
+       A.DATASENDON                    DATA_SYNCED_ON,
+       A.ADMSITE_CODE_OWNER            ADMSITE_CODE_OWNER,
+       OS.SHRTNAME                     OWNER_SITE,
+       INITCAP (A.FORMAPP)             FORM_APPLICABLE,
+       A.FORMNO                        FORM_NO,
+       A.FORMDT                        FORM_DATE,
+       A.UDFSTRING01                   SALINMAIN_UDFSTRING01,
+       A.UDFSTRING02                   SALINMAIN_UDFSTRING02,
+       A.UDFSTRING03                   SALINMAIN_UDFSTRING03,
+       A.UDFSTRING04                   SALINMAIN_UDFSTRING04,
+       A.UDFSTRING05                   SALINMAIN_UDFSTRING05,
+       A.UDFSTRING06                   SALINMAIN_UDFSTRING06,
+       A.UDFSTRING07                   SALINMAIN_UDFSTRING07,
+       A.UDFSTRING08                   SALINMAIN_UDFSTRING08,
+       A.UDFSTRING09                   SALINMAIN_UDFSTRING09,
+       A.UDFSTRING10                   SALINMAIN_UDFSTRING10,
+       A.UDFNUM01                      SALINVMAIN_UDFNUM01,
+       A.UDFNUM02                      SALINVMAIN_UDFNUM02,
+       A.UDFNUM03                      SALINVMAIN_UDFNUM03,
+       A.UDFNUM04                      SALINVMAIN_UDFNUM04,
+       A.UDFNUM05                      SALINVMAIN_UDFNUM05,
+       A.UDFDATE01                     SALINVMAIN_UDFDATE01,
+       A.UDFDATE02                     SALINVMAIN_UDFDATE02,
+       A.UDFDATE03                     SALINVMAIN_UDFDATE03,
+       A.UDFDATE04                     SALINVMAIN_UDFDATE04,
+       A.UDFDATE05                     SALINVMAIN_UDFDATE05,
+       INITCAP (A.RELEASE_STATUS)      RELEASE_STATUS,
+       A.RELEASE_TIME                  RELEASE_ON,
+       R.FNAME || ' [' || R.ENO || ']' RELEASE_BY,
+       P.NAME                          TRADE_GROUP_NAME,
+       F.FORMNAME                      FORM_NAME,
+       A.FORMAMT                       FORM_AMOUNT,
+       PL.PRICELISTNAME                PRICE_LIST_NAME,
+       A.DISCOUNT_FACTOR               DISCOUNT_FACTOR,
+       A.PRICE_ROUNDOFF                PRICE_ROUND_OFF,
+       INITCAP (A.ROUNDOFF_LIMIT)      PRICE_ROUNF_OFF_LIMIT,
+       INITCAP (A.INCL_VAT_IN_DIST)    PRICE_INCLUSION_OF_TAX,
+       INITCAP (A.DISCOUNT_MODE)       PRICE_MODE,
+       INITCAP (A.DISCOUNT_BASIS)      PRICE_BASIS,
+       I.INTGNAME                      THIRD_PARTY_SOURCE,
+       A.OWNER_GSTIN_NO                OWNER_GSTIN_NO,
+       A.OWNER_GSTIN_STATE_CODE        OWNER_GSTIN_STATE_CODE,
+       GST.NAME                        OWNER_GSTIN_STATE_NAME,
+       A.CP_GSTIN_NO                   CP_GSTIN_NO,
+       A.CP_GSTIN_STATE_CODE           CP_GSTIN_STATE_CODE,
+       CPGST.NAME                      CP_GSTIN_STATE_NAME,
+       A.GSTAPPL                       Is_GST_Applicable,
+       A.EWAYBILLNO                    E_way_Bill_No,
+       A.EWAYBILLGENERATEDON           E_way_Bill_Generated_On,
+       A.EWAYBILLVALIDUPTO             E_way_Bill_Valid_Upto,
+       A.GLCODE                        GLCODE,
+       EI.E_INVOICE_IRN,
+       EI.E_INVOICE_ACK_DATETIME,
+       EI.E_INVOICE_ACK_NO,
+       EI.E_INVOICE_SIGNED_QR_DATA,
+       EI.E_INVOICE_UPDATED_BY,
+       EI.E_INVOICE_UPDATED_ON
+  --          LEVEL_COPY.L1                     L1
+  FROM (SELECT *
+          FROM ginssot.FACT$SALINVMAIN
+         WHERE (   INVCODE IN
+                      (    SELECT REGEXP_SUBSTR ('@DocumentId@',
+                                                 '[^|~|]+',
+                                                 1,
+                                                 LEVEL)
+                                     COL1
+                             FROM DUAL
+                       CONNECT BY LEVEL &lt;=
+                                     REGEXP_COUNT ('@DocumentId@', '|~|') + 1)
+                OR NVL (REGEXP_COUNT ('@DocumentId@', '|~|') + 1, 0) = 0)) A,
+       ginssot.DIM$FINSL            CUS,
+       ginssot.DIM$FINSL            AG,
+       ginssot.DIM$FINSL            TRP,
+       ginssot.DIM$FINGL            G,
+       ginssot.DIM$ADMYEAR          Y,
+       ginssot.DIM$HRDEMP           C,
+       ginssot.DIM$SALTERMMAIN      T,
+       ginssot.DIM$HRDEMP           M,
+       ginssot.DIM$ADMDOCSCHEME     D,
+       ginssot.DIM$FINGL            G1,
+       ginssot.DIM$FINSL            S,
+       ginssot.DIM$HRDEMP           U,
+       ginssot.DIM$HRDEMP           R,
+       ginssot.DIM$FINTRADEGRP      P,
+       ginssot.DIM$FINFORM          F,
+       ginssot.DIM$INTGMAIN         I,
+       ginssot.DIM$ADMSITE          ST,
+       ginssot.DIM$ADMSITE          OS,
+       ginssot.DIM$SALPRICELISTMAIN PL,
+       ginssot.DIM$ADMGSTSTATE      GST,
+       ginssot.DIM$ADMGSTSTATE      CPGST,
+       ginssot.DIM$INVLGTNOTE       L,
+       ginssot.DIM$FINSL            TR,
+       (SELECT A.TRANSACTION_CODE,
+               A.IRN                           E_INVOICE_IRN,
+               A.ACK_DATETIME                  E_INVOICE_ACK_DATETIME,
+               A.ACK_NO                        E_INVOICE_ACK_NO,
+               A.SIGNED_QR_DATA                E_INVOICE_SIGNED_QR_DATA,
+               E.FNAME || ' [' || E.ENO || ']' E_INVOICE_UPDATED_BY,
+               A.UPDATED_ON                    E_INVOICE_UPDATED_ON
+          FROM INVGST_EINVOICE A, HRDEMP E
+         WHERE     A.UPDATED_BY = E.ECODE(+)
+               AND A.TRANSACTION_TABLE = 'SALINVMAIN') EI,
+       (  SELECT INVCODE,
+                 SUM (CASE WHEN ISTAX = 'YES' THEN NVL (CHGAMT, 0) ELSE 0 END)
+                    TAX_CHARGE_AMOUNT,
+                 SUM (CASE WHEN ISTAX = 'NO' THEN NVL (CHGAMT, 0) ELSE 0 END)
+                    OTHER_CHARGE_AMOUNT
+            FROM ginssot.FACT$SALINVCHG
+           WHERE (   INVCODE IN
+                        (    SELECT REGEXP_SUBSTR ('@DocumentId@',
+                                                   '[^|~|]+',
+                                                   1,
+                                                   LEVEL)
+                                       COL1
+                               FROM DUAL
+                         CONNECT BY LEVEL &lt;=
+                                       REGEXP_COUNT ('@DocumentId@', '|~|') + 1)
+                  OR NVL (REGEXP_COUNT ('@DocumentId@', '|~|') + 1, 0) = 0)
+        GROUP BY INVCODE) TAX
+ --          (    SELECT LEVEL L1
+ --                 FROM DUAL
+ --           CONNECT BY LEVEL &lt;= 3) LEVEL_COPY
+ WHERE     A.GLCODE = G.GLCODE
+       AND A.PCODE = CUS.SLCODE(+)
+       AND A.AGCODE = AG.SLCODE(+)
+       AND A.TRPCODE = TRP.SLCODE(+)
+       AND A.YCODE = Y.YCODE
+       AND A.ECODE = C.ECODE
+       AND A.SALTERMCODE = T.SALTERMCODE(+)
+       AND A.LAST_ACCESS_ECODE = M.ECODE(+)
+       AND A.DOCCODE = D.DOCCODE(+)
+       AND A.PGLCODE = G1.GLCODE
+       AND A.SLCODE = S.SLCODE(+)
+       AND A.AUTHORIZE_ECODE = U.ECODE(+)
+       AND A.RELEASE_ECODE = R.ECODE(+)
+       AND A.SALTRADEGRP_CODE = P.CODE(+)
+       AND A.FORMCODE = F.FORMCODE(+)
+       AND A.INTGCODE = I.INTGCODE(+)
+       AND A.LGTCODE = L.LGTCODE(+)
+       AND L.TRPCODE = TR.SLCODE(+)
+       AND A.ADMSITE_CODE = ST.CODE(+)
+       AND A.ADMSITE_CODE_OWNER = OS.CODE
+       AND A.PRICELISTCODE = PL.PRICELISTCODE(+)
+       AND A.INVCODE = TAX.INVCODE(+)
+       AND A.SALETYPE = 'OUTRIGHT'
+       AND A.OWNER_GSTIN_STATE_CODE = GST.CODE(+)
+       AND A.CP_GSTIN_STATE_CODE = CPGST.CODE(+)
+       AND TO_CHAR (A.INVCODE) = EI.TRANSACTION_CODE(+)
+       AND (   A.INVCODE IN
+                  (    SELECT REGEXP_SUBSTR ('@DocumentId@',
+                                             '[^|~|]+',
+                                             1,
+                                             LEVEL)
+                                 COL1
+                         FROM DUAL
+                   CONNECT BY LEVEL &lt;=
+                                 REGEXP_COUNT ('@DocumentId@', '|~|') + 1)
+            OR NVL (REGEXP_COUNT ('@DocumentId@', '|~|') + 1, 0) = 0)</sql_stmt>
+    <category>05-Sales and Distribution|*{*}*|02-Transaction|*{*}*|Sales Invoice</category>
+    <datasource_id>0</datasource_id>
+    <object_type>sql</object_type>
+    <schema_access_type>Metadata</schema_access_type>
+    <key>
+      <col_name>UK</col_name>
+    </key>
+    <column_metadata>
+      <col_name>ADJUSTMENT_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>ADMOU_CODE</col_name>
+      <col_type>int</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>ADMSITE_CODE</col_name>
+      <col_type>int</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>ADMSITE_CODE_OWNER</col_name>
+      <col_type>int</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>AGCODE</col_name>
+      <col_type>int</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>AGENT_NAME</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>AGENT_RATE</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>ARAP_LEDGER</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>AUTHORIZED_BY</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>AUTHORIZED_ON</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CHARGE_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CP_GSTIN_NO</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CP_GSTIN_STATE_CODE</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CP_GSTIN_STATE_NAME</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CREATED_BY</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CREATED_ON</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CUSTOMER_BILLING_EMAIL</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CUSTOMER_BILLING_EMAIL2</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CUSTOMER_NAME</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CUSTOMER_SHIPPING_EMAIL</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CUSTOMER_SHIPPING_EMAIL2</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>DATA_SYNCED_ON</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>DISCOUNT_FACTOR</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>DOCUMENT_DATE</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>DOCUMENT_NO</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>DUE_DATE</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>E_INVOICE_ACK_DATETIME</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>E_INVOICE_ACK_NO</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>E_INVOICE_IRN</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>E_INVOICE_SIGNED_QR_DATA</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>E_INVOICE_UPDATED_BY</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>E_INVOICE_UPDATED_ON</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>E_WAY_BILL_GENERATED_ON</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>E_WAY_BILL_NO</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>E_WAY_BILL_VALID_UPTO</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>FORM_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>FORM_APPLICABLE</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>FORM_DATE</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>FORM_NAME</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>FORM_NO</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>GLCODE</col_name>
+      <col_type>int</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>GROSS_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>INVCODE</col_name>
+      <col_type>int</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>INVOICE_DATE</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>INVOICE_NO</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>IS_GST_APPLICABLE</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>LAST_ACCESSED_BY</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>LAST_ACCESSED_ON</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>LOGISTIC_DATE</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>LOGISTIC_DECLARED_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>LOGISTIC_DOCUMENT_DATE</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>LOGISTIC_DOCUMENT_NO</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>LOGISTIC_NO</col_name>
+      <col_type>int</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>LOGISTIC_STATION_FROM</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>LOGISTIC_STATION_TO</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>LOGISTIC_TRANSPORTER</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>NET_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>NUMBERING_SCHEME</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>OTHER_CHARGE_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>OWNER_GSTIN_NO</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>OWNER_GSTIN_STATE_CODE</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>OWNER_GSTIN_STATE_NAME</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>OWNER_SITE</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>PCODE</col_name>
+      <col_type>int</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>PRICE_BASIS</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>PRICE_INCLUSION_OF_TAX</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>PRICE_LIST_NAME</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>PRICE_MODE</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>PRICE_ROUND_OFF</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>PRICE_ROUNF_OFF_LIMIT</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>REFERENCE_SITE</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>RELEASE_BY</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>RELEASE_ON</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>RELEASE_STATUS</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>REMARKS</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALES_LEDGER</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALES_SUB_LEDGER</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALES_TERM</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALINMAIN_UDFSTRING01</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALINMAIN_UDFSTRING02</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALINMAIN_UDFSTRING03</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALINMAIN_UDFSTRING04</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALINMAIN_UDFSTRING05</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALINMAIN_UDFSTRING06</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALINMAIN_UDFSTRING07</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALINMAIN_UDFSTRING08</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALINMAIN_UDFSTRING09</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALINMAIN_UDFSTRING10</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALINVMAIN_UDFDATE01</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALINVMAIN_UDFDATE02</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALINVMAIN_UDFDATE03</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALINVMAIN_UDFDATE04</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALINVMAIN_UDFDATE05</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALINVMAIN_UDFNUM01</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALINVMAIN_UDFNUM02</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALINVMAIN_UDFNUM03</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALINVMAIN_UDFNUM04</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SALINVMAIN_UDFNUM05</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SECONDARY_STOCK</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>TAX_CHARGE_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>THIRD_PARTY_SOURCE</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>TRADE_GROUP_NAME</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>TRANSIT_DAYS</col_name>
+      <col_type>int</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>TRANSIT_DUE_DATE</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>TRANSPORTER_NAME</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>TRPCODE</col_name>
+      <col_type>int</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>UK</col_name>
+      <col_type>int</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>YEAR_NAME</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+  </entity>
+  <entity>
+    <id>SALINV_HSN_SQL_01</id>
+    <entity_name>SI HSN SQL</entity_name>
+    <affinity>Global</affinity>
+    <db_name>SALINV_HSN_SQL</db_name>
+    <sql_stmt>/* Formatted on 27-05-2022 16:00:16 (QP5 v5.294) */
+  SELECT D.INVCODE,
+         SUM (D.INVQTY)     INVOICED_QUANTITY,
+         SUM (D.INVAMT)     INVAMT,
+         D.HSN_SAC_CODE     HSN_CODE,
+         H.HSN_SAC_CODE     HSN_SAC_ID,
+         H.DESCRIPTION      HSN_DESCRIPTION,
+         I.UNITNAME         UOM,
+         SUM (TAXABLE_AMOUNT) TAXABLE_AMOUNT,
+         CGST_RATE          CGST_RATE,
+         SUM (CGST_AMOUNT)  CGST_AMOUNT,
+         SGST_RATE          SGST_RATE,
+         SUM (SGST_amount)  SGST_amount,
+         IGST_RATE          IGST_RATE,
+         SUM (IGST_amount)  IGST_amount,
+         CESS_RATE          CESS_RATE,
+         SUM (CESS_amount)  CESS_amount,
+         GINVIEW.fnc_uk     uk
+    FROM (SELECT *
+            FROM salinvdet
+           WHERE (   INVCODE IN
+                        (    SELECT REGEXP_SUBSTR ('@DocumentId@',
+                                                   '[^|~|]+',
+                                                   1,
+                                                   LEVEL)
+                                       COL1
+                               FROM DUAL
+                         CONNECT BY LEVEL &lt;=
+                                       REGEXP_COUNT ('@DocumentId@', '|~|') + 1)
+                  OR NVL (REGEXP_COUNT ('@DocumentId@', '|~|') + 1, 0) = 0)) D,
+         INVITEM     I,
+         INVHSNSACMAIN H,
+         (  SELECT SALINVDET_CODE,
+                   APPAMT TAXABLE_AMOUNT,
+                   SUM (CASE WHEN GST_COMPONENT = 'CGST' THEN RATE ELSE 0 END)
+                      CGST_RATE,
+                   SUM (CASE WHEN GST_COMPONENT = 'CGST' THEN CHGAMT ELSE 0 END)
+                      CGST_AMOUNT,
+                   SUM (CASE WHEN GST_COMPONENT = 'SGST' THEN RATE ELSE 0 END)
+                      SGST_RATE,
+                   SUM (CASE WHEN GST_COMPONENT = 'SGST' THEN CHGAMT ELSE 0 END)
+                      SGST_AMOUNT,
+                   SUM (CASE WHEN GST_COMPONENT = 'IGST' THEN RATE ELSE 0 END)
+                      IGST_RATE,
+                   SUM (CASE WHEN GST_COMPONENT = 'IGST' THEN CHGAMT ELSE 0 END)
+                      IGST_AMOUNT,
+                   SUM (CASE WHEN GST_COMPONENT = 'CESS' THEN RATE ELSE 0 END)
+                      CESS_Rate,
+                   SUM (CASE WHEN GST_COMPONENT = 'CESS' THEN CHGAMT ELSE 0 END)
+                      CESS_AMOUNT
+              FROM SALINVCHG_ITEM
+             WHERE     SOURCE = 'G'
+                   AND (   INVCODE IN
+                              (    SELECT REGEXP_SUBSTR ('@DocumentId@',
+                                                         '[^|~|]+',
+                                                         1,
+                                                         LEVEL)
+                                             COL1
+                                     FROM DUAL
+                               CONNECT BY LEVEL &lt;=
+                                               REGEXP_COUNT ('@DocumentId@',
+                                                             '|~|')
+                                             + 1)
+                        OR NVL (REGEXP_COUNT ('@DocumentId@', '|~|') + 1, 0) = 0)
+          GROUP BY SALINVDET_CODE, APPAMT) TAX
+   WHERE     D.ICODE = I.ICODE
+         AND I.INVHSNSACMAIN_CODE = H.CODE 
+         AND D.CODE = TAX.SALINVDET_CODE(+)
+         AND (   d.INVCODE IN
+                    (    SELECT REGEXP_SUBSTR ('@DocumentId@',
+                                               '[^|~|]+',
+                                               1,
+                                               LEVEL)
+                                   COL1
+                           FROM DUAL
+                     CONNECT BY LEVEL &lt;=
+                                   REGEXP_COUNT ('@DocumentId@', '|~|') + 1)
+              OR NVL (REGEXP_COUNT ('@DocumentId@', '|~|') + 1, 0) = 0)
+GROUP BY D.INVCODE,
+         D.HSN_SAC_CODE,
+         H.HSN_SAC_CODE,
+         H.DESCRIPTION,
+         I.UNITNAME,
+         CGST_RATE,
+         SGST_RATE,
+         IGST_RATE,
+         CESS_RATE</sql_stmt>
+    <category>05-Sales and Distribution|*{*}*|02-Transaction|*{*}*|Sales Invoice</category>
+    <datasource_id>0</datasource_id>
+    <object_type>sql</object_type>
+    <schema_access_type>Metadata</schema_access_type>
+    <key>
+      <col_name>UK</col_name>
+    </key>
+    <column_metadata>
+      <col_name>CESS_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CESS_RATE</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CGST_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CGST_RATE</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>HSN_CODE</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>HSN_DESCRIPTION</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>HSN_SAC_ID</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>IGST_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>IGST_RATE</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>INVAMT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>INVCODE</col_name>
+      <col_type>int</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>INVOICED_QUANTITY</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SGST_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SGST_RATE</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>TAXABLE_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>UK</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>UOM</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+  </entity>
+  <entity>
+    <id>SALINV_ITEM_SQL_01</id>
+    <entity_name>SI Item SQL</entity_name>
+    <affinity>Global</affinity>
+    <db_name>SALINV_ITEM_SQL</db_name>
+    <sql_stmt>/* Formatted on 27-05-2022 15:46:51 (QP5 v5.294) */
+  SELECT M.INVCODE                INVCODE,
+         M.ICODE                  ICODE,
+         SUM (M.INVQTY)           INVOICE_QUANTITY,
+         SUM (NVL (DC.DISCOUNT, 0)) DC_Discount_Amount,
+         DC.BASIC_RATE            DC_Basic_Rate,
+         SUM (NVL (DC.ROUNDOFF, 0)) DC_Round_Off_Amount,
+         M.RATE                   INVOICE_RATE,
+         M.COSTRATE               COST_RATE,
+         SUM (M.RTQTY)            RETURNED_QUANTITY,
+         M.MRP                    INVOICE_RSP,
+         M.REM                    ITEM_REMARKS,
+         SUM (M.INVAMT)           ITEM_GROSS_AMOUNT,
+         SUM (TAX.ITEM_TAX_RATE)  ITEM_TAX_RATE,
+         SUM (M.CHGAMT)           ITEM_CHARGE_AMOUNT,
+         SUM (NVL (M.INVAMT, 0) + NVL (M.CHGAMT, 0) + NVL (M.TAXAMT, 0))
+            ITEM_NET_AMOUNT,
+         SUM (M.TAXAMT)           ITEM_TAX_AMOUNT,
+         SUM (Taxable_Amount)     Taxable_Amount,
+         CGST_Rate,
+         SUM (CGST_Amount)        CGST_Amount,
+         SGST_Rate,
+         SUM (SGST_Amount)        SGST_Amount,
+         IGST_Rate,
+         SUM (IGST_Amount)        IGST_Amount,
+         CESS_Rate,
+         SUM (CESS_Amount)        CESS_Amount,
+         GINVIEW.fnc_uk           UK,
+         M.HSN_SAC_CODE,
+         SUM (TAX.VAT_RATE)       VAT_RATE,
+         SUM (TAX.VAT_AMOUNT)     VAT_AMOUNT
+    FROM (select * from SALINVDET where (   INVCODE IN
+                              (    SELECT REGEXP_SUBSTR ('@DocumentId@',
+                                                         '[^|~|]+',
+                                                         1,
+                                                         LEVEL)
+                                             COL1
+                                     FROM DUAL
+                               CONNECT BY LEVEL &lt;=
+                                               REGEXP_COUNT ('@DocumentId@',
+                                                             '|~|')
+                                             + 1)
+                        OR NVL (REGEXP_COUNT ('@DocumentId@', '|~|') + 1, 0) = 0))  M,
+         (  SELECT dc.code,
+                   NVL (DC.BASIC_RATE, 0) BASIC_RATE,
+                   SUM (NVL (DC.DISCOUNT, 0)) DISCOUNT,
+                   SUM (NVL (DC.ROUNDOFF, 0)) ROUNDOFF
+              FROM INVDCDET dc, salinvdet det
+			  where dc.dccode = det.dccode
+			  AND (   INVCODE IN
+                              (    SELECT REGEXP_SUBSTR ('@DocumentId@',
+                                                         '[^|~|]+',
+                                                         1,
+                                                         LEVEL)
+                                             COL1
+                                     FROM DUAL
+                               CONNECT BY LEVEL &lt;=
+                                               REGEXP_COUNT ('@DocumentId@',
+                                                             '|~|')
+                                             + 1)
+                        OR NVL (REGEXP_COUNT ('@DocumentId@', '|~|') + 1, 0) = 0)
+          GROUP BY dc.code, NVL (DC.BASIC_RATE, 0)) DC,
+         (  SELECT SALINVDET_CODE,
+                   APPAMT                                          TAXABLE_AMOUNT,
+                   ROUND (
+                      SUM (
+                         CASE
+                            WHEN source IN ('G', 'V')
+                            THEN
+                                 (  NVL (CHGAMT, 0)
+                                  / DECODE (NVL (APPAMT, 0), 0, 1, APPAMT))
+                               * 100
+                            ELSE
+                               0
+                         END),
+                      3)
+                      ITEM_TAX_RATE,
+                   SUM (NVL (CHGAMT, 0))                           TAX_CHARGE_AMOUNT,
+                   SUM (CASE WHEN GST_COMPONENT = 'CGST' THEN RATE ELSE 0 END)
+                      CGST_RATE,
+                   SUM (CASE WHEN GST_COMPONENT = 'CGST' THEN CHGAMT ELSE 0 END)
+                      CGST_AMOUNT,
+                   SUM (CASE WHEN GST_COMPONENT = 'SGST' THEN RATE ELSE 0 END)
+                      SGST_RATE,
+                   SUM (CASE WHEN GST_COMPONENT = 'SGST' THEN CHGAMT ELSE 0 END)
+                      SGST_AMOUNT,
+                   SUM (CASE WHEN GST_COMPONENT = 'IGST' THEN RATE ELSE 0 END)
+                      IGST_RATE,
+                   SUM (CASE WHEN GST_COMPONENT = 'IGST' THEN CHGAMT ELSE 0 END)
+                      IGST_AMOUNT,
+                   SUM (CASE WHEN GST_COMPONENT = 'CESS' THEN RATE ELSE 0 END)
+                      CESS_Rate,
+                   SUM (CASE WHEN GST_COMPONENT = 'CESS' THEN CHGAMT ELSE 0 END)
+                      CESS_AMOUNT,
+                   SUM (CASE WHEN SOURCE = 'V' THEN RATE ELSE 0 END) VAT_RATE,
+                   SUM (CASE WHEN SOURCE = 'V' THEN CHGAMT ELSE 0 END) VAT_AMOUNT
+              FROM SALINVCHG_ITEM
+             WHERE     ISTAX = 'Y'
+                   AND (   INVCODE IN
+                              (    SELECT REGEXP_SUBSTR ('@DocumentId@',
+                                                         '[^|~|]+',
+                                                         1,
+                                                         LEVEL)
+                                             COL1
+                                     FROM DUAL
+                               CONNECT BY LEVEL &lt;=
+                                               REGEXP_COUNT ('@DocumentId@',
+                                                             '|~|')
+                                             + 1)
+                        OR NVL (REGEXP_COUNT ('@DocumentId@', '|~|') + 1, 0) = 0)
+          GROUP BY SALINVDET_CODE, APPAMT) TAX
+   WHERE     M.CODE = TAX.SALINVDET_CODE(+)
+         AND M.INVDCDET_CODE = DC.CODE(+)
+         AND (   M.INVCODE IN
+                    (    SELECT REGEXP_SUBSTR ('@DocumentId@',
+                                               '[^|~|]+',
+                                               1,
+                                               LEVEL)
+                                   COL1
+                           FROM DUAL
+                     CONNECT BY LEVEL &lt;=
+                                   REGEXP_COUNT ('@DocumentId@', '|~|') + 1)
+              OR NVL (REGEXP_COUNT ('@DocumentId@', '|~|') + 1, 0) = 0)
+GROUP BY M.INVCODE,
+         M.ICODE,
+         M.RATE,
+         M.MRP,
+         M.REM,
+         CGST_Rate,
+         SGST_Rate,
+         IGST_Rate,
+         CESS_Rate,
+         DC.BASIC_RATE,
+         M.COSTRATE,
+         M.HSN_SAC_CODE</sql_stmt>
+    <category>05-Sales and Distribution|*{*}*|02-Transaction|*{*}*|Sales Invoice</category>
+    <datasource_id>0</datasource_id>
+    <object_type>sql</object_type>
+    <schema_access_type>Metadata</schema_access_type>
+    <key>
+      <col_name>UK</col_name>
+    </key>
+    <column_metadata>
+      <col_name>CESS_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CESS_RATE</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CGST_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>CGST_RATE</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>COST_RATE</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>DC_BASIC_RATE</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>DC_DISCOUNT_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>DC_ROUND_OFF_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>HSN_SAC_CODE</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>ICODE</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>IGST_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>IGST_RATE</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>INVCODE</col_name>
+      <col_type>int</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>INVOICE_QUANTITY</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>INVOICE_RATE</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>INVOICE_RSP</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>ITEM_CHARGE_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>ITEM_GROSS_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>ITEM_NET_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>ITEM_REMARKS</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>ITEM_TAX_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>ITEM_TAX_RATE</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>RETURNED_QUANTITY</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SGST_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SGST_RATE</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>TAXABLE_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>UK</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>VAT_AMOUNT</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>VAT_RATE</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+  </entity>
+  <entity>
+    <id>SALINV_REFDOCS_SQL_01</id>
+    <entity_name>SI Refdocs SQL</entity_name>
+    <affinity>Global</affinity>
+    <db_name>SALINV_REFDOCS_SQL</db_name>
+    <sql_stmt>/* Formatted on 27-05-2022 16:18:06 (QP5 v5.294) */
+  SELECT SI.INVCODE,
+         DCM.SCHEME_DOCNO DC_No,
+         DCM.DCDT       DC_Date,
+         SUM (SI.INVQTY) Invoice_Quantity,
+         ORM.SCHEME_DOCNO SO_No,
+         ORM.ORDDT      SO_Date,
+         DCM.REM        AS DC_REMARKS,
+         SUM (DCD.ISQTY) DCQTY,
+         DCM.DCBARCODE  DC_BARCODE,
+         ginview.fnc_uk uk
+    FROM (SELECT *
+            FROM ginssot.FACT$SALINVDET
+           WHERE (   INVCODE IN
+                        (    SELECT REGEXP_SUBSTR ('@DocumentId@',
+                                                   '[^|~|]+',
+                                                   1,
+                                                   LEVEL)
+                                       COL1
+                               FROM DUAL
+                         CONNECT BY LEVEL &lt;=
+                                       REGEXP_COUNT ('@DocumentId@', '|~|') + 1)
+                  OR NVL (REGEXP_COUNT ('@DocumentId@', '|~|') + 1, 0) = 0)) SI,
+         (SELECT *
+            FROM ginssot.FACT$SALINVMAIN
+           WHERE (   INVCODE IN
+                        (    SELECT REGEXP_SUBSTR ('@DocumentId@',
+                                                   '[^|~|]+',
+                                                   1,
+                                                   LEVEL)
+                                       COL1
+                               FROM DUAL
+                         CONNECT BY LEVEL &lt;=
+                                       REGEXP_COUNT ('@DocumentId@', '|~|') + 1)
+                  OR NVL (REGEXP_COUNT ('@DocumentId@', '|~|') + 1, 0) = 0)) SM,
+         ginssot.DIM$INVDCMAIN DCM,
+         ginssot.FACT$INVDCDET DCD,
+         ginssot.FACT$SALORDMAIN ORM
+   WHERE     SI.INVCODE = SM.INVCODE
+         AND SI.DCCODE = DCM.DCCODE
+         AND DCM.DCCODE = DCD.DCCODE
+         AND DCD.code = SI.INVDCDET_CODE
+         AND DCD.ORDCODE = ORM.ORDCODE(+)
+         AND SM.SALETYPE = 'OUTRIGHT'
+         AND (   si.INVCODE IN
+                    (    SELECT REGEXP_SUBSTR ('@DocumentId@',
+                                               '[^|~|]+',
+                                               1,
+                                               LEVEL)
+                                   COL1
+                           FROM DUAL
+                     CONNECT BY LEVEL &lt;=
+                                   REGEXP_COUNT ('@DocumentId@', '|~|') + 1)
+              OR NVL (REGEXP_COUNT ('@DocumentId@', '|~|') + 1, 0) = 0)
+GROUP BY SI.INVCODE,
+         DCM.SCHEME_DOCNO,
+         DCM.DCDT,
+         ORM.SCHEME_DOCNO,
+         ORM.ORDDT,
+         DCM.REM,
+         DCM.DCBARCODE</sql_stmt>
+    <category>05-Sales and Distribution|*{*}*|02-Transaction|*{*}*|Sales Invoice</category>
+    <datasource_id>0</datasource_id>
+    <object_type>sql</object_type>
+    <schema_access_type>Metadata</schema_access_type>
+    <key>
+      <col_name>UK</col_name>
+    </key>
+    <column_metadata>
+      <col_name>DC_BARCODE</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>DC_DATE</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>DC_NO</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>DC_REMARKS</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>DCQTY</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>INVCODE</col_name>
+      <col_type>int</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>INVOICE_QUANTITY</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SO_DATE</col_name>
+      <col_type>date</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>SO_NO</col_name>
+      <col_type>string</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>UK</col_name>
+      <col_type>decimal</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+  </entity>
+  <join>
+    <affinity>Global</affinity>
+    <entity_from_name>LV_AGENT_01</entity_from_name>
+    <entity_to_name>SALINV_HEADER_SQL_01</entity_to_name>
+    <entity_from_id>LV_AGENT_01</entity_from_id>
+    <entity_to_id>SALINV_HEADER_SQL_01</entity_to_id>
+    <join_type>rightouter</join_type>
+    <relation_type>11</relation_type>
+    <weight>0</weight>
+    <joincol>
+      <col_from_name>CODE</col_from_name>
+      <col_to_name>AGCODE</col_to_name>
+    </joincol>
+    <clause>
+      <left_side>CODE</left_side>
+      <left_side_type>Column</left_side_type>
+      <comparison>EQ</comparison>
+      <right_side>AGCODE</right_side>
+      <right_side_type>Column</right_side_type>
+      <conjunction>AND</conjunction>
+      <level>0</level>
+    </clause>
+  </join>
+  <join>
+    <affinity>Global</affinity>
+    <entity_from_name>LV_CALENDAR_01</entity_from_name>
+    <entity_to_name>SALINV_HEADER_SQL_01</entity_to_name>
+    <entity_from_id>LV_CALENDAR_01</entity_from_id>
+    <entity_to_id>SALINV_HEADER_SQL_01</entity_to_id>
+    <join_type>inner</join_type>
+    <relation_type>11</relation_type>
+    <weight>0</weight>
+    <joincol>
+      <col_from_name>DATE_VALUE</col_from_name>
+      <col_to_name>INVOICE_DATE</col_to_name>
+    </joincol>
+    <clause>
+      <left_side>DATE_VALUE</left_side>
+      <left_side_type>Column</left_side_type>
+      <comparison>EQ</comparison>
+      <right_side>INVOICE_DATE</right_side>
+      <right_side_type>Column</right_side_type>
+      <conjunction>AND</conjunction>
+      <level>0</level>
+    </clause>
+  </join>
+  <join>
+    <affinity>Global</affinity>
+    <entity_from_name>LV_CUSTOMER_SUPPLIER_01</entity_from_name>
+    <entity_to_name>SALINV_HEADER_SQL_01</entity_to_name>
+    <entity_from_id>LV_CUSTOMER_SUPPLIER_01</entity_from_id>
+    <entity_to_id>SALINV_HEADER_SQL_01</entity_to_id>
+    <join_type>inner</join_type>
+    <relation_type>11</relation_type>
+    <weight>0</weight>
+    <joincol>
+      <col_from_name>CODE</col_from_name>
+      <col_to_name>PCODE</col_to_name>
+    </joincol>
+    <clause>
+      <left_side>CODE</left_side>
+      <left_side_type>Column</left_side_type>
+      <comparison>EQ</comparison>
+      <right_side>PCODE</right_side>
+      <right_side_type>Column</right_side_type>
+      <conjunction>AND</conjunction>
+      <level>0</level>
+    </clause>
+  </join>
+  <join>
+    <affinity>Global</affinity>
+    <entity_from_name>LV_SITE_02</entity_from_name>
+    <entity_to_name>SALINV_HEADER_SQL_01</entity_to_name>
+    <entity_from_id>LV_SITE_02</entity_from_id>
+    <entity_to_id>SALINV_HEADER_SQL_01</entity_to_id>
+    <join_type>inner</join_type>
+    <relation_type>11</relation_type>
+    <weight>0</weight>
+    <joincol>
+      <col_from_name>SITECODE</col_from_name>
+      <col_to_name>ADMSITE_CODE</col_to_name>
+    </joincol>
+    <clause>
+      <left_side>SITECODE</left_side>
+      <left_side_type>Column</left_side_type>
+      <comparison>EQ</comparison>
+      <right_side>ADMSITE_CODE</right_side>
+      <right_side_type>Column</right_side_type>
+      <conjunction>AND</conjunction>
+      <level>0</level>
+    </clause>
+  </join>
+  <join>
+    <affinity>Global</affinity>
+    <entity_from_name>LV_SITE_01</entity_from_name>
+    <entity_to_name>SALINV_HEADER_SQL_01</entity_to_name>
+    <entity_from_id>LV_SITE_01</entity_from_id>
+    <entity_to_id>SALINV_HEADER_SQL_01</entity_to_id>
+    <join_type>inner</join_type>
+    <relation_type>11</relation_type>
+    <weight>0</weight>
+    <joincol>
+      <col_from_name>SITECODE</col_from_name>
+      <col_to_name>ADMSITE_CODE_OWNER</col_to_name>
+    </joincol>
+    <clause>
+      <left_side>SITECODE</left_side>
+      <left_side_type>Column</left_side_type>
+      <comparison>EQ</comparison>
+      <right_side>ADMSITE_CODE_OWNER</right_side>
+      <right_side_type>Column</right_side_type>
+      <conjunction>AND</conjunction>
+      <level>0</level>
+    </clause>
+  </join>
+  <join>
+    <affinity>Global</affinity>
+    <entity_from_name>LV_TRANSPORTER_01</entity_from_name>
+    <entity_to_name>SALINV_HEADER_SQL_01</entity_to_name>
+    <entity_from_id>LV_TRANSPORTER_01</entity_from_id>
+    <entity_to_id>SALINV_HEADER_SQL_01</entity_to_id>
+    <join_type>rightouter</join_type>
+    <relation_type>11</relation_type>
+    <weight>0</weight>
+    <joincol>
+      <col_from_name>CODE</col_from_name>
+      <col_to_name>TRPCODE</col_to_name>
+    </joincol>
+    <clause>
+      <left_side>CODE</left_side>
+      <left_side_type>Column</left_side_type>
+      <comparison>EQ</comparison>
+      <right_side>TRPCODE</right_side>
+      <right_side_type>Column</right_side_type>
+      <conjunction>AND</conjunction>
+      <level>0</level>
+    </clause>
+  </join>
+  <join>
+    <affinity>Global</affinity>
+    <entity_from_name>SALINV_HEADER_SQL_01</entity_from_name>
+    <entity_to_name>SALINV_CHARGE_SQL_01</entity_to_name>
+    <entity_from_id>SALINV_HEADER_SQL_01</entity_from_id>
+    <entity_to_id>SALINV_CHARGE_SQL_01</entity_to_id>
+    <join_type>leftouter</join_type>
+    <relation_type>1M</relation_type>
+    <weight>0</weight>
+    <joincol>
+      <col_from_name>INVCODE</col_from_name>
+      <col_to_name>INVCODE</col_to_name>
+    </joincol>
+    <clause>
+      <left_side>INVCODE</left_side>
+      <left_side_type>Column</left_side_type>
+      <comparison>EQ</comparison>
+      <right_side>INVCODE</right_side>
+      <right_side_type>Column</right_side_type>
+      <conjunction>AND</conjunction>
+      <level>0</level>
+    </clause>
+  </join>
+  <join>
+    <affinity>Global</affinity>
+    <entity_from_name>SALINV_HEADER_SQL_01</entity_from_name>
+    <entity_to_name>SALINV_HSN_SQL_01</entity_to_name>
+    <entity_from_id>SALINV_HEADER_SQL_01</entity_from_id>
+    <entity_to_id>SALINV_HSN_SQL_01</entity_to_id>
+    <join_type>inner</join_type>
+    <relation_type>1M</relation_type>
+    <weight>0</weight>
+    <joincol>
+      <col_from_name>INVCODE</col_from_name>
+      <col_to_name>INVCODE</col_to_name>
+    </joincol>
+    <clause>
+      <left_side>INVCODE</left_side>
+      <left_side_type>Column</left_side_type>
+      <comparison>EQ</comparison>
+      <right_side>INVCODE</right_side>
+      <right_side_type>Column</right_side_type>
+      <conjunction>AND</conjunction>
+      <level>0</level>
+    </clause>
+  </join>
+  <join>
+    <affinity>Global</affinity>
+    <entity_from_name>SALINV_HEADER_SQL_01</entity_from_name>
+    <entity_to_name>SALINV_ITEM_SQL_01</entity_to_name>
+    <entity_from_id>SALINV_HEADER_SQL_01</entity_from_id>
+    <entity_to_id>SALINV_ITEM_SQL_01</entity_to_id>
+    <join_type>inner</join_type>
+    <relation_type>1M</relation_type>
+    <weight>0</weight>
+    <joincol>
+      <col_from_name>INVCODE</col_from_name>
+      <col_to_name>INVCODE</col_to_name>
+    </joincol>
+    <clause>
+      <left_side>INVCODE</left_side>
+      <left_side_type>Column</left_side_type>
+      <comparison>EQ</comparison>
+      <right_side>INVCODE</right_side>
+      <right_side_type>Column</right_side_type>
+      <conjunction>AND</conjunction>
+      <level>0</level>
+    </clause>
+  </join>
+  <join>
+    <affinity>Global</affinity>
+    <entity_from_name>SALINV_HEADER_SQL_01</entity_from_name>
+    <entity_to_name>SALINV_REFDOCS_SQL_01</entity_to_name>
+    <entity_from_id>SALINV_HEADER_SQL_01</entity_from_id>
+    <entity_to_id>SALINV_REFDOCS_SQL_01</entity_to_id>
+    <join_type>inner</join_type>
+    <relation_type>1M</relation_type>
+    <weight>0</weight>
+    <joincol>
+      <col_from_name>INVCODE</col_from_name>
+      <col_to_name>INVCODE</col_to_name>
+    </joincol>
+    <clause>
+      <left_side>INVCODE</left_side>
+      <left_side_type>Column</left_side_type>
+      <comparison>EQ</comparison>
+      <right_side>INVCODE</right_side>
+      <right_side_type>Column</right_side_type>
+      <conjunction>AND</conjunction>
+      <level>0</level>
+    </clause>
+  </join>
+  <join>
+    <affinity>Global</affinity>
+    <entity_from_name>LV_ITEM_01</entity_from_name>
+    <entity_to_name>SALINV_ITEM_SQL_01</entity_to_name>
+    <entity_from_id>LV_ITEM_01</entity_from_id>
+    <entity_to_id>SALINV_ITEM_SQL_01</entity_to_id>
+    <join_type>inner</join_type>
+    <relation_type>11</relation_type>
+    <weight>0</weight>
+    <joincol>
+      <col_from_name>CODE</col_from_name>
+      <col_to_name>ICODE</col_to_name>
+    </joincol>
+    <clause>
+      <left_side>CODE</left_side>
+      <left_side_type>Column</left_side_type>
+      <comparison>EQ</comparison>
+      <right_side>ICODE</right_side>
+      <right_side_type>Column</right_side_type>
+      <conjunction>AND</conjunction>
+      <level>0</level>
+    </clause>
+  </join>
+  

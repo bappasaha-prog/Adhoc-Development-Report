@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="19.2.4.0" Ref="0" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v19.2, Version=19.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Report2" Margins="100, 100, 25, 100" PageWidth="850" PageHeight="1100" Version="19.2" XmlDataPath="C:\Users\ujjal.b\Downloads\POSBillDocumentData - KC.xml" Font="Arial, 9.75pt">
+  <Bands>
+    <Item1 Ref="1" ControlType="TopMarginBand" Name="TopMargin" HeightF="25">
+      <Controls>
+        <Item1 Ref="2" ControlType="XRLabel" Name="label1" Multiline="true" Text="Payment Detail:-" SizeF="250,12.5" LocationFloat="12.5, 12.5" Padding="2,2,0,0,96" />
+      </Controls>
+    </Item1>
+    <Item2 Ref="3" ControlType="DetailBand" Name="Detail">
+      <Controls>
+        <Item1 Ref="4" ControlType="XRLabel" Name="label4" Multiline="true" Text="label4" TextAlignment="TopRight" SizeF="221.874969,12.5" LocationFloat="402.083344, 0" Padding="2,2,0,0,96">
+          <ExpressionBindings>
+            <Item1 Ref="5" EventName="BeforePrint" PropertyName="Text" Expression="[v_Report_POSBillMOP].[BaseTender]" />
+          </ExpressionBindings>
+        </Item1>
+        <Item2 Ref="6" ControlType="XRLabel" Name="label3" Multiline="true" Text="label3" SizeF="170.833344,12.5" LocationFloat="231.25, 0" Padding="2,2,0,0,96">
+          <ExpressionBindings>
+            <Item1 Ref="7" EventName="BeforePrint" PropertyName="Text" Expression="Iif(IsNullOrEmpty([v_Report_POSBill.CNNo]) And !IsNullOrEmpty([v_Report_POSBill.DNNo]), [v_Report_POSBill.DNNo], Iif(IsNullOrEmpty([v_Report_POSBill.DNNo]) And !IsNullOrEmpty([v_Report_POSBill.CNNo]), [v_Report_POSBill.CNNo], ''))" />
+          </ExpressionBindings>
+        </Item2>
+        <Item3 Ref="8" ControlType="XRLabel" Name="label2" Multiline="true" Text="label2" SizeF="218.75,12.5" LocationFloat="12.5, 0" Padding="2,2,0,0,96">
+          <ExpressionBindings>
+            <Item1 Ref="9" EventName="BeforePrint" PropertyName="Text" Expression="[v_Report_POSBillMOP].[MOPName]" />
+          </ExpressionBindings>
+        </Item3>
+      </Controls>
+    </Item2>
+    <Item3 Ref="10" ControlType="BottomMarginBand" Name="BottomMargin" />
+  </Bands>
+</XtraReportsLayoutSerializer>

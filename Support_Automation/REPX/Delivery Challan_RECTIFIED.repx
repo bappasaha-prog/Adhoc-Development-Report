@@ -1,0 +1,377 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="19.2.4.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v19.2, Version=19.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Report1" ScriptsSource="&#xD;&#xA;private void AMIW_GetValue(object sender, DevExpress.XtraReports.UI.GetValueEventArgs e) &#xD;&#xA;{&#xD;&#xA;string isNegative = &quot;Rs. &quot;;  &#xD;&#xA;    try  &#xD;&#xA;    {  &#xD;&#xA;        //Console.WriteLine(&quot;Enter a Number to convert to currency&quot;);  &#xD;&#xA;        string number = Convert.ToDouble(e.GetColumnValue(&quot;NetAmount&quot;)).ToString();  &#xD;&#xA;//&quot;15550000.90&quot;;&#xD;&#xA;  &#xD;&#xA;        if (number.Contains(&quot;-&quot;))  &#xD;&#xA;        {  &#xD;&#xA;            isNegative = isNegative + &quot;Minus &quot;;  &#xD;&#xA;            number = number.Substring(1, number.Length - 1);  &#xD;&#xA;        }  &#xD;&#xA;        if (number == &quot;0&quot;)  &#xD;&#xA;        {  &#xD;&#xA;            e.Value = &quot;Rs. Zero Only&quot;;  &#xD;&#xA;        }  &#xD;&#xA;        else  &#xD;&#xA;        {  &#xD;&#xA;            e.Value = isNegative + ConvertToWords(number);  &#xD;&#xA;        }  &#xD;&#xA;       // Console.ReadKey();  &#xD;&#xA;    }  &#xD;&#xA;    catch (Exception ex)  &#xD;&#xA;    {  &#xD;&#xA;        e.Value = ex.Message;&#xD;&#xA;&#x9;  //Console.WriteLine(ex.Message);&#xD;&#xA;    }&#xD;&#xA;}&#xD;&#xA;private static String ConvertToWords(String numb)  &#xD;&#xA;{  &#xD;&#xA;    String val = &quot;&quot;, wholeNo = numb, points = &quot;&quot;, andStr = &quot;&quot;, pointStr = &quot;&quot;;  &#xD;&#xA;    String endStr = &quot;Only&quot;;  &#xD;&#xA;    try  &#xD;&#xA;    {  &#xD;&#xA;        int decimalPlace = numb.IndexOf(&quot;.&quot;);  &#xD;&#xA;        if (decimalPlace &gt; 0)  &#xD;&#xA;        {  &#xD;&#xA;            wholeNo = numb.Substring(0, decimalPlace);  &#xD;&#xA;            points = numb.Substring(decimalPlace + 1);  &#xD;&#xA;            if (Convert.ToInt32(points) &gt; 0)  &#xD;&#xA;            {  &#xD;&#xA;                andStr = &quot;and&quot;;// just to separate whole numbers from points/cents    &#xD;&#xA;                endStr = &quot;Paisa &quot; + endStr;//Cents    &#xD;&#xA;                pointStr = ConvertDecimals(points);  &#xD;&#xA;            }  &#xD;&#xA;        }  &#xD;&#xA;        val = String.Format(&quot;{0} {1}{2} {3}&quot;, ConvertWholeNumber(wholeNo).Trim(), andStr, pointStr, endStr);  &#xD;&#xA;    }  &#xD;&#xA;    catch { }  &#xD;&#xA;    return val;  &#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;private static String ConvertDecimals(String number)  &#xD;&#xA;{  &#xD;&#xA;    String cd = &quot;&quot;, digit = &quot;&quot;, engOne = &quot;&quot;;  &#xD;&#xA;    for (int i = 0; i &lt; number.Length; i++)  &#xD;&#xA;    {  &#xD;&#xA;        digit = number[i].ToString();  &#xD;&#xA;        if (digit.Equals(&quot;0&quot;))  &#xD;&#xA;        {  &#xD;&#xA;            engOne = &quot;Zero&quot;;  &#xD;&#xA;        }  &#xD;&#xA;        else  &#xD;&#xA;        {  &#xD;&#xA;            engOne = ones(digit);  &#xD;&#xA;        }  &#xD;&#xA;        cd += &quot; &quot; + engOne;  &#xD;&#xA;    }  &#xD;&#xA;    return cd;  &#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;private static String ConvertWholeNumber(String Number)  &#xD;&#xA;{  &#xD;&#xA;    string word = &quot;&quot;;  &#xD;&#xA;    try  &#xD;&#xA;    {  &#xD;&#xA;        bool beginsZero = false;//tests for 0XX    &#xD;&#xA;        bool isDone = false;//test if already translated    &#xD;&#xA;        double dblAmt = (Convert.ToDouble(Number));  &#xD;&#xA;        //if ((dblAmt &gt; 0) &amp;&amp; number.StartsWith(&quot;0&quot;))    &#xD;&#xA;        if (dblAmt &gt; 0)  &#xD;&#xA;        {//test for zero or digit zero in a nuemric    &#xD;&#xA;            beginsZero = Number.StartsWith(&quot;0&quot;);  &#xD;&#xA;  &#xD;&#xA;            int numDigits = Number.Length;  &#xD;&#xA;            int pos = 0;//store digit grouping    &#xD;&#xA;            String place = &quot;&quot;;//digit grouping name:hundres,thousand,etc...    &#xD;&#xA;            switch (numDigits)  &#xD;&#xA;            {  &#xD;&#xA;                case 1://ones' range    &#xD;&#xA;  &#xD;&#xA;                    word = ones(Number);  &#xD;&#xA;                    isDone = true;  &#xD;&#xA;                    break;  &#xD;&#xA;                case 2://tens' range    &#xD;&#xA;                    word = tens(Number);  &#xD;&#xA;                    isDone = true;  &#xD;&#xA;                    break;  &#xD;&#xA;                case 3://hundreds' range    &#xD;&#xA;                    pos = (numDigits % 3) + 1;  &#xD;&#xA;                    place = &quot; Hundred &quot;;  &#xD;&#xA;                    break;  &#xD;&#xA;                case 4://thousands' range    &#xD;&#xA;                case 5:  &#xD;&#xA;&#x9;&#x9;&#x9;  pos = (numDigits % 4) + 1;  &#xD;&#xA;                    place = &quot; Thousand &quot;;  &#xD;&#xA;                    break;&#xD;&#xA;                case 6://Lacs range  &#xD;&#xA;                case 7:  &#xD;&#xA;&#x9;&#x9;&#x9;  pos = (numDigits % 6) + 1;  &#xD;&#xA;                    place = &quot; Lacs &quot;;  &#xD;&#xA;                    break;&#xD;&#xA;                case 8:  &#xD;&#xA;                case 9:  &#xD;&#xA;                    pos = (numDigits % 8) + 1;  &#xD;&#xA;                    place = &quot; Crore &quot;;  &#xD;&#xA;                    break;  &#xD;&#xA;                case 10://Billions's range    &#xD;&#xA;                case 11:  &#xD;&#xA;                case 12:  &#xD;&#xA;  &#xD;&#xA;                    pos = (numDigits % 10) + 1;  &#xD;&#xA;                    place = &quot; Billion &quot;;  &#xD;&#xA;                    break;  &#xD;&#xA;                //add extra case options for anything above Billion...    &#xD;&#xA;                default:  &#xD;&#xA;                    isDone = true;  &#xD;&#xA;                    break;  &#xD;&#xA;            }  &#xD;&#xA;            if (!isDone)  &#xD;&#xA;            {//if transalation is not done, continue...(Recursion comes in now!!)    &#xD;&#xA;                if (Number.Substring(0, pos) != &quot;0&quot; &amp;&amp; Number.Substring(pos) != &quot;0&quot;)  &#xD;&#xA;                {  &#xD;&#xA;                    try  &#xD;&#xA;                    {  &#xD;&#xA;                        word = ConvertWholeNumber(Number.Substring(0, pos)) + place + ConvertWholeNumber(Number.Substring(pos));  &#xD;&#xA;                    }  &#xD;&#xA;                    catch { }  &#xD;&#xA;                }  &#xD;&#xA;                else  &#xD;&#xA;                {  &#xD;&#xA;                    word = ConvertWholeNumber(Number.Substring(0, pos)) + ConvertWholeNumber(Number.Substring(pos));  &#xD;&#xA;                }  &#xD;&#xA;  &#xD;&#xA;                //check for trailing zeros    &#xD;&#xA;                //if (beginsZero) word = &quot; and &quot; + word.Trim();    &#xD;&#xA;            }  &#xD;&#xA;            //ignore digit grouping names    &#xD;&#xA;            if (word.Trim().Equals(place.Trim())) word = &quot;&quot;;  &#xD;&#xA;        }  &#xD;&#xA;    }  &#xD;&#xA;    catch { }  &#xD;&#xA;    return word.Trim();  &#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;private static String ones(String Number)  &#xD;&#xA;{  &#xD;&#xA;    int _Number = Convert.ToInt32(Number);  &#xD;&#xA;    String name = &quot;&quot;;  &#xD;&#xA;    switch (_Number)  &#xD;&#xA;    {  &#xD;&#xA;  &#xD;&#xA;        case 1:  &#xD;&#xA;            name = &quot;One&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 2:  &#xD;&#xA;            name = &quot;Two&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 3:  &#xD;&#xA;            name = &quot;Three&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 4:  &#xD;&#xA;            name = &quot;Four&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 5:  &#xD;&#xA;            name = &quot;Five&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 6:  &#xD;&#xA;            name = &quot;Six&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 7:  &#xD;&#xA;            name = &quot;Seven&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 8:  &#xD;&#xA;            name = &quot;Eight&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 9:  &#xD;&#xA;            name = &quot;Nine&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;    }  &#xD;&#xA;    return name;  &#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;private static String tens(String Number)  &#xD;&#xA;{  &#xD;&#xA;    int _Number = Convert.ToInt32(Number);  &#xD;&#xA;    String name = null;  &#xD;&#xA;    switch (_Number)  &#xD;&#xA;    {  &#xD;&#xA;        case 10:  &#xD;&#xA;            name = &quot;Ten&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 11:  &#xD;&#xA;            name = &quot;Eleven&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 12:  &#xD;&#xA;            name = &quot;Twelve&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 13:  &#xD;&#xA;            name = &quot;Thirteen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 14:  &#xD;&#xA;            name = &quot;Fourteen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 15:  &#xD;&#xA;            name = &quot;Fifteen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 16:  &#xD;&#xA;            name = &quot;Sixteen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 17:  &#xD;&#xA;            name = &quot;Seventeen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 18:  &#xD;&#xA;            name = &quot;Eighteen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 19:  &#xD;&#xA;            name = &quot;Nineteen&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 20:  &#xD;&#xA;            name = &quot;Twenty&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 30:  &#xD;&#xA;            name = &quot;Thirty&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 40:  &#xD;&#xA;            name = &quot;Fourty&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 50:  &#xD;&#xA;            name = &quot;Fifty&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 60:  &#xD;&#xA;            name = &quot;Sixty&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 70:  &#xD;&#xA;            name = &quot;Seventy&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 80:  &#xD;&#xA;            name = &quot;Eighty&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        case 90:  &#xD;&#xA;            name = &quot;Ninety&quot;;  &#xD;&#xA;            break;  &#xD;&#xA;        default:  &#xD;&#xA;            if (_Number &gt; 0)  &#xD;&#xA;            {  &#xD;&#xA;                name = tens(Number.Substring(0, 1) + &quot;0&quot;) + &quot; &quot; + ones(Number.Substring(1));  &#xD;&#xA;            }  &#xD;&#xA;            break;  &#xD;&#xA;    }  &#xD;&#xA;    return name;  &#xD;&#xA;}" Margins="19, 19, 11, 15" PageWidth="850" PageHeight="1100" Version="19.2" DataMember="LV_DC_HEADER" DataSource="#Ref-0" Font="Arial, 9.75pt">
+  <Parameters>
+    <Item1 Ref="3" Description="Code" MultiValue="true" Name="Code" Type="#Ref-2" />
+  </Parameters>
+  <CalculatedFields>
+    <Item1 Ref="4" Name="AMIW" DataMember="LV_DC_HEADER">
+      <Scripts Ref="5" OnGetValue="AMIW_GetValue" />
+    </Item1>
+  </CalculatedFields>
+  <Bands>
+    <Item1 Ref="6" ControlType="TopMarginBand" Name="TopMargin" HeightF="11.458333" />
+    <Item2 Ref="7" ControlType="DetailBand" Name="Detail" HeightF="0" />
+    <Item3 Ref="8" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="14.583333" />
+    <Item4 Ref="9" ControlType="PageHeaderBand" Name="PageHeader" HeightF="180.541687" Font="Calibri, 9pt, charSet=0">
+      <Controls>
+        <Item1 Ref="10" ControlType="XRLabel" Name="label75" Multiline="true" Text="GSTIN" SizeF="99.20832,23.0000153" LocationFloat="0, 155.458328" Padding="2,2,0,0,100" />
+        <Item2 Ref="11" ControlType="XRLabel" Name="label74" Multiline="true" Text="CIN No." SizeF="99.20832,23.0000229" LocationFloat="0, 132.458313" Padding="2,2,0,0,100" />
+        <Item3 Ref="12" ControlType="XRLabel" Name="label73" Multiline="true" Text=":" SizeF="14.583374,23.0000153" LocationFloat="99.20831, 155.458328" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="13" UseFont="false" />
+        </Item3>
+        <Item4 Ref="14" ControlType="XRLabel" Name="label72" Multiline="true" Text=":" SizeF="14.583374,23" LocationFloat="99.20831, 132.4584" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="15" UseFont="false" />
+        </Item4>
+        <Item5 Ref="16" ControlType="XRLabel" Name="label71" Multiline="true" Text="Date" SizeF="147.416534,23.0000153" LocationFloat="436.458282, 155.458389" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="17" UseFont="false" />
+        </Item5>
+        <Item6 Ref="18" ControlType="XRLabel" Name="label70" Multiline="true" Text=":" SizeF="14.583374,23" LocationFloat="583.8748, 155.458389" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="19" UseFont="false" />
+        </Item6>
+        <Item7 Ref="20" ControlType="XRLabel" Name="label18" Multiline="true" Text=":" SizeF="14.583374,23" LocationFloat="583.8748, 132.4584" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="21" UseFont="false" />
+        </Item7>
+        <Item8 Ref="22" ControlType="XRLabel" Name="label13" Multiline="true" Text="Challan No." SizeF="147.416412,22.9999924" LocationFloat="436.4587, 132.4584" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="23" UseFont="false" />
+        </Item8>
+        <Item9 Ref="24" ControlType="XRLine" Name="line1" SizeF="812.000061,2.08333588" LocationFloat="0, 178.458344" />
+        <Item10 Ref="25" ControlType="XRLabel" Name="label68" Multiline="true" Text="label68" SizeF="213.541382,23" LocationFloat="598.458435, 132.458344" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="26" EventName="BeforePrint" PropertyName="Text" Expression="[CHALLAN_NO]" />
+          </ExpressionBindings>
+          <StylePriority Ref="27" UseFont="false" />
+        </Item10>
+        <Item11 Ref="28" ControlType="XRLabel" Name="label67" Multiline="true" Text="label67" SizeF="213.541626,23" LocationFloat="598.458252, 155.458328" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="29" EventName="BeforePrint" PropertyName="Text" Expression="FormatString('{0:dd-MM-yyyy}',[CHALLAN_DATE])" />
+          </ExpressionBindings>
+          <StylePriority Ref="30" UseFont="false" />
+        </Item11>
+        <Item12 Ref="31" ControlType="XRLabel" Name="label66" Multiline="true" Text="label66" SizeF="321.875,23" LocationFloat="113.791679, 155.458359" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="32" EventName="BeforePrint" PropertyName="Text" Expression="[LV_DC_HEADERLV_SITE].[GST_IDENTIFICATION_NO]+' ('+[LV_DC_HEADERLV_SITE].[GST_STATE_CODE]+')'" />
+          </ExpressionBindings>
+        </Item12>
+        <Item13 Ref="33" ControlType="XRLabel" Name="label65" Multiline="true" Text="label65" SizeF="321.875,23" LocationFloat="114.58371, 132.458313" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="34" EventName="BeforePrint" PropertyName="Text" Expression="[CIN]" />
+          </ExpressionBindings>
+        </Item13>
+        <Item14 Ref="35" ControlType="XRLabel" Name="label64" Multiline="true" Text="label64" SizeF="436.458344,44.875" LocationFloat="0, 87.58332" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="36" EventName="BeforePrint" PropertyName="Text" Expression="[LV_DC_HEADERLV_SITE].[ADDRESS]+', '+[LV_DC_HEADERLV_SITE].[CITY]+', '+[LV_DC_HEADERLV_SITE].[PINCODE]" />
+          </ExpressionBindings>
+        </Item14>
+        <Item15 Ref="37" ControlType="XRLabel" Name="label63" Multiline="true" Text="Delivery Challan" TextAlignment="TopRight" SizeF="333.333038,23" LocationFloat="436.4587, 64.58332" Font="Calibri, 12pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="38" UseFont="false" UseTextAlignment="false" />
+        </Item15>
+        <Item16 Ref="39" ControlType="XRLabel" Name="label62" Multiline="true" Text="label62" SizeF="436.458344,23" LocationFloat="0, 64.58332" Font="Calibri, 12pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="40" EventName="BeforePrint" PropertyName="Text" Expression="[LV_DC_HEADERLV_SITE].[NAME]" />
+          </ExpressionBindings>
+          <StylePriority Ref="41" UseFont="false" />
+        </Item16>
+      </Controls>
+      <StylePriority Ref="42" UseFont="false" />
+    </Item4>
+    <Item5 Ref="43" ControlType="PageFooterBand" Name="PageFooter" HeightF="23" Font="Calibri, 9pt">
+      <Controls>
+        <Item1 Ref="44" ControlType="XRPageInfo" Name="pageInfo1" TextAlignment="TopRight" SizeF="42.208313,23" LocationFloat="769.7917, 0" Padding="2,2,0,0,100" Borders="Top">
+          <StylePriority Ref="45" UseBorders="false" UseTextAlignment="false" />
+        </Item1>
+        <Item2 Ref="46" ControlType="XRLabel" Name="label20" Multiline="true" Text="Page No. : " TextAlignment="TopRight" SizeF="97.91675,23" LocationFloat="671.875, 0" Padding="2,2,0,0,100" Borders="Top">
+          <StylePriority Ref="47" UseBorders="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="48" ControlType="XRLabel" Name="label19" Multiline="true" Text="label19" SizeF="671.875,23" LocationFloat="0, 0" Padding="2,2,0,0,100" Borders="Top">
+          <ExpressionBindings>
+            <Item1 Ref="49" EventName="BeforePrint" PropertyName="Text" Expression="'Print Date : '+FormatString('{0:dd-MM-yyyy}',Today())" />
+          </ExpressionBindings>
+          <StylePriority Ref="50" UseBorders="false" />
+        </Item3>
+      </Controls>
+      <StylePriority Ref="51" UseFont="false" />
+    </Item5>
+    <Item6 Ref="52" ControlType="GroupHeaderBand" Name="GroupHeader1" PageBreak="BeforeBand" HeightF="163.08342" Font="Calibri, 9pt">
+      <GroupFields>
+        <Item1 Ref="53" FieldName="DCCODE" />
+      </GroupFields>
+      <Controls>
+        <Item1 Ref="54" ControlType="XRLine" Name="line2" SizeF="812.000061,2.08332825" LocationFloat="0, 161.000092" />
+        <Item2 Ref="55" ControlType="XRLabel" Name="label59" Multiline="true" Text=":" SizeF="14.583374,23.0000534" LocationFloat="583.875061, 138.000046" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="56" UseFont="false" />
+        </Item2>
+        <Item3 Ref="57" ControlType="XRLabel" Name="label60" Multiline="true" Text="label46" SizeF="213.541626,23.0000229" LocationFloat="598.458435, 138.000076" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="58" EventName="BeforePrint" PropertyName="Text" Expression="[SALE_TYPE]" />
+          </ExpressionBindings>
+        </Item3>
+        <Item4 Ref="59" ControlType="XRLabel" Name="label61" Multiline="true" Text="Type" SizeF="147.416656,23.0000153" LocationFloat="436.458466, 138.000076" Font="Calibri, 9pt" Padding="2,2,0,0,100" Borders="Left">
+          <StylePriority Ref="60" UseFont="false" UseBorders="false" />
+        </Item4>
+        <Item5 Ref="61" ControlType="XRLabel" Name="label58" Multiline="true" Text="label58" SizeF="321.875,22.9999981" LocationFloat="114.583359, 23.0000019" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="62" EventName="BeforePrint" PropertyName="Text" Expression="[LV_DC_HEADERLV_REFSITE].[NAME]" />
+          </ExpressionBindings>
+          <StylePriority Ref="63" UseFont="false" />
+        </Item5>
+        <Item6 Ref="64" ControlType="XRLabel" Name="label57" Multiline="true" Text=":" SizeF="14.583374,23" LocationFloat="99.99999, 23.0000019" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="65" UseFont="false" />
+        </Item6>
+        <Item7 Ref="66" ControlType="XRLabel" Name="label56" Multiline="true" Text="SIte Name" SizeF="100,23" LocationFloat="0, 23.0000019" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="67" UseFont="false" />
+        </Item7>
+        <Item8 Ref="68" ControlType="XRLabel" Name="label55" Multiline="true" Text="label55" SizeF="321.875122,31.7084351" LocationFloat="114.583359, 129.291656" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="69" EventName="BeforePrint" PropertyName="Text" Expression="[LV_DC_HEADERLV_REFSITE].[GST_STATE_NAME]+' ('+[LV_DC_HEADERLV_REFSITE].[GST_STATE_CODE]+')'" />
+          </ExpressionBindings>
+        </Item8>
+        <Item9 Ref="70" ControlType="XRLabel" Name="label54" Multiline="true" Text="label54" SizeF="321.874939,23" LocationFloat="114.583359, 106.291656" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="71" EventName="BeforePrint" PropertyName="Text" Expression="[LV_DC_HEADERLV_REFSITE].[GST_IDENTIFICATION_NO]" />
+          </ExpressionBindings>
+        </Item9>
+        <Item10 Ref="72" ControlType="XRLabel" Name="label53" Multiline="true" Text="label53" SizeF="321.875,60.291626" LocationFloat="114.583359, 46.0000038" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="73" EventName="BeforePrint" PropertyName="Text" Expression="Iif([LV_DC_HEADERLV_CUSTOMER_SUPPLIER].[BILLING_ADDRESS]='',[LV_DC_HEADERLV_REFSITE].[ADDRESS]+', '+[LV_DC_HEADERLV_REFSITE].[CITY]+', '+[LV_DC_HEADERLV_REFSITE].[PINCODE],[LV_DC_HEADERLV_CUSTOMER_SUPPLIER].[BILLING_ADDRESS]+', '+[LV_DC_HEADERLV_CUSTOMER_SUPPLIER].[BILLING_CITY]+', '+[LV_DC_HEADERLV_CUSTOMER_SUPPLIER].[BILLING_PINCODE])" />
+          </ExpressionBindings>
+        </Item10>
+        <Item11 Ref="74" ControlType="XRLabel" Name="label52" Multiline="true" Text="label52" SizeF="321.874939,23" LocationFloat="114.583359, 0" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="75" EventName="BeforePrint" PropertyName="Text" Expression="[LV_DC_HEADERLV_CUSTOMER_SUPPLIER].[NAME]" />
+          </ExpressionBindings>
+          <StylePriority Ref="76" UseFont="false" />
+        </Item11>
+        <Item12 Ref="77" ControlType="XRLabel" Name="label50" Multiline="true" Text="label46" SizeF="213.541626,23" LocationFloat="598.4582, 92.00001" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="78" EventName="BeforePrint" PropertyName="Text" Expression="[AGENT_NAME]" />
+          </ExpressionBindings>
+        </Item12>
+        <Item13 Ref="79" ControlType="XRLabel" Name="label51" Multiline="true" Text="label46" SizeF="213.541626,23.0000229" LocationFloat="598.458252, 115.000023" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="80" EventName="BeforePrint" PropertyName="Text" Expression="Iif([AGAINST_ORDER]='Yes','Against Order' ,'Adhoc' )" />
+          </ExpressionBindings>
+        </Item13>
+        <Item14 Ref="81" ControlType="XRLabel" Name="label48" Multiline="true" Text="label46" SizeF="213.541626,22.9999962" LocationFloat="598.4584, 46.0000038" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="82" EventName="BeforePrint" PropertyName="Text" Expression="[CHALLAN_BARCODE]" />
+          </ExpressionBindings>
+        </Item14>
+        <Item15 Ref="83" ControlType="XRLabel" Name="label49" Multiline="true" Text="label46" SizeF="213.541626,23" LocationFloat="598.458435, 69.00001" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="84" EventName="BeforePrint" PropertyName="Text" Expression="[TRANSPORTER_NAME]" />
+          </ExpressionBindings>
+        </Item15>
+        <Item16 Ref="85" ControlType="XRLabel" Name="label47" Multiline="true" Text="Package" SizeF="213.541626,22.9999981" LocationFloat="598.4584, 23.0000019" Padding="2,2,0,0,100" />
+        <Item17 Ref="86" ControlType="XRLabel" Name="label46" Multiline="true" Text="label46" SizeF="213.541626,23" LocationFloat="598.4583, 0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="87" EventName="BeforePrint" PropertyName="Text" Expression="[OUT_STOCKPOINT]" />
+          </ExpressionBindings>
+        </Item17>
+        <Item18 Ref="88" ControlType="XRLabel" Name="label45" Multiline="true" Text=":" SizeF="14.583374,23" LocationFloat="99.99999, 129.291656" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="89" UseFont="false" />
+        </Item18>
+        <Item19 Ref="90" ControlType="XRLabel" Name="label44" Multiline="true" Text=":" SizeF="14.583374,23" LocationFloat="99.99999, 106.291626" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="91" UseFont="false" />
+        </Item19>
+        <Item20 Ref="92" ControlType="XRLabel" Name="label43" Multiline="true" Text=":" SizeF="14.583374,23" LocationFloat="99.99999, 46.0000038" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="93" UseFont="false" />
+        </Item20>
+        <Item21 Ref="94" ControlType="XRLabel" Name="label42" Multiline="true" Text=":" SizeF="14.583374,23" LocationFloat="99.99999, 0" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="95" UseFont="false" />
+        </Item21>
+        <Item22 Ref="96" ControlType="XRLabel" Name="label41" Multiline="true" Text=":" SizeF="14.583374,23.0000534" LocationFloat="583.8749, 114.999992" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="97" UseFont="false" />
+        </Item22>
+        <Item23 Ref="98" ControlType="XRLabel" Name="label40" Multiline="true" Text=":" SizeF="14.583374,23" LocationFloat="583.874939, 92.00001" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="99" UseFont="false" />
+        </Item23>
+        <Item24 Ref="100" ControlType="XRLabel" Name="label39" Multiline="true" Text=":" SizeF="14.583374,23" LocationFloat="583.874939, 68.99999" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="101" UseFont="false" />
+        </Item24>
+        <Item25 Ref="102" ControlType="XRLabel" Name="label38" Multiline="true" Text=":" SizeF="14.583374,23" LocationFloat="583.875061, 46.0000038" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="103" UseFont="false" />
+        </Item25>
+        <Item26 Ref="104" ControlType="XRLabel" Name="label37" Multiline="true" Text=":" SizeF="14.583374,23" LocationFloat="583.874939, 23.0000019" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="105" UseFont="false" />
+        </Item26>
+        <Item27 Ref="106" ControlType="XRLabel" Name="label36" Multiline="true" Text=":" SizeF="14.583374,23" LocationFloat="583.874939, 0" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="107" UseFont="false" />
+        </Item27>
+        <Item28 Ref="108" ControlType="XRLabel" Name="label35" Multiline="true" Text="Document Source" SizeF="147.416656,23.0000153" LocationFloat="436.458282, 115.000023" Font="Calibri, 9pt" Padding="2,2,0,0,100" Borders="Left">
+          <StylePriority Ref="109" UseFont="false" UseBorders="false" />
+        </Item28>
+        <Item29 Ref="110" ControlType="XRLabel" Name="label34" Multiline="true" Text="Agent Name" SizeF="147.4166,23" LocationFloat="436.458282, 92.00001" Font="Calibri, 9pt" Padding="2,2,0,0,100" Borders="Left">
+          <StylePriority Ref="111" UseFont="false" UseBorders="false" />
+        </Item29>
+        <Item30 Ref="112" ControlType="XRLabel" Name="label33" Multiline="true" Text="Transporter Name" SizeF="147.4166,23" LocationFloat="436.458282, 68.99999" Font="Calibri, 9pt" Padding="2,2,0,0,100" Borders="Left">
+          <StylePriority Ref="113" UseFont="false" UseBorders="false" />
+        </Item30>
+        <Item31 Ref="114" ControlType="XRLabel" Name="label32" Multiline="true" Text="Challan Barcode No." SizeF="147.4166,22.9999962" LocationFloat="436.4584, 46.0000038" Font="Calibri, 9pt" Padding="2,2,0,0,100" Borders="Left">
+          <StylePriority Ref="115" UseFont="false" UseBorders="false" />
+        </Item31>
+        <Item32 Ref="116" ControlType="XRLabel" Name="label31" Multiline="true" Text="Destination Stock Point" SizeF="147.416656,22.9999981" LocationFloat="436.458344, 23.0000172" Font="Calibri, 9pt" Padding="2,2,0,0,100" Borders="Left">
+          <StylePriority Ref="117" UseFont="false" UseBorders="false" />
+        </Item32>
+        <Item33 Ref="118" ControlType="XRLabel" Name="label30" Multiline="true" Text="Source Stock Point" SizeF="147.4166,23" LocationFloat="436.458282, 0" Font="Calibri, 9pt" Padding="2,2,0,0,100" Borders="Left">
+          <StylePriority Ref="119" UseFont="false" UseBorders="false" />
+        </Item33>
+        <Item34 Ref="120" ControlType="XRLabel" Name="label29" Multiline="true" Text="Site GST State" SizeF="100,23" LocationFloat="0, 129.291656" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="121" UseFont="false" />
+        </Item34>
+        <Item35 Ref="122" ControlType="XRLabel" Name="label28" Multiline="true" Text="Site GSTIN" SizeF="100,23" LocationFloat="0, 106.291656" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="123" UseFont="false" />
+        </Item35>
+        <Item36 Ref="124" ControlType="XRLabel" Name="label27" Multiline="true" Text="Address" SizeF="100,23" LocationFloat="0, 46.0000038" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="125" UseFont="false" />
+        </Item36>
+        <Item37 Ref="126" ControlType="XRLabel" Name="label26" Multiline="true" Text="Customer Name" SizeF="100,23" LocationFloat="0, 0" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="127" UseFont="false" />
+        </Item37>
+      </Controls>
+      <StylePriority Ref="128" UseFont="false" />
+    </Item6>
+    <Item7 Ref="129" ControlType="GroupFooterBand" Name="GroupFooter1" HeightF="121.9584" Font="Calibri, 9pt">
+      <Controls>
+        <Item1 Ref="130" ControlType="XRLabel" Name="label69" Multiline="true" Text="label69" SizeF="564.583252,22.9999962" LocationFloat="86.45839, 22.9999542" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="131" EventName="BeforePrint" PropertyName="Text" Expression="[LV_DC_HEADERLV_DC_REF_DOCS].[ORDER_NO]" />
+          </ExpressionBindings>
+          <StylePriority Ref="132" UseFont="false" />
+        </Item1>
+        <Item2 Ref="133" ControlType="XRLabel" Name="label25" Multiline="true" Text="label25" TextAlignment="TopCenter" SizeF="213.541626,23" LocationFloat="598.4584, 49.6250153" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="134" EventName="BeforePrint" PropertyName="Text" Expression="'For '+[OUNAME]" />
+          </ExpressionBindings>
+          <StylePriority Ref="135" UseFont="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="136" ControlType="XRLabel" Name="label24" Multiline="true" Text="Checked &amp; Passed By" TextAlignment="TopCenter" SizeF="213.541626,23" LocationFloat="598.4583, 98.9584" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100" Borders="Top">
+          <StylePriority Ref="137" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+        </Item3>
+        <Item4 Ref="138" ControlType="XRLabel" Name="label23" Multiline="true" Text="label23" TextAlignment="TopCenter" SizeF="280.208344,23" LocationFloat="0, 98.9584" Padding="2,2,0,0,100" Borders="Top">
+          <ExpressionBindings>
+            <Item1 Ref="139" EventName="BeforePrint" PropertyName="Text" Expression="'Prepared By'+NewLine()+[CREATED_BY]+NewLine()+FormatString('{0:dd-MM-yyyy}',[CREATED_ON])" />
+          </ExpressionBindings>
+          <StylePriority Ref="140" UseBorders="false" UseTextAlignment="false" />
+        </Item4>
+        <Item5 Ref="141" ControlType="XRLabel" Name="label22" Multiline="true" Text="Order No(s) :" SizeF="86.4584,22.9999981" LocationFloat="0, 23.0000172" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="142" UseFont="false" />
+        </Item5>
+        <Item6 Ref="143" ControlType="XRLabel" Name="label21" Multiline="true" Text="label21" SizeF="651.0417,23" LocationFloat="0, 0" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100" Visible="false">
+          <ExpressionBindings>
+            <Item1 Ref="144" EventName="BeforePrint" PropertyName="Text" Expression="'Amount In Words : '+[AMIW]" />
+          </ExpressionBindings>
+          <StylePriority Ref="145" UseFont="false" />
+        </Item6>
+      </Controls>
+      <StylePriority Ref="146" UseFont="false" />
+    </Item7>
+    <Item8 Ref="147" ControlType="DetailReportBand" Name="DetailReport" Level="0" DataMember="LV_DC_HEADER.LV_DC_HEADERLV_DC_ITEM" DataSource="#Ref-0" Font="Calibri, 9pt">
+      <Bands>
+        <Item1 Ref="148" ControlType="DetailBand" Name="Detail1" HeightF="0" />
+        <Item2 Ref="149" ControlType="GroupHeaderBand" Name="GroupHeader2" Level="2" HeightF="25">
+          <GroupFields>
+            <Item1 Ref="150" FieldName="DCCODE" />
+          </GroupFields>
+          <Controls>
+            <Item1 Ref="151" ControlType="XRLabel" Name="label7" Multiline="true" Text="Barcode" SizeF="146.083328,23.0000019" LocationFloat="0.7916689, 0" Font="Calibri, 9pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Bottom">
+              <StylePriority Ref="152" UseFont="false" UseBackColor="false" UseBorders="false" />
+            </Item1>
+            <Item2 Ref="153" ControlType="XRLabel" Name="label12" Multiline="true" Text="UOM" TextAlignment="TopCenter" SizeF="113.541504,23" LocationFloat="598.458435, 0" Font="Calibri, 9pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Bottom">
+              <StylePriority Ref="154" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="155" ControlType="XRLabel" Name="label11" Multiline="true" Text="Qty." TextAlignment="TopRight" SizeF="100,23" LocationFloat="711.9998, 0" Font="Calibri, 9pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Bottom">
+              <StylePriority Ref="156" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item3>
+            <Item4 Ref="157" ControlType="XRLabel" Name="label10" Multiline="true" Text="RSP" TextAlignment="TopRight" SizeF="99.50009,23" LocationFloat="498.958344, 0" Font="Calibri, 9pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Bottom">
+              <StylePriority Ref="158" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item4>
+            <Item5 Ref="159" ControlType="XRLabel" Name="label9" Multiline="true" Text="HSN Code" SizeF="147.916626,23" LocationFloat="351.041656, 0" Font="Calibri, 9pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Bottom">
+              <StylePriority Ref="160" UseFont="false" UseBackColor="false" UseBorders="false" />
+            </Item5>
+            <Item6 Ref="161" ControlType="XRLabel" Name="label8" Multiline="true" Text="Item Description" SizeF="204.166656,23" LocationFloat="146.875, 0" Font="Calibri, 9pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Bottom">
+              <StylePriority Ref="162" UseFont="false" UseBackColor="false" UseBorders="false" />
+            </Item6>
+          </Controls>
+        </Item2>
+        <Item3 Ref="163" ControlType="GroupHeaderBand" Name="GroupHeader3" Level="1" HeightF="23">
+          <GroupFields>
+            <Item1 Ref="164" FieldName="DEPARTMENT" />
+          </GroupFields>
+          <Controls>
+            <Item1 Ref="165" ControlType="XRLabel" Name="label14" Multiline="true" Text="label14" SizeF="351.041656,23" LocationFloat="0, 0" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100" Visible="false">
+              <ExpressionBindings>
+                <Item1 Ref="166" EventName="BeforePrint" PropertyName="Text" Expression="[SECTION]+' - '+[DEPARTMENT]" />
+              </ExpressionBindings>
+              <StylePriority Ref="167" UseFont="false" />
+            </Item1>
+          </Controls>
+        </Item3>
+        <Item4 Ref="168" ControlType="GroupHeaderBand" Name="GroupHeader4" HeightF="0">
+          <GroupFields>
+            <Item1 Ref="169" FieldName="BARCODE" />
+          </GroupFields>
+        </Item4>
+        <Item5 Ref="170" ControlType="GroupFooterBand" Name="GroupFooter2" HeightF="23">
+          <Controls>
+            <Item1 Ref="171" ControlType="XRLabel" Name="label6" Multiline="true" Text="label6" TextAlignment="TopCenter" SizeF="113.541565,23" LocationFloat="598.458435, 0" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="172" EventName="BeforePrint" PropertyName="Text" Expression="[UOM]" />
+              </ExpressionBindings>
+              <StylePriority Ref="173" UseTextAlignment="false" />
+            </Item1>
+            <Item2 Ref="174" ControlType="XRLabel" Name="label5" TextFormatString="{0:0.00}" Multiline="true" Text="label5" TextAlignment="TopRight" SizeF="99.50003,23" LocationFloat="498.9584, 0" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="175" EventName="BeforePrint" PropertyName="Text" Expression="[CHALLAN_RSP]" />
+              </ExpressionBindings>
+            </Item2>
+            <Item3 Ref="176" ControlType="XRLabel" Name="label4" Multiline="true" Text="label4" TextAlignment="TopRight" SizeF="100,23" LocationFloat="712, 0" Padding="2,2,0,0,100">
+              <Summary Ref="177" Running="Group" />
+              <ExpressionBindings>
+                <Item1 Ref="178" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([CHALLAN_QUANTITY])" />
+              </ExpressionBindings>
+            </Item3>
+            <Item4 Ref="179" ControlType="XRLabel" Name="label3" Multiline="true" Text="label3" SizeF="147.916656,23" LocationFloat="351.041626, 0" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="180" EventName="BeforePrint" PropertyName="Text" Expression="[HSN_CODE]" />
+              </ExpressionBindings>
+            </Item4>
+            <Item5 Ref="181" ControlType="XRLabel" Name="label2" Multiline="true" Text="label2" SizeF="204.1666,23" LocationFloat="146.875, 0" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="182" EventName="BeforePrint" PropertyName="Text" Expression="[ITEM_NAME]" />
+              </ExpressionBindings>
+            </Item5>
+            <Item6 Ref="183" ControlType="XRLabel" Name="label1" Multiline="true" Text="label1" SizeF="146.875,23" LocationFloat="0, 0" Padding="2,2,0,0,100">
+              <ExpressionBindings>
+                <Item1 Ref="184" EventName="BeforePrint" PropertyName="Text" Expression="[BARCODE]" />
+              </ExpressionBindings>
+            </Item6>
+          </Controls>
+        </Item5>
+        <Item6 Ref="185" ControlType="GroupFooterBand" Name="GroupFooter3" Level="1" HeightF="0" />
+        <Item7 Ref="186" ControlType="GroupFooterBand" Name="GroupFooter4" Level="2" HeightF="23">
+          <Controls>
+            <Item1 Ref="187" ControlType="XRLabel" Name="label17" Multiline="true" SizeF="319.291656,23" LocationFloat="392.708344, 0" Font="Calibri, 9pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Bottom">
+              <StylePriority Ref="188" UseFont="false" UseBackColor="false" UseBorders="false" />
+            </Item1>
+            <Item2 Ref="189" ControlType="XRLabel" Name="label16" Multiline="true" Text="label16" TextAlignment="TopRight" SizeF="100,23" LocationFloat="712.000061, 0" Font="Calibri, 9pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Bottom">
+              <Summary Ref="190" Running="Group" />
+              <ExpressionBindings>
+                <Item1 Ref="191" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([CHALLAN_QUANTITY])" />
+              </ExpressionBindings>
+              <StylePriority Ref="192" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item2>
+            <Item3 Ref="193" ControlType="XRLabel" Name="label15" Multiline="true" Text="Total :" TextAlignment="TopRight" SizeF="392.708344,23" LocationFloat="0, 0" Font="Calibri, 9pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Bottom">
+              <StylePriority Ref="194" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+            </Item3>
+          </Controls>
+        </Item7>
+      </Bands>
+    </Item8>
+  </Bands>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v19.2" Name="sqlDataSource1" Base64="PFNxbERhdGFTb3VyY2UgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxDb25uZWN0aW9uIE5hbWU9IkNvbm5lY3Rpb24iIENvbm5lY3Rpb25TdHJpbmc9Inhwb3Byb3ZpZGVyPU9EUE1hbmFnZWQ7ZGF0YSBzb3VyY2U9JnF1b3Q7KERFU0NSSVBUSU9OPShBRERSRVNTPShQUk9UT0NPTD1UQ1ApKEhPU1Q9YmEtMDIpKFBPUlQ9MTUyMSkpKENPTk5FQ1RfREFUQT0oU0VSVklDRV9OQU1FPWdpbmVzeXMpKSkmcXVvdDsiIC8+PFF1ZXJ5IFR5cGU9IlNlbGVjdFF1ZXJ5IiBOYW1lPSJMVl9EQ19IRUFERVIiPjxQYXJhbWV0ZXIgTmFtZT0iQ29kZSIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uSW50MzIpKD9Db2RlKTwvUGFyYW1ldGVyPjxUYWJsZXM+PFRhYmxlIE5hbWU9IkxWX0RDX0hFQURFUiIgWD0iMzAiIFk9IjMwIiBXaWR0aD0iMTI1IiBIZWlnaHQ9IjEzNTYiIC8+PFRhYmxlIE5hbWU9IkxWX09SR0FOSVpBVElPTl9VTklUIiBYPSIxODUiIFk9IjMwIiBXaWR0aD0iMTI1IiBIZWlnaHQ9Ijk3OCIgLz48VGFibGUgTmFtZT0iTFZfRENfSVRFTSIgWD0iMzQwIiBZPSIzMCIgV2lkdGg9IjIxMCIgSGVpZ2h0PSIyNzYiIC8+PFJlbGF0aW9uIFR5cGU9IklubmVyIiBQYXJlbnQ9IkxWX0RDX0hFQURFUiIgTmVzdGVkPSJMVl9PUkdBTklaQVRJT05fVU5JVCI+PEtleUNvbHVtbiBQYXJlbnQ9IkFETU9VX0NPREUiIE5lc3RlZD0iQ09ERSIgLz48L1JlbGF0aW9uPjxSZWxhdGlvbiBUeXBlPSJJbm5lciIgUGFyZW50PSJMVl9EQ19IRUFERVIiIE5lc3RlZD0iTFZfRENfSVRFTSI+PEtleUNvbHVtbiBQYXJlbnQ9IkRDQ09ERSIgTmVzdGVkPSJEQ0NPREUiIC8+PC9SZWxhdGlvbj48L1RhYmxlcz48Q29sdW1ucz48Q29sdW1uIFRhYmxlPSJMVl9EQ19IRUFERVIiIE5hbWU9IkRDQ09ERSIgLz48Q29sdW1uIFRhYmxlPSJMVl9EQ19IRUFERVIiIE5hbWU9IkNIQUxMQU5fREFURSIgLz48Q29sdW1uIFRhYmxlPSJMVl9EQ19IRUFERVIiIE5hbWU9IlBDT0RFIiAvPjxDb2x1bW4gVGFibGU9IkxWX0RDX0hFQURFUiIgTmFtZT0iQ1VTVE9NRVJfTkFNRSIgLz48Q29sdW1uIFRhYmxlPSJMVl9EQ19IRUFERVIiIE5hbWU9IklOVk9JQ0VfTk8iIC8+PENvbHVtbiBUYWJsZT0iTFZfRENfSEVBREVSIiBOYW1lPSJJTlZPSUNFX0RBVEUiIC8+PENvbHVtbiBUYWJsZT0iTFZfRENfSEVBREVSIiBOYW1lPSJPVVRfU1RPQ0tQT0lOVCIgLz48Q29sdW1uIFRhYmxlPSJMVl9EQ19IRUFERVIiIE5hbWU9IlJFTUFSS1MiIC8+PENvbHVtbiBUYWJsZT0iTFZfRENfSEVBREVSIiBOYW1lPSJDUkVBVEVEX0JZIiAvPjxDb2x1bW4gVGFibGU9IkxWX0RDX0hFQURFUiIgTmFtZT0iQ1JFQVRFRF9PTiIgLz48Q29sdW1uIFRhYmxlPSJMVl9EQ19IRUFERVIiIE5hbWU9IkFHRU5UX05BTUUiIC8+PENvbHVtbiBUYWJsZT0iTFZfRENfSEVBREVSIiBOYW1lPSJUUkFOU1BPUlRFUl9OQU1FIiAvPjxDb2x1bW4gVGFibGU9IkxWX0RDX0hFQURFUiIgTmFtZT0iU0FMRV9UWVBFIiAvPjxDb2x1bW4gVGFibGU9IkxWX0RDX0hFQURFUiIgTmFtZT0iU1RBVFVTIiAvPjxDb2x1bW4gVGFibGU9IkxWX0RDX0hFQURFUiIgTmFtZT0iQUdBSU5TVF9PUkRFUiIgLz48Q29sdW1uIFRhYmxlPSJMVl9EQ19IRUFERVIiIE5hbWU9IkNIQUxMQU5fQkFSQ09ERSIgLz48Q29sdW1uIFRhYmxlPSJMVl9EQ19IRUFERVIiIE5hbWU9IkNIQUxMQU5fTk8iIC8+PENvbHVtbiBUYWJsZT0iTFZfRENfSEVBREVSIiBOYW1lPSJBRE1PVV9DT0RFIiAvPjxDb2x1bW4gVGFibGU9IkxWX0RDX0hFQURFUiIgTmFtZT0iQURNU0lURV9DT0RFX09XTkVSIiAvPjxDb2x1bW4gVGFibGU9IkxWX09SR0FOSVpBVElPTl9VTklUIiBOYW1lPSJOQU1FIiBBbGlhcz0iT1VOQU1FIiAvPjxDb2x1bW4gVGFibGU9IkxWX09SR0FOSVpBVElPTl9VTklUIiBOYW1lPSJDSU4iIC8+PEV4cHJlc3Npb24gQWdncmVnYXRlPSJTdW0iIEFsaWFzPSJOZXRBbW91bnQiPltMVl9EQ19JVEVNLkNIQUxMQU5fUVVBTlRJVFldKltMVl9EQ19JVEVNLkNIQUxMQU5fUlNQXTwvRXhwcmVzc2lvbj48Q29sdW1uIFRhYmxlPSJMVl9EQ19IRUFERVIiIE5hbWU9IkFETVNJVEVfQ09ERSIgLz48Q29sdW1uIFRhYmxlPSJMVl9EQ19IRUFERVIiIE5hbWU9Ik9VVExPQ0NPREUiIC8+PC9Db2x1bW5zPjxHcm91cGluZz48Q29sdW1uIFRhYmxlPSJMVl9EQ19IRUFERVIiIE5hbWU9IkRDQ09ERSIgLz48Q29sdW1uIFRhYmxlPSJMVl9EQ19IRUFERVIiIE5hbWU9IkNIQUxMQU5fREFURSIgLz48Q29sdW1uIFRhYmxlPSJMVl9EQ19IRUFERVIiIE5hbWU9IlBDT0RFIiAvPjxDb2x1bW4gVGFibGU9IkxWX0RDX0hFQURFUiIgTmFtZT0iQ1VTVE9NRVJfTkFNRSIgLz48Q29sdW1uIFRhYmxlPSJMVl9EQ19IRUFERVIiIE5hbWU9IklOVk9JQ0VfTk8iIC8+PENvbHVtbiBUYWJsZT0iTFZfRENfSEVBREVSIiBOYW1lPSJJTlZPSUNFX0RBVEUiIC8+PENvbHVtbiBUYWJsZT0iTFZfRENfSEVBREVSIiBOYW1lPSJPVVRfU1RPQ0tQT0lOVCIgLz48Q29sdW1uIFRhYmxlPSJMVl9EQ19IRUFERVIiIE5hbWU9IlJFTUFSS1MiIC8+PENvbHVtbiBUYWJsZT0iTFZfRENfSEVBREVSIiBOYW1lPSJDUkVBVEVEX0JZIiAvPjxDb2x1bW4gVGFibGU9IkxWX0RDX0hFQURFUiIgTmFtZT0iQ1JFQVRFRF9PTiIgLz48Q29sdW1uIFRhYmxlPSJMVl9EQ19IRUFERVIiIE5hbWU9IkFHRU5UX05BTUUiIC8+PENvbHVtbiBUYWJsZT0iTFZfRENfSEVBREVSIiBOYW1lPSJUUkFOU1BPUlRFUl9OQU1FIiAvPjxDb2x1bW4gVGFibGU9IkxWX0RDX0hFQURFUiIgTmFtZT0iU0FMRV9UWVBFIiAvPjxDb2x1bW4gVGFibGU9IkxWX0RDX0hFQURFUiIgTmFtZT0iU1RBVFVTIiAvPjxDb2x1bW4gVGFibGU9IkxWX0RDX0hFQURFUiIgTmFtZT0iQUdBSU5TVF9PUkRFUiIgLz48Q29sdW1uIFRhYmxlPSJMVl9EQ19IRUFERVIiIE5hbWU9IkNIQUxMQU5fQkFSQ09ERSIgLz48Q29sdW1uIFRhYmxlPSJMVl9EQ19IRUFERVIiIE5hbWU9IkNIQUxMQU5fTk8iIC8+PENvbHVtbiBUYWJsZT0iTFZfRENfSEVBREVSIiBOYW1lPSJBRE1PVV9DT0RFIiAvPjxDb2x1bW4gVGFibGU9IkxWX0RDX0hFQURFUiIgTmFtZT0iQURNU0lURV9DT0RFX09XTkVSIiAvPjxDb2x1bW4gVGFibGU9IkxWX09SR0FOSVpBVElPTl9VTklUIiBOYW1lPSJOQU1FIiAvPjxDb2x1bW4gVGFibGU9IkxWX09SR0FOSVpBVElPTl9VTklUIiBOYW1lPSJDSU4iIC8+PENvbHVtbiBUYWJsZT0iTFZfRENfSEVBREVSIiBOYW1lPSJBRE1TSVRFX0NPREUiIC8+PENvbHVtbiBUYWJsZT0iTFZfRENfSEVBREVSIiBOYW1lPSJPVVRMT0NDT0RFIiAvPjwvR3JvdXBpbmc+PEZpbHRlcj5bTFZfRENfSEVBREVSLkRDQ09ERV0gSW4gKD9Db2RlKTwvRmlsdGVyPjxHcm91cEZpbHRlcj48L0dyb3VwRmlsdGVyPjxNZXRhIFg9IjIwIiBZPSIyMCIgV2lkdGg9IjE3OCIgSGVpZ2h0PSIxMjY1IiAvPjwvUXVlcnk+PFF1ZXJ5IFR5cGU9IlNlbGVjdFF1ZXJ5IiBOYW1lPSJMVl9EQ19JVEVNIj48UGFyYW1ldGVyIE5hbWU9IkNvZGUiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkludDMyKSg/Q29kZSk8L1BhcmFtZXRlcj48VGFibGVzPjxUYWJsZSBOYW1lPSJMVl9EQ19JVEVNIiBYPSIzMCIgWT0iMzAiIFdpZHRoPSIyNjAiIEhlaWdodD0iMjc2IiAvPjxUYWJsZSBOYW1lPSJMVl9JVEVNIiBYPSIzMjAiIFk9IjMwIiBXaWR0aD0iMTI1IiBIZWlnaHQ9IjE0ODIiIC8+PFJlbGF0aW9uIFR5cGU9IklubmVyIiBQYXJlbnQ9IkxWX0RDX0lURU0iIE5lc3RlZD0iTFZfSVRFTSI+PEtleUNvbHVtbiBQYXJlbnQ9IklDT0RFIiBOZXN0ZWQ9IkNPREUiIC8+PC9SZWxhdGlvbj48L1RhYmxlcz48Q29sdW1ucz48Q29sdW1uIFRhYmxlPSJMVl9EQ19JVEVNIiBOYW1lPSJEQ0NPREUiIC8+PENvbHVtbiBUYWJsZT0iTFZfRENfSVRFTSIgTmFtZT0iSUNPREUiIC8+PENvbHVtbiBUYWJsZT0iTFZfRENfSVRFTSIgTmFtZT0iQ0hBTExBTl9RVUFOVElUWSIgLz48Q29sdW1uIFRhYmxlPSJMVl9EQ19JVEVNIiBOYW1lPSJDSEFMTEFOX05FVF9SQVRFIiAvPjxDb2x1bW4gVGFibGU9IkxWX0RDX0lURU0iIE5hbWU9IkNIQUxMQU5fTkVUX0FNT1VOVCIgLz48Q29sdW1uIFRhYmxlPSJMVl9EQ19JVEVNIiBOYW1lPSJDSEFMTEFOX1JTUCIgLz48Q29sdW1uIFRhYmxlPSJMVl9JVEVNIiBOYW1lPSJTRUNUSU9OIiAvPjxDb2x1bW4gVGFibGU9IkxWX0lURU0iIE5hbWU9IkRFUEFSVE1FTlQiIC8+PENvbHVtbiBUYWJsZT0iTFZfSVRFTSIgTmFtZT0iVU9NIiAvPjxDb2x1bW4gVGFibGU9IkxWX0lURU0iIE5hbWU9IkJBUkNPREUiIC8+PENvbHVtbiBUYWJsZT0iTFZfSVRFTSIgTmFtZT0iSVRFTV9OQU1FIiAvPjxDb2x1bW4gVGFibGU9IkxWX0lURU0iIE5hbWU9IkhTTl9DT0RFIiAvPjwvQ29sdW1ucz48RmlsdGVyPltMVl9EQ19JVEVNLkRDQ09ERV0gSW4gKD9Db2RlKTwvRmlsdGVyPjxHcm91cEZpbHRlcj48L0dyb3VwRmlsdGVyPjxNZXRhIFg9IjIxOCIgWT0iMjAiIFdpZHRoPSIxNTciIEhlaWdodD0iMjQ1IiAvPjwvUXVlcnk+PFF1ZXJ5IFR5cGU9IlNlbGVjdFF1ZXJ5IiBOYW1lPSJMVl9EQ19SRUZfRE9DUyI+PFBhcmFtZXRlciBOYW1lPSJDb2RlIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5JbnQzMikoP0NvZGUpPC9QYXJhbWV0ZXI+PFRhYmxlcz48VGFibGUgTmFtZT0iTFZfRENfUkVGX0RPQ1MiIFg9IjMwIiBZPSIzMCIgV2lkdGg9IjIzMCIgSGVpZ2h0PSIyMDQiIC8+PC9UYWJsZXM+PENvbHVtbnM+PENvbHVtbiBUYWJsZT0iTFZfRENfUkVGX0RPQ1MiIE5hbWU9Ik9SREVSX05PIiAvPjxDb2x1bW4gVGFibGU9IkxWX0RDX1JFRl9ET0NTIiBOYW1lPSJPUkRFUl9EQVRFIiAvPjxDb2x1bW4gVGFibGU9IkxWX0RDX1JFRl9ET0NTIiBOYW1lPSJDSEFMTEFOX1FVQU5USVRZIiAvPjxDb2x1bW4gVGFibGU9IkxWX0RDX1JFRl9ET0NTIiBOYW1lPSJEQ0NPREUiIC8+PENvbHVtbiBUYWJsZT0iTFZfRENfUkVGX0RPQ1MiIE5hbWU9Ik9SREVSX1JFRl9ET0NfTk8iIC8+PENvbHVtbiBUYWJsZT0iTFZfRENfUkVGX0RPQ1MiIE5hbWU9Ik9SREVSX1JFRl9ET0NfREFURSIgLz48Q29sdW1uIFRhYmxlPSJMVl9EQ19SRUZfRE9DUyIgTmFtZT0iT1JERVJfRFVFX0RBVEUiIC8+PC9Db2x1bW5zPjxGaWx0ZXI+W0xWX0RDX1JFRl9ET0NTLkRDQ09ERV0gSW4gKD9Db2RlKTwvRmlsdGVyPjxHcm91cEZpbHRlcj48L0dyb3VwRmlsdGVyPjxNZXRhIFg9IjM5NSIgWT0iMjAiIFdpZHRoPSIxNTYiIEhlaWdodD0iMTc3IiAvPjwvUXVlcnk+PFF1ZXJ5IFR5cGU9IlNlbGVjdFF1ZXJ5IiBOYW1lPSJMVl9DVVNUT01FUl9TVVBQTElFUiI+PFRhYmxlcz48VGFibGUgTmFtZT0iTFZfQ1VTVE9NRVJfU1VQUExJRVIiIFg9IjMwIiBZPSIzMCIgV2lkdGg9IjI3MCIgSGVpZ2h0PSIyNjg4IiAvPjwvVGFibGVzPjxDb2x1bW5zPjxDb2x1bW4gVGFibGU9IkxWX0NVU1RPTUVSX1NVUFBMSUVSIiBOYW1lPSJCSUxMSU5HX0FERFJFU1MiIC8+PENvbHVtbiBUYWJsZT0iTFZfQ1VTVE9NRVJfU1VQUExJRVIiIE5hbWU9IkJJTExJTkdfQ0lUWSIgLz48Q29sdW1uIFRhYmxlPSJMVl9DVVNUT01FUl9TVVBQTElFUiIgTmFtZT0iQklMTElOR19QSU5DT0RFIiAvPjxDb2x1bW4gVGFibGU9IkxWX0NVU1RPTUVSX1NVUFBMSUVSIiBOYW1lPSJOQU1FIiAvPjxDb2x1bW4gVGFibGU9IkxWX0NVU1RPTUVSX1NVUFBMSUVSIiBOYW1lPSJDT0RFIiAvPjwvQ29sdW1ucz48TWV0YSBYPSI1NzEiIFk9IjIwIiBXaWR0aD0iMjI1IiBIZWlnaHQ9IjI1MjMiIC8+PC9RdWVyeT48UXVlcnkgVHlwZT0iU2VsZWN0UXVlcnkiIE5hbWU9IkxWX1JFRlNJVEUiPjxUYWJsZXM+PFRhYmxlIE5hbWU9IkxWX1JFRlNJVEUiIFg9IjMwIiBZPSIzMCIgV2lkdGg9IjEyNSIgSGVpZ2h0PSIyMzQ2IiAvPjwvVGFibGVzPjxDb2x1bW5zPjxDb2x1bW4gVGFibGU9IkxWX1JFRlNJVEUiIE5hbWU9IkFERFJFU1MiIC8+PENvbHVtbiBUYWJsZT0iTFZfUkVGU0lURSIgTmFtZT0iQ0lUWSIgLz48Q29sdW1uIFRhYmxlPSJMVl9SRUZTSVRFIiBOYW1lPSJQSU5DT0RFIiAvPjxDb2x1bW4gVGFibGU9IkxWX1JFRlNJVEUiIE5hbWU9Ik5BTUUiIC8+PENvbHVtbiBUYWJsZT0iTFZfUkVGU0lURSIgTmFtZT0iR1NUX0lERU5USUZJQ0FUSU9OX05PIiAvPjxDb2x1bW4gVGFibGU9IkxWX1JFRlNJVEUiIE5hbWU9IkdTVF9TVEFURV9DT0RFIiAvPjxDb2x1bW4gVGFibGU9IkxWX1JFRlNJVEUiIE5hbWU9IkdTVF9TVEFURV9OQU1FIiAvPjxDb2x1bW4gVGFibGU9IkxWX1JFRlNJVEUiIE5hbWU9IlNJVEVDT0RFIiAvPjwvQ29sdW1ucz48TWV0YSBYPSI4MTYiIFk9IjIwIiBXaWR0aD0iMjM1IiBIZWlnaHQ9IjIyMDAiIC8+PC9RdWVyeT48UXVlcnkgVHlwZT0iU2VsZWN0UXVlcnkiIE5hbWU9IkxWX1NJVEUiPjxUYWJsZXM+PFRhYmxlIE5hbWU9IkxWX1NJVEUiIFg9IjMwIiBZPSIzMCIgV2lkdGg9IjEyNSIgSGVpZ2h0PSIyMzQ2IiAvPjwvVGFibGVzPjxDb2x1bW5zPjxDb2x1bW4gVGFibGU9IkxWX1NJVEUiIE5hbWU9Ik5BTUUiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0lURSIgTmFtZT0iQUREUkVTUyIgLz48Q29sdW1uIFRhYmxlPSJMVl9TSVRFIiBOYW1lPSJDSVRZIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NJVEUiIE5hbWU9IlBJTkNPREUiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0lURSIgTmFtZT0iR1NUX0lERU5USUZJQ0FUSU9OX05PIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NJVEUiIE5hbWU9IkdTVF9TVEFURV9DT0RFIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NJVEUiIE5hbWU9IkdTVF9TVEFURV9OQU1FIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NJVEUiIE5hbWU9IkVNQUlMMSIgLz48Q29sdW1uIFRhYmxlPSJMVl9TSVRFIiBOYW1lPSJNT0JJTEUiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0lURSIgTmFtZT0iUEhPTkUxIiAvPjxDb2x1bW4gVGFibGU9IkxWX1NJVEUiIE5hbWU9IlBIT05FMiIgLz48Q29sdW1uIFRhYmxlPSJMVl9TSVRFIiBOYW1lPSJQSE9ORTMiIC8+PENvbHVtbiBUYWJsZT0iTFZfU0lURSIgTmFtZT0iU0lURUNPREUiIC8+PC9Db2x1bW5zPjxNZXRhIFg9IjEwNzEiIFk9IjIwIiBXaWR0aD0iMjM1IiBIZWlnaHQ9IjIyMDAiIC8+PC9RdWVyeT48UmVsYXRpb24gTWFzdGVyPSJMVl9EQ19IRUFERVIiIERldGFpbD0iTFZfRENfSVRFTSIgTmFtZT0iTFZfRENfSEVBREVSTFZfRENfSVRFTSI+PEtleUNvbHVtbiBNYXN0ZXI9IkRDQ09ERSIgRGV0YWlsPSJEQ0NPREUiIC8+PC9SZWxhdGlvbj48UmVsYXRpb24gTWFzdGVyPSJMVl9EQ19IRUFERVIiIERldGFpbD0iTFZfRENfUkVGX0RPQ1MiIE5hbWU9IkxWX0RDX0hFQURFUkxWX0RDX1JFRl9ET0NTIj48S2V5Q29sdW1uIE1hc3Rlcj0iRENDT0RFIiBEZXRhaWw9IkRDQ09ERSIgLz48L1JlbGF0aW9uPjxSZWxhdGlvbiBNYXN0ZXI9IkxWX0RDX0hFQURFUiIgRGV0YWlsPSJMVl9DVVNUT01FUl9TVVBQTElFUiIgTmFtZT0iTFZfRENfSEVBREVSTFZfQ1VTVE9NRVJfU1VQUExJRVIiPjxLZXlDb2x1bW4gTWFzdGVyPSJQQ09ERSIgRGV0YWlsPSJDT0RFIiAvPjwvUmVsYXRpb24+PFJlbGF0aW9uIE1hc3Rlcj0iTFZfRENfSEVBREVSIiBEZXRhaWw9IkxWX1JFRlNJVEUiIE5hbWU9IkxWX0RDX0hFQURFUkxWX1JFRlNJVEUiPjxLZXlDb2x1bW4gTWFzdGVyPSJBRE1TSVRFX0NPREUiIERldGFpbD0iU0lURUNPREUiIC8+PC9SZWxhdGlvbj48UmVsYXRpb24gTWFzdGVyPSJMVl9EQ19IRUFERVIiIERldGFpbD0iTFZfU0lURSIgTmFtZT0iTFZfRENfSEVBREVSTFZfU0lURSI+PEtleUNvbHVtbiBNYXN0ZXI9IkFETVNJVEVfQ09ERV9PV05FUiIgRGV0YWlsPSJTSVRFQ09ERSIgLz48L1JlbGF0aW9uPjxSZXN1bHRTY2hlbWE+PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9IkxWX0RDX0hFQURFUiI+PEZpZWxkIE5hbWU9IkRDQ09ERSIgVHlwZT0iSW50NjQiIC8+PEZpZWxkIE5hbWU9IkNIQUxMQU5fREFURSIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IlBDT0RFIiBUeXBlPSJJbnQ2NCIgLz48RmllbGQgTmFtZT0iQ1VTVE9NRVJfTkFNRSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJTlZPSUNFX05PIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IklOVk9JQ0VfREFURSIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9Ik9VVF9TVE9DS1BPSU5UIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlJFTUFSS1MiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQ1JFQVRFRF9CWSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDUkVBVEVEX09OIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iQUdFTlRfTkFNRSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJUUkFOU1BPUlRFUl9OQU1FIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlNBTEVfVFlQRSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJTVEFUVVMiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQUdBSU5TVF9PUkRFUiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDSEFMTEFOX0JBUkNPREUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQ0hBTExBTl9OTyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJBRE1PVV9DT0RFIiBUeXBlPSJJbnQ2NCIgLz48RmllbGQgTmFtZT0iQURNU0lURV9DT0RFX09XTkVSIiBUeXBlPSJJbnQ2NCIgLz48RmllbGQgTmFtZT0iT1VOQU1FIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkNJTiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJOZXRBbW91bnQiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IkFETVNJVEVfQ09ERSIgVHlwZT0iSW50NjQiIC8+PEZpZWxkIE5hbWU9Ik9VVExPQ0NPREUiIFR5cGU9IkludDY0IiAvPjwvVmlldz48VmlldyBOYW1lPSJMVl9EQ19JVEVNIj48RmllbGQgTmFtZT0iRENDT0RFIiBUeXBlPSJJbnQ2NCIgLz48RmllbGQgTmFtZT0iSUNPREUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQ0hBTExBTl9RVUFOVElUWSIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iQ0hBTExBTl9ORVRfUkFURSIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iQ0hBTExBTl9ORVRfQU1PVU5UIiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJDSEFMTEFOX1JTUCIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iU0VDVElPTiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJERVBBUlRNRU5UIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlVPTSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJCQVJDT0RFIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IklURU1fTkFNRSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJIU05fQ09ERSIgVHlwZT0iU3RyaW5nIiAvPjwvVmlldz48VmlldyBOYW1lPSJMVl9EQ19SRUZfRE9DUyI+PEZpZWxkIE5hbWU9Ik9SREVSX05PIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9SREVSX0RBVEUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJDSEFMTEFOX1FVQU5USVRZIiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJEQ0NPREUiIFR5cGU9IkludDY0IiAvPjxGaWVsZCBOYW1lPSJPUkRFUl9SRUZfRE9DX05PIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9SREVSX1JFRl9ET0NfREFURSIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9Ik9SREVSX0RVRV9EQVRFIiBUeXBlPSJEYXRlVGltZSIgLz48L1ZpZXc+PFZpZXcgTmFtZT0iTFZfQ1VTVE9NRVJfU1VQUExJRVIiPjxGaWVsZCBOYW1lPSJCSUxMSU5HX0FERFJFU1MiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQklMTElOR19DSVRZIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkJJTExJTkdfUElOQ09ERSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJOQU1FIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkNPREUiIFR5cGU9IkludDY0IiAvPjwvVmlldz48VmlldyBOYW1lPSJMVl9SRUZTSVRFIj48RmllbGQgTmFtZT0iQUREUkVTUyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDSVRZIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlBJTkNPREUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iTkFNRSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJHU1RfSURFTlRJRklDQVRJT05fTk8iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iR1NUX1NUQVRFX0NPREUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iR1NUX1NUQVRFX05BTUUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU0lURUNPREUiIFR5cGU9IkludDY0IiAvPjwvVmlldz48VmlldyBOYW1lPSJMVl9TSVRFIj48RmllbGQgTmFtZT0iTkFNRSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJBRERSRVNTIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkNJVFkiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iUElOQ09ERSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJHU1RfSURFTlRJRklDQVRJT05fTk8iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iR1NUX1NUQVRFX0NPREUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iR1NUX1NUQVRFX05BTUUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRU1BSUwxIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik1PQklMRSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJQSE9ORTEiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iUEhPTkUyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlBIT05FMyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJTSVRFQ09ERSIgVHlwZT0iSW50NjQiIC8+PC9WaWV3PjxSZWxhdGlvbiBNYXN0ZXI9IkxWX0RDX0hFQURFUiIgRGV0YWlsPSJMVl9EQ19JVEVNIj48S2V5Q29sdW1uIE1hc3Rlcj0iRENDT0RFIiBEZXRhaWw9IkRDQ09ERSIgLz48L1JlbGF0aW9uPjxSZWxhdGlvbiBNYXN0ZXI9IkxWX0RDX0hFQURFUiIgRGV0YWlsPSJMVl9EQ19SRUZfRE9DUyI+PEtleUNvbHVtbiBNYXN0ZXI9IkRDQ09ERSIgRGV0YWlsPSJEQ0NPREUiIC8+PC9SZWxhdGlvbj48UmVsYXRpb24gTWFzdGVyPSJMVl9EQ19IRUFERVIiIERldGFpbD0iTFZfQ1VTVE9NRVJfU1VQUExJRVIiPjxLZXlDb2x1bW4gTWFzdGVyPSJQQ09ERSIgRGV0YWlsPSJDT0RFIiAvPjwvUmVsYXRpb24+PFJlbGF0aW9uIE1hc3Rlcj0iTFZfRENfSEVBREVSIiBEZXRhaWw9IkxWX1JFRlNJVEUiPjxLZXlDb2x1bW4gTWFzdGVyPSJBRE1TSVRFX0NPREUiIERldGFpbD0iU0lURUNPREUiIC8+PC9SZWxhdGlvbj48UmVsYXRpb24gTWFzdGVyPSJMVl9EQ19IRUFERVIiIERldGFpbD0iTFZfU0lURSI+PEtleUNvbHVtbiBNYXN0ZXI9IkFETVNJVEVfQ09ERV9PV05FUiIgRGV0YWlsPSJTSVRFQ09ERSIgLz48L1JlbGF0aW9uPjwvRGF0YVNldD48L1Jlc3VsdFNjaGVtYT48Q29ubmVjdGlvbk9wdGlvbnMgQ2xvc2VDb25uZWN0aW9uPSJ0cnVlIiAvPjwvU3FsRGF0YVNvdXJjZT4=" />
+  </ComponentStorage>
+  <ObjectStorage>
+    <Item1 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v19.2" Ref="2" Content="System.Int32" Type="System.Type" />
+  </ObjectStorage>
+</XtraReportsLayoutSerializer>
