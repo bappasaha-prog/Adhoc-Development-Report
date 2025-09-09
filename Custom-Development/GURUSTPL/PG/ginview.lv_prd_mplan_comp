@@ -1,0 +1,27 @@
+CREATE OR REPLACE VIEW ginview.lv_prd_mplan_comp
+AS SELECT m.code,
+    m.planno,
+    m.schedule_date,
+    sum(bom.qty) AS bom_quantity,
+    round(sum((100::numeric - COALESCE(bom.shrinkage, 0::numeric)) * d.qty * bom.qty / 100::numeric), 2) AS total_quantity,
+    bom.component_icode,
+    fnc_uk() AS uk
+   FROM prdmplanmain m
+     JOIN prdmplandet d ON m.code = d.plancode
+     LEFT JOIN ( SELECT m_1.assembly_icode,
+            d_1.component_icode,
+            sum(d_1.qty) AS qty,
+            sum(d_1.shrinkage) AS shrinkage
+           FROM prdbommain m_1
+             JOIN prdbomdet d_1 ON m_1.code = d_1.bomcode
+          WHERE d_1.is_ass_item = 'N'::bpchar AND d_1.com_saitem_code IS NULL AND ((m_1.code, d_1.bomver_code) IN ( SELECT m_1.code,
+                    max(d_2.bomver_code) AS max
+                   FROM prdbomdet d_2
+                     JOIN ( SELECT prdbomver.bomcode,
+                            max(prdbomver.bom_version_no) AS max
+                           FROM prdbomver
+                          GROUP BY prdbomver.bomcode) t ON d_2.bomcode = t.bomcode
+                  GROUP BY d_2.assembly_icode))
+          GROUP BY m_1.assembly_icode, d_1.component_icode) bom ON d.assembly_icode::text = bom.assembly_icode::text
+  WHERE bom.component_icode IS NOT NULL
+  GROUP BY m.code, m.planno, m.schedule_date, bom.component_icode;

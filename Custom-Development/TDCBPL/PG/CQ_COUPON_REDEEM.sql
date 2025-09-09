@@ -1,0 +1,22 @@
+/*|| Custom Development || Object : CQ_COUPON_REDEEM || Ticket Id :  429097 || Developer : Dipankar ||*/
+
+SELECT row_number() OVER()  UK,
+       A.CODE,
+       A.ADMSITE_CODE,
+       S.SHRTNAME        SITE_NAME,
+       B.NAME            COUPON_OFFER_NAME,
+       B.SHORTCODE       COUPON_OFFER_SHORT_CODE,
+       CASE
+          WHEN A.ISEXTINCT = 0 THEN 'No'
+          WHEN A.ISEXTINCT = 1 THEN 'Yes'
+       END
+          ASSIGNMENT_EXTINCT,
+       ASM.NAME          ASSORTMENT_NAME,
+       b.description COUPON_OFFER_DESCRIPTION,
+       B.allow_red_on_promoitem 
+  FROM PSITE_COUPON_ASSIGN A
+       INNER JOIN PSITE_COUPONOFFER B ON A.COUPONOFFER_CODE = B.CODE
+       INNER JOIN ADMSITE S ON A.ADMSITE_CODE = S.CODE
+       LEFT JOIN PSITE_COUPON_ASSRT ASS
+          ON A.COUPONOFFER_CODE = ASS.COUPONOFFER_CODE
+       LEFT JOIN PROMO_ASSORTMENT ASM ON ASS.ASSRT_CODE = ASM.CODE

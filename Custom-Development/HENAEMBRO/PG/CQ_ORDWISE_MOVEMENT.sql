@@ -1,0 +1,49 @@
+/*><><>< || Custom Development || Object : CQ_ORDWISE_MOVEMENT || Ticket Id : 401539 || Developer : Dipankar || ><><><*/
+select
+	row_number() over () UK,
+	A.UDFSTRING01 SO_NO,
+	F.CATEGORY1 ITEM_DESIGN,
+	F.CATEGORY3 "DESC",
+	D.QTY PLAN_QTY,
+	A.LOTNO PLAN_NO,
+	A.SCHEDULE_DATE PLAN_DATE,
+	C.OPERATION_SEQUENCE SEQ,
+	E.PROCESS_NAME PROCESS,
+	H.JOBBER_NAME JOBBER,
+	H.JOB_ORDER_NO JOB_ORDER_NO,
+	H.JOB_ORDER_DATE::DATE JOB_ORDER_DATE,
+	C.ORDER_QUANTITY JOB_ORDER_QTY,
+	C.DUE_DATE::DATE DUE_DATE,
+	E.JOB_RECEIPT_NO JOB_RECEIPT_NO,
+	E.JOB_RECEIPT_DATE::DATE JOB_RECEIPT_DATE,
+	B.RECEIVED_QUANTITY JOB_RECEIVED_QUANTITY,
+	A.code LOTCODE
+from
+	MAIN.PRDLOTMAIN A
+left join MAIN.PRDLOTDET D on
+	A.CODE = D.lotcode
+inner join GINVIEW.LV_ASSEMBLY_ITEM F on
+	D.ASSEMBLY_ICODE = ITEM_CODE
+left join GINVIEW.LV_PRD_JOB_ORDER_DETAIL C on
+	(A.CODE = C.lotcode
+		and D.ASSEMBLY_ICODE = C.ASSEMBLY_ICODE)
+left join GINVIEW.LV_PRD_JOB_ORDER_HEADER H on
+	C.jobcode = H.code
+left join GINVIEW.LV_PRD_JOB_RECEIPT_DETAIL B on
+	(C.JOBCODE = B.JOBCODE
+		and C.ASSEMBLY_ICODE = B.ASSEMBLY_ICODE)
+left join GINVIEW.LV_PRD_JOB_RECEIPT_HEADER E on
+	B.JRCCODE = E.CODE
+where
+	(a.lotno in (
+	select
+		unnest(string_to_array('',
+		'æ'))
+        )
+		or coalesce(array_length(string_to_array('',
+		'æ'),
+		1),
+		0) = 0)
+	and A.SCHEDULE_DATE between TO_DATE ('@DTFR@',
+	'YYYY-MM-DD') and TO_DATE ('@DTTO@',
+	'YYYY-MM-DD')

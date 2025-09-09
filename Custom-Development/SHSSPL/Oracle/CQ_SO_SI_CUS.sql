@@ -1,0 +1,63 @@
+/* Formatted on 2025-02-04 17:38:33 (QP5 v5.294) */
+/*><><>< || Custom Development || Object : CQ_SO_SI_CUS || Ticket Id : 391752 || Developer : Dipankar || ><><><*/
+  SELECT GINVIEW.FNC_UK () UK,
+         M.SCHEME_DOCNO   ORDER_NO,
+         M.ORDDT          ORDER_DATE,
+         M.DOCNO          ORDER_DOC_NO,
+         M.DOCDT          ORDER_DOC_DATE,
+         CS.SLNAME        ORDER_CUSTOMER,
+         SUM (D.ORDQTY)   ORDER_QTY,
+         CASE
+            WHEN SUM (COALESCE (D.NETAMT, 0)) = 0
+            THEN
+                 (SUM (D.ORDQTY * D.RATE) + SUM (COALESCE (D.CHGAMT, 0)))
+               + SUM (COALESCE (D.TAXAMT, 0))
+            ELSE
+               SUM (COALESCE (D.NETAMT, 0))
+         END
+            ORDER_NETAMT,
+         SIM.SCHEME_DOCNO INVOICE_NO,
+         SIM.INVDT        INVOICE_DATE,
+         CM.NAME          INVOICE_CUSTOMER,
+         CM.SHIPPING_CITY INV_CUS_CITY,
+         AG.SLNAME        INVOICE_AGENT,
+         SIM.UDFSTRING01  HASTEE,
+         SUM (SID.INVQTY) INVOICE_QTY,
+         SUM (
+              (COALESCE (SID.INVAMT, 0) + COALESCE (SID.CHGAMT, 0))
+            + COALESCE (SID.TAXAMT, 0))
+            INVOICE_NETAMT,
+         LGT.DOCUMENT_NO  LR_DOC_NO,
+         LGT.DOCUMENT_DATE LR_DOC_DATE,
+         LGT.CONSIGNOR_NAME LR_CONSIGNOR,
+         LGT.REMARKS      LR_REM
+    FROM SALORDMAIN M
+         INNER JOIN SALORDDET D ON M.ORDCODE = D.ORDCODE
+         LEFT OUTER JOIN FINSL CS ON M.PCODE = CS.SLCODE
+         INNER JOIN INVDCDET DCD
+            ON D.ORDCODE = DCD.ORDCODE AND D.CODE = DCD.SALORDDET_CODE
+         INNER JOIN SALINVDET SID
+            ON DCD.DCCODE = SID.DCCODE AND DCD.CODE = SID.INVDCDET_CODE
+         INNER JOIN SALINVMAIN SIM ON SID.INVCODE = SIM.INVCODE
+         LEFT OUTER JOIN GINVIEW.LV_CUSTOMER_SUPPLIER CM ON M.PCODE = CM.CODE
+         LEFT OUTER JOIN FINSL AG ON M.AGCODE = AG.SLCODE
+         LEFT OUTER JOIN GINVIEW.LV_LGTOUT_HEADER LGT
+            ON SIM.LGTCODE = LGT.LGTCODE
+   WHERE     M.SALETYPE = 'O'
+         AND TRUNC (SIM.INVDT) BETWEEN TO_DATE ('@DTFR@', 'YYYY-MM-DD')
+                                 AND TO_DATE ('@DTTO@', 'YYYY-MM-DD')
+GROUP BY M.SCHEME_DOCNO,
+         M.ORDDT,
+         M.DOCNO,
+         M.DOCDT,
+         CS.SLNAME,
+         SIM.SCHEME_DOCNO,
+         SIM.INVDT,
+         CM.NAME,
+         CM.SHIPPING_CITY,
+         AG.SLNAME,
+         SIM.UDFSTRING01,
+         LGT.DOCUMENT_NO,
+         LGT.DOCUMENT_DATE,
+         LGT.CONSIGNOR_NAME,
+         LGT.REMARKS

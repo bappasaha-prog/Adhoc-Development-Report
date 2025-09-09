@@ -1,0 +1,29 @@
+/* Formatted on 2025-04-16 12:42:26 (QP5 v5.294) */
+/*><><>< || Custom Development || Object : CQ_MONTH_ORDER || Ticket Id : 403895 || Developer : Dipankar || ><><><*/
+SELECT 1,
+       MAX (CASE WHEN SEQ = 1 THEN MONTH_NAME ELSE NULL END)  MONTH_NAME1,
+       MAX (CASE WHEN SEQ = 2 THEN MONTH_NAME ELSE NULL END)  MONTH_NAME2,
+       MAX (CASE WHEN SEQ = 3 THEN MONTH_NAME ELSE NULL END)  MONTH_NAME3,
+       MAX (CASE WHEN SEQ = 4 THEN MONTH_NAME ELSE NULL END)  MONTH_NAME4,
+       MAX (CASE WHEN SEQ = 5 THEN MONTH_NAME ELSE NULL END)  MONTH_NAME5,
+       MAX (CASE WHEN SEQ = 6 THEN MONTH_NAME ELSE NULL END)  MONTH_NAME6,
+       MAX (CASE WHEN SEQ = 7 THEN MONTH_NAME ELSE NULL END)  MONTH_NAME7,
+       MAX (CASE WHEN SEQ = 8 THEN MONTH_NAME ELSE NULL END)  MONTH_NAME8,
+       MAX (CASE WHEN SEQ = 9 THEN MONTH_NAME ELSE NULL END)  MONTH_NAME9,
+       MAX (CASE WHEN SEQ = 10 THEN MONTH_NAME ELSE NULL END) MONTH_NAME10,
+       MAX (CASE WHEN SEQ = 11 THEN MONTH_NAME ELSE NULL END) MONTH_NAME11,
+       MAX (CASE WHEN SEQ = 12 THEN MONTH_NAME ELSE NULL END) MONTH_NAME12,
+       MAX (CASE WHEN SEQ = 13 THEN MONTH_NAME ELSE NULL END) MONTH_NAME13
+  FROM (  SELECT ROW_NUMBER () OVER (ORDER BY MCODE ASC) SEQ, MONTH_NAME
+            FROM ADMMONTH
+           WHERE DTFR BETWEEN (SELECT DTFR
+                                 FROM ADMMONTH
+                                WHERE ADD_MONTHS (
+                                         TO_DATE ('@ASON@', 'YYYY-MM-DD'),
+                                         -12) BETWEEN DTFR
+                                                  AND DTTO)
+                          AND (SELECT DTFR
+                                 FROM ADMMONTH
+                                WHERE TO_DATE ('@ASON@', 'YYYY-MM-DD') BETWEEN DTFR
+                                                                               AND DTTO)
+        ORDER BY MCODE ASC)

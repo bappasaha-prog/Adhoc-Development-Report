@@ -1,0 +1,1128 @@
+/* Formatted on 20-02-2024 14:57:19 (QP5 v5.294) */
+/*><><>< || Custom Development || Object : CQ_SALES || Ticket Id : 404247 || Developer : Dipankar || ><><><*/
+with site_data
+     as (
+select
+	ST.CODE SITECODE,
+	ST.NAME NAME,
+	ST.SHRTNAME SHORT_CODE,
+	ST.ADDRESS ADDRESS,
+	ST.CTNAME CITY,
+	B.STNAME STATE,
+	B.DIST DISTRICT,
+	ST.PIN PINCODE,
+	ST.OPH1 PHONE1,
+	ST.OPH2 PHONE2,
+	ST.OPH3 PHONE3,
+	st.EMAIL1 EMAIL1,
+	ST.EMAIL2 EMAIL2,
+	case
+		when SITETYPE like '%OO-CM'
+		or SITETYPE = 'MS-CO-CM'
+                   then
+                      SIN.GSTIN_NO
+		else
+                      ST.CP_GSTIN_NO
+	end
+                   GST_IDENTIFICATION_NO,
+	case
+		when SITETYPE like '%OO-CM'
+		or SITETYPE = 'MS-CO-CM'
+                   then
+                      SIN.ADMGSTSTATE_CODE
+		else
+                      ST.CP_GSTIN_STATE_CODE
+	end
+                   GST_STATE_CODE,
+	case
+		when SITETYPE like '%OO-CM'
+		or SITETYPE = 'MS-CO-CM'
+                   then
+                      STA.NAME
+		else
+                      STA1.NAME
+	end
+                   GST_STATE_NAME,
+	case
+		when ST.SITETYPE like '%OM%'
+                   then
+                      case
+			when ISBILLINGSHIPPINGSAME = 'Y' then F.SLNAME
+			else ST.SHIP_LEGAL_NAME
+		end
+		else
+                      O.NAME
+	end
+                   Shipping_Company_Name,
+	case
+		when ISBILLINGSHIPPINGSAME = 'Y' then ST.ADDRESS
+		else ST.SHIP_ADDRESS
+	end
+                   Shipping_Address,
+	case
+		when ISBILLINGSHIPPINGSAME = 'Y' then ST.CTNAME
+		else ST.SHIP_CTNAME
+	end
+                   Shipping_CITY,
+	case
+		when ISBILLINGSHIPPINGSAME = 'Y' then ST.PIN
+		else ST.SHIP_PIN
+	end
+                   Shipping_Pincode,
+	case
+		when ISBILLINGSHIPPINGSAME = 'Y' then ST.OPH1
+		else ST.SHIP_OPH1
+	end
+                   Shipping_Phone1,
+	case
+		when ISBILLINGSHIPPINGSAME = 'Y' then ST.OPH2
+		else ST.SHIP_OPH2
+	end
+                   Shipping_Phone2,
+	case
+		when ISBILLINGSHIPPINGSAME = 'Y' then ST.OPH3
+		else ST.SHIP_OPH3
+	end
+                   Shipping_Phone3,
+	case
+		when ISBILLINGSHIPPINGSAME = 'Y' then ST.EMAIL1
+		else ST.SHIP_EMAIL1
+	end
+                   Shipping_Email1,
+	case
+		when ST.SITETYPE like '%CM'
+                   then
+                      SIN.GSTIN_NO
+		else
+                      case
+			when ISBILLINGSHIPPINGSAME = 'Y' then ST.CP_GSTIN_NO
+			else ST.SHIP_CP_GSTIN_NO
+		end
+	end
+                   Shipping_GST_Identification_No,
+	case
+		when ST.SITETYPE like '%CM'
+                   then
+                      SIN.ADMGSTSTATE_CODE
+		else
+                      case
+			when ISBILLINGSHIPPINGSAME = 'Y'
+                         then
+                            ST.CP_GSTIN_STATE_CODE
+			else
+                            ST.SHIP_CP_GSTIN_STATE_CODE
+		end
+	end
+                   Shipping_GST_State_Code,
+	case
+		when ST.SITETYPE like '%CM'
+                   then
+                      STA.NAME
+		else
+                      case
+			when ISBILLINGSHIPPINGSAME = 'Y' then STA1.NAME
+			else STA2.NAME
+		end
+	end
+                   Shipping_GST_State_Name,
+	ST.WEBSITE
+from
+	ADMSITE ST
+left outer join FINSL F on
+	ST.SLCODE = F.SLCODE
+left outer join ADMCITY B on
+	ST.CTNAME = B.CTNAME
+left outer join ADMOU O on
+	ST.ADMOU_CODE = O.CODE
+left outer join ADMGSTIN SIN on
+	ST.ADMGSTIN_CODE = SIN.CODE
+left outer join ADMGSTSTATE STA
+                   on
+	SIN.ADMGSTSTATE_CODE = STA.CODE
+left outer join ADMGSTSTATE STA1
+                   on
+	ST.CP_GSTIN_STATE_CODE = STA1.CODE
+left outer join ADMGSTSTATE STA2
+                   on
+	ST.SHIP_CP_GSTIN_STATE_CODE = STA2.CODE)
+select
+	ginview.fnc_uk() uk,
+	H.INVCODE L1_INVCODE,
+	H.INVOICE_DATE L1_INVOICE_DATE,
+	H.PCODE L1_PCODE,
+	H.DOCUMENT_NO L1_DOCUMENT_NO,
+	H.DUE_DATE L1_DUE_DATE,
+	H.AGCODE L1_AGCODE,
+	H.AGENT_NAME L1_AGENT_NAME,
+	H.AGENT_RATE L1_AGENT_RATE,
+	H.GROSS_AMOUNT L1_GROSS_AMOUNT,
+	H.NET_AMOUNT L1_NET_AMOUNT,
+	H.REMARKS L1_REMARKS,
+	H.INVOICE_CREATED_BY L1_INVOICE_CREATED_BY,
+	H.INVOICE_CREATED_ON L1_INVOICE_CREATED_ON,
+	H.SALES_TERM L1_SALES_TERM,
+	H.LAST_ACCESSED_ON L1_LAST_ACCESSED_ON,
+	H.LAST_ACCESSED_BY L1_LAST_ACCESSED_BY,
+	H.LGTCODE L1_LGTCODE,
+	H.LOGISTIC_NO L1_LOGISTIC_NO,
+	H.LOGISTIC_DATE L1_LOGISTIC_DATE,
+	H.LOGISTIC_TRANSPORTER L1_LOGISTIC_TRANSPORTER,
+	H.LOGISTIC_DECLARED_AMOUNT L1_LOGISTIC_DECLARED_AMOUNT,
+	H.DOCUMENT_DATE L1_DOCUMENT_DATE,
+	H.INVOICE_NO L1_INVOICE_NO,
+	H.TRPCODE L1_TRPCODE,
+	H.TRANSPORTER_NAME L1_TRANSPORTER_NAME,
+	H.TRANSIT_DAYS L1_TRANSIT_DAYS,
+	H.ADMOU_CODE L1_ADMOU_CODE,
+	H.ADMSITE_CODE L1_ADMSITE_CODE,
+	H.AUTHORIZED_BY L1_AUTHORIZED_BY,
+	H.AUTHORIZED_ON L1_AUTHORIZED_ON,
+	H.ADMSITE_CODE_OWNER L1_ADMSITE_CODE_OWNER,
+	H.SALINMAIN_UDFSTRING01 L1_SALINMAIN_UDFSTRING01,
+	H.SALINMAIN_UDFSTRING02 L1_SALINMAIN_UDFSTRING02,
+	H.SALINMAIN_UDFSTRING03 L1_SALINMAIN_UDFSTRING03,
+	H.SALINMAIN_UDFSTRING04 L1_SALINMAIN_UDFSTRING04,
+	H.SALINMAIN_UDFSTRING05 L1_SALINMAIN_UDFSTRING05,
+	H.SALINMAIN_UDFSTRING06 L1_SALINMAIN_UDFSTRING06,
+	H.SALINMAIN_UDFSTRING07 L1_SALINMAIN_UDFSTRING07,
+	H.SALINMAIN_UDFSTRING08 L1_SALINMAIN_UDFSTRING08,
+	H.SALINMAIN_UDFSTRING09 L1_SALINMAIN_UDFSTRING09,
+	H.SALINMAIN_UDFSTRING10 L1_SALINMAIN_UDFSTRING10,
+	H.SALINVMAIN_UDFNUM01 L1_SALINVMAIN_UDFNUM01,
+	H.SALINVMAIN_UDFNUM02 L1_SALINVMAIN_UDFNUM02,
+	H.SALINVMAIN_UDFNUM03 L1_SALINVMAIN_UDFNUM03,
+	H.SALINVMAIN_UDFNUM04 L1_SALINVMAIN_UDFNUM04,
+	H.SALINVMAIN_UDFNUM05 L1_SALINVMAIN_UDFNUM05,
+	H.SALINVMAIN_UDFDATE01 L1_SALINVMAIN_UDFDATE01,
+	H.SALINVMAIN_UDFDATE02 L1_SALINVMAIN_UDFDATE02,
+	H.SALINVMAIN_UDFDATE03 L1_SALINVMAIN_UDFDATE03,
+	H.SALINVMAIN_UDFDATE04 L1_SALINVMAIN_UDFDATE04,
+	H.SALINVMAIN_UDFDATE05 L1_SALINVMAIN_UDFDATE05,
+	H.RELEASE_STATUS L1_RELEASE_STATUS,
+	H.RELEASE_ON L1_RELEASE_ON,
+	H.RELEASE_BY L1_RELEASE_BY,
+	H.TRADE_GROUP_NAME L1_TRADE_GROUP_NAME,
+	H.PRICE_LIST_NAME L1_PRICE_LIST_NAME,
+	H.PRICE_ROUND_OFF L1_PRICE_ROUND_OFF,
+	H.PRICE_ROUND_OFF_LIMIT L1_PRICE_ROUND_OFF_LIMIT,
+	H.PRICE_INCLUSION_OF_TAX L1_PRICE_INCLUSION_OF_TAX,
+	H.PRICE_MODE L1_PRICE_MODE,
+	H.PRICE_BASIS L1_PRICE_BASIS,
+	H.OWNER_GSTIN_NO L1_OWNER_GSTIN_NO,
+	H.OWNER_GSTIN_STATE_CODE L1_OWNER_GSTIN_STATE_CODE,
+	H.OWNER_GSTIN_STATE_NAME L1_OWNER_GSTIN_STATE_NAME,
+	H.CP_GSTIN_NO L1_CP_GSTIN_NO,
+	H.CP_GSTIN_STATE_CODE L1_CP_GSTIN_STATE_CODE,
+	H.CP_GSTIN_STATE_NAME L1_CP_GSTIN_STATE_NAME,
+	H.E_WAY_BILL_NO L1_E_WAY_BILL_NO,
+	H.E_WAY_BILL_GENERATED_ON L1_E_WAY_BILL_GENERATED_ON,
+	H.E_WAY_BILL_VALID_UPTO L1_E_WAY_BILL_VALID_UPTO,
+	H.E_INVOICE_IRN L1_E_INVOICE_IRN,
+	H.E_INVOICE_ACK_DATETIME L1_E_INVOICE_ACK_DATETIME,
+	H.E_INVOICE_ACK_NO L1_E_INVOICE_ACK_NO,
+	H.E_INVOICE_SIGNED_QR_DATA L1_E_INVOICE_SIGNED_QR_DATA,
+	H.E_INVOICE_UPDATED_BY L1_E_INVOICE_UPDATED_BY,
+	H.E_INVOICE_UPDATED_ON L1_E_INVOICE_UPDATED_ON,
+	H.SALETYPE L1_SALETYPE,
+	H.CUST_NAME L1_CUST_NAME,
+	H.CUST_BILLING_ADDRESS L1_CUST_BILLING_ADDRESS,
+	H.CUST_BILLING_CONTACT_PERSON L1_CUST_BILLING_CONTACT_PERSON,
+	H.CUST_BILLING_CITY L1_CUST_BILLING_CITY,
+	H.CUST_BILLING_STATE L1_CUST_BILLING_STATE,
+	H.CUST_BILLING_DISTRICT L1_CUST_BILLING_DISTRICT,
+	H.CUST_BILLING_ZONE L1_CUST_BILLING_ZONE,
+	H.CUST_BILLING_EMAIL1 L1_CUST_BILLING_EMAIL1,
+	H.CUST_BILLING_EMAIL2 L1_CUST_BILLING_EMAIL2,
+	H.CUST_BILLING_FAX L1_CUST_BILLING_FAX,
+	H.CUST_BILLING_MOBILE L1_CUST_BILLING_MOBILE,
+	H.CUST_BILLING_OFFICE_PHONE1 L1_CUST_BILLING_OFFICE_PHONE1,
+	H.CUST_BILLING_OFFICE_PHONE2 L1_CUST_BILLING_OFFICE_PHONE2,
+	H.CUST_BILLING_OFFICE_PHONE3 L1_CUST_BILLING_OFFICE_PHONE3,
+	H.CUST_BILLING_PINCODE L1_CUST_BILLING_PINCODE,
+	H.CUST_BILLING_WEBSITE L1_CUST_BILLING_WEBSITE,
+	H.CUST_GSTIN_NO L1_CUST_GSTIN_NO,
+	H.CUST_GST_STATE_CODE L1_CUST_GST_STATE_CODE,
+	H.CUST_GST_STATE_NAME L1_CUST_GST_STATE_NAME,
+	H.ORGUNIT_NAME L1_ORGUNIT_NAME,
+	H.ORGUNIT_WEBSITE L1_ORGUNIT_WEBSITE,
+	H.ORGUNIT_CIN L1_ORGUNIT_CIN,
+	H.OWNER_SITE_NAME L1_OWNER_SITE_NAME,
+	H.OWNER_SHORT_CODE L1_OWNER_SHORT_CODE,
+	H.OWNER_SITE_ADDRESS L1_OWNER_SITE_ADDRESS,
+	H.OWNER_SITE_CITY L1_OWNER_SITE_CITY,
+	H.OWNER_SITE_PINCODE L1_OWNER_SITE_PINCODE,
+	H.OWNER_SITE_PHONE1 L1_OWNER_SITE_PHONE1,
+	H.OWNER_SITE_PHONE2 L1_OWNER_SITE_PHONE2,
+	H.OWNER_SITE_PHONE3 L1_OWNER_SITE_PHONE3,
+	H.OWNER_SITE_EMAIL1 L1_OWNER_SITE_EMAIL1,
+	H.OWNER_SITE_EMAIL2 L1_OWNER_SITE_EMAIL2,
+	H.OWNER_SITE_WEBSITE L1_OWNER_SITE_WEBSITE,
+	H.REFSITE_NAME L1_REFSITE_NAME,
+	H.REFSITE_SHORT_CODE L1_REFSITE_SHORT_CODE,
+	H.REFSITE_ADDRESS L1_REFSITE_ADDRESS,
+	H.REFSITE_CITY L1_REFSITE_CITY,
+	H.REFSITE_PINCODE L1_REFSITE_PINCODE,
+	H.REFSITE_PHONE1 L1_REFSITE_PHONE1,
+	H.REFSITE_PHONE2 L1_REFSITE_PHONE2,
+	H.REFSITE_PHONE3 L1_REFSITE_PHONE3,
+	H.REFSITE_EMAIL1 L1_REFSITE_EMAIL1,
+	H.REFSITE_GSTIN_NO L1_REFSITE_GSTIN_NO,
+	H.REFSITE_GST_STATE_CODE L1_REFSITE_GST_STATE_CODE,
+	H.REFSITE_GST_STATE_NAME L1_REFSITE_GST_STATE_NAME,
+	H.REFSITE_SHIPPING_COMPANY_NAME L1_REFSITE_SHIP_COMPANY_NAME,
+	H.REFSITE_SHIPPING_ADDRESS L1_REFSITE_SHIP_ADDRESS,
+	H.REFSITE_SHIPPING_CITY L1_REFSITE_SHIP_CITY,
+	H.REFSITE_SHIPPING_PINCODE L1_REFSITE_SHIP_PINCODE,
+	H.REFSITE_SHIPPING_PHONE1 L1_REFSITE_SHIP_PHONE1,
+	H.REFSITE_SHIPPING_PHONE2 L1_REFSITE_SHIP_PHONE2,
+	H.REFSITE_SHIPPING_PHONE3 L1_REFSITE_SHIP_PHONE3,
+	H.REFSITE_SHIPPING_EMAIL1 L1_REFSITE_SHIP_EMAIL1,
+	H.REFSITE_SHIP_GSTIN_NO L1_REFSITE_SHIP_GSTIN_NO,
+	H.REFSITE_SHIP_GST_STATE_CODE L1_REFSITE_SHIP_GST_STATE_CODE,
+	H.REFSITE_SHIP_GST_STATE_NAME L1_REFSITE_SHIP_GST_STATE_NAME,
+	TRANSIT_DUE_DATE L1_TRANSIT_DUE_DATE,
+	d.lvl,
+	d.seq,
+	D.SLNO L2_SLNO,
+			D.ARTICLE_NAME L2_ARTICLE_NAME,
+			D.BRAND L2_BRAND,
+			D.COLOUR L2_COLOUR,
+			d.sole_material l2_sole_material,
+			D.TOTAL_QTY L2_TOTAL_QTY,
+			D.SIZE1 L2_SIZE1,
+			D.SIZE2 L2_SIZE2,
+			D.SIZE3 L2_SIZE3,
+			D.SIZE4 L2_SIZE4,
+			D.SIZE5 L2_SIZE5,
+			D.SIZE6 L2_SIZE6,
+			D.SIZE7 L2_SIZE7,
+			D.SIZE8 L2_SIZE8,
+			D.SIZE9 L2_SIZE9,
+			D.SIZE10 L2_SIZE10,
+			D.SIZE11 L2_SIZE11,
+			D.SIZE12 L2_SIZE12,
+			D.SIZE13 L2_SIZE13,
+			D.SIZE14 L2_SIZE14,
+			D.SIZE15 L2_SIZE15,
+	D.DISPLAY_SEQUENCE L3_DISPLAY_SEQUENCE,
+	D.SALES_CHARGE_NAME L3_SALES_CHARGE_NAME,
+	D.CHARGE_RATE L3_CHARGE_RATE,
+	D.CHARGE_AMOUNT L3_CHARGE_AMOUNT,
+	D.CHARGE_BASIS L3_CHARGE_BASIS,
+	D.CHARGE_APPLICABLE_ON L3_CHARGE_APPLICABLE_ON,
+	D.OPERATION_LEVEL L3_OPERATION_LEVEL,
+	D.HSN_INVOICED_QUANTITY L4_INVOICED_QUANTITY,
+	D.HSN_CODE L4_HSN_CODE,
+	D.HSN_SAC_ID L4_HSN_SAC_ID,
+	D.HSN_DESCRIPTION L4_HSN_DESCRIPTION,
+	D.HSN_UOM L4_HSN_UOM,
+	D.HSN_TAXABLE_AMOUNT L4_TAXABLE_AMOUNT,
+	D.HSN_CGST_RATE L4_CGST_RATE,
+	D.HSN_CGST_AMOUNT L4_CGST_AMOUNT,
+	D.HSN_SGST_RATE L4_SGST_RATE,
+	D.HSN_SGST_AMOUNT L4_SGST_AMOUNT,
+	D.HSN_IGST_RATE L4_IGST_RATE,
+	D.HSN_IGST_AMOUNT L4_IGST_AMOUNT,
+	D.HSN_CESS_RATE L4_CESS_RATE,
+	D.HSN_CESS_AMOUNT L4_CESS_AMOUNT,
+	D.DC_NO L5_DC_NO,
+	D.DC_DATE L5_DC_DATE,
+	D.SO_NO L5_SO_NO,
+	D.SO_DATE L5_SO_DATE
+from
+	(/*Header Part*/
+	select
+		A.INVCODE INVCODE,
+		INVDT INVOICE_DATE,
+		PCODE PCODE,
+		A.DOCNO DOCUMENT_NO,
+		DUEDT DUE_DATE,
+		A.AGCODE AGCODE,
+		coalesce (AG.SLNAME,
+		'No Agent') AGENT_NAME,
+		A.AGRATE AGENT_RATE,
+		GRSAMT GROSS_AMOUNT,
+		NETAMT NET_AMOUNT,
+		A.REM REMARKS,
+		( (C.FNAME || ' [') || C.ENO) || ']' INVOICE_CREATED_BY,
+		A.TIME INVOICE_CREATED_ON,
+		SALTERMNAME SALES_TERM,
+		A.LAST_ACCESS_TIME LAST_ACCESSED_ON,
+		( (M.FNAME || ' [') || M.ENO) || ']' LAST_ACCESSED_BY,
+		a.lgtcode,
+		LGTNO LOGISTIC_NO,
+		LGTDT LOGISTIC_DATE,
+		TR.SLNAME LOGISTIC_TRANSPORTER,
+		DECAMT LOGISTIC_DECLARED_AMOUNT,
+		A.DOCDT DOCUMENT_DATE,
+		SCHEME_DOCNO INVOICE_NO,
+		A.TRPCODE TRPCODE,
+		TRP.SLNAME TRANSPORTER_NAME,
+		TRANSITDAYS TRANSIT_DAYS,
+		A.ADMOU_CODE,
+		A.ADMSITE_CODE ADMSITE_CODE,
+		( (U.FNAME || ' [') || U.ENO) || ']' AUTHORIZED_BY,
+		AUTHORIZE_TIME AUTHORIZED_ON,
+		A.ADMSITE_CODE_OWNER ADMSITE_CODE_OWNER,
+		A.UDFSTRING01 SALINMAIN_UDFSTRING01,
+		A.UDFSTRING02 SALINMAIN_UDFSTRING02,
+		A.UDFSTRING03 SALINMAIN_UDFSTRING03,
+		A.UDFSTRING04 SALINMAIN_UDFSTRING04,
+		A.UDFSTRING05 SALINMAIN_UDFSTRING05,
+		A.UDFSTRING06 SALINMAIN_UDFSTRING06,
+		A.UDFSTRING07 SALINMAIN_UDFSTRING07,
+		A.UDFSTRING08 SALINMAIN_UDFSTRING08,
+		A.UDFSTRING09 SALINMAIN_UDFSTRING09,
+		A.UDFSTRING10 SALINMAIN_UDFSTRING10,
+		A.UDFNUM01 SALINVMAIN_UDFNUM01,
+		A.UDFNUM02 SALINVMAIN_UDFNUM02,
+		A.UDFNUM03 SALINVMAIN_UDFNUM03,
+		A.UDFNUM04 SALINVMAIN_UDFNUM04,
+		A.UDFNUM05 SALINVMAIN_UDFNUM05,
+		A.UDFDATE01 SALINVMAIN_UDFDATE01,
+		A.UDFDATE02 SALINVMAIN_UDFDATE02,
+		A.UDFDATE03 SALINVMAIN_UDFDATE03,
+		A.UDFDATE04 SALINVMAIN_UDFDATE04,
+		A.UDFDATE05 SALINVMAIN_UDFDATE05,
+		TRANSIT_DUE_DATE,
+		INITCAP (
+                  case
+			when A.RELEASE_STATUS = 'P' then 'POSTED'
+			when A.RELEASE_STATUS = 'U' then 'UNPOSTED'
+			when A.RELEASE_STATUS = 'R' then 'REVERSED'
+		end)
+                  RELEASE_STATUS,
+		RELEASE_TIME RELEASE_ON,
+		( (R.FNAME || ' [') || R.ENO) || ']' RELEASE_BY,
+		P.NAME TRADE_GROUP_NAME,
+		PRICELISTNAME PRICE_LIST_NAME,
+		PRICE_ROUNDOFF PRICE_ROUND_OFF,
+		INITCAP (
+                  case
+			when coalesce (A.ROUNDOFF_LIMIT,
+			'U') = 'U' then 'UPPER'
+			when coalesce (A.ROUNDOFF_LIMIT,
+			'U') = 'L' then 'LOWER'
+			when coalesce (A.ROUNDOFF_LIMIT,
+			'U') = 'R' then 'ROUND'
+			when coalesce (A.ROUNDOFF_LIMIT,
+			'U') = 'N' then 'NONE'
+		end)
+                  PRICE_ROUND_OFF_LIMIT,
+		INITCAP (
+                  case
+			when coalesce (A.INCL_VAT_IN_DIST,
+			'N') = 'Y'
+                     then
+                        'INCLUDE'
+			when coalesce (A.INCL_VAT_IN_DIST,
+			'N') = 'N'
+                     then
+                        'DO NOT INCLUDE'
+		end)
+                  PRICE_INCLUSION_OF_TAX,
+		INITCAP (
+                  case
+			when coalesce (A.DISCOUNT_MODE,
+			'U') = 'U'
+                     then
+                        'MARKUP'
+			when coalesce (A.DISCOUNT_MODE,
+			'U') = 'D'
+                     then
+                        'MARKDOWN'
+		end)
+                  PRICE_MODE,
+		INITCAP (
+                  case
+			when coalesce (A.DISCOUNT_BASIS,
+			'B') = 'B'
+                     then
+                        'ON BASE PRICE'
+			when coalesce (A.DISCOUNT_BASIS,
+			'B') = 'N'
+                     then
+                        'ON NET PRICE'
+		end)
+                  PRICE_BASIS,
+		OWNER_GSTIN_NO OWNER_GSTIN_NO,
+		OWNER_GSTIN_STATE_CODE OWNER_GSTIN_STATE_CODE,
+		GST.NAME OWNER_GSTIN_STATE_NAME,
+		A.CP_GSTIN_NO CP_GSTIN_NO,
+		A.CP_GSTIN_STATE_CODE CP_GSTIN_STATE_CODE,
+		CPGST.NAME CP_GSTIN_STATE_NAME,
+		EWAYBILLNO E_WAY_BILL_NO,
+		EWAYBILLGENERATEDON E_WAY_BILL_GENERATED_ON,
+		EWAYBILLVALIDUPTO E_WAY_BILL_VALID_UPTO,
+		E_INVOICE_IRN,
+		E_INVOICE_ACK_DATETIME,
+		E_INVOICE_ACK_NO,
+		E_INVOICE_SIGNED_QR_DATA,
+		E_INVOICE_UPDATED_BY,
+		E_INVOICE_UPDATED_ON,
+		case
+			A.saletype
+                  when 'O' then 'SALES INVOICE'
+			when 'C' then 'TRANSFER OUT'
+		end
+                  SALETYPE,
+		cust_NAME,
+		cust_BILLING_ADDRESS,
+		cust_BILLING_CONTACT_PERSON,
+		cust_BILLING_CITY,
+		cust_BILLING_STATE,
+		cust_BILLING_DISTRICT,
+		cust_BILLING_ZONE,
+		cust_BILLING_EMAIL1,
+		cust_BILLING_EMAIL2,
+		cust_BILLING_FAX,
+		cust_BILLING_MOBILE,
+		cust_BILLING_OFFICE_PHONE1,
+		cust_BILLING_OFFICE_PHONE2,
+		cust_BILLING_OFFICE_PHONE3,
+		cust_BILLING_PINCODE,
+		cust_BILLING_WEBSITE,
+		CUST_GSTIN_NO,
+		cust_GST_STATE_CODE,
+		cust_GST_STATE_NAME,
+		ou.NAME ORGUNIT_NAME,
+		ou.WEBSITE ORGUNIT_WEBSITE,
+		ou.CINNO ORGUNIT_CIN,
+		os.NAME OWNER_SITE_NAME,
+		os.SHORT_CODE OWNER_SHORT_CODE,
+		os.ADDRESS OWNER_SITE_ADDRESS,
+		os.CITY OWNER_SITE_CITY,
+		os.PINCODE OWNER_SITE_PINCODE,
+		os.PHONE1 OWNER_SITE_PHONE1,
+		os.PHONE2 OWNER_SITE_PHONE2,
+		os.PHONE3 OWNER_SITE_PHONE3,
+		os.EMAIL1 OWNER_SITE_EMAIL1,
+		os.EMAIL2 OWNER_SITE_EMAIL2,
+		os.website OWNER_SITE_WEBSITE,
+		rs.NAME REFSITE_NAME,
+		rs.SHORT_CODE REFSITE_SHORT_CODE,
+		rs.ADDRESS REFSITE_ADDRESS,
+		rs.CITY REFSITE_CITY,
+		rs.PINCODE REFSITE_PINCODE,
+		rs.PHONE1 REFSITE_PHONE1,
+		rs.PHONE2 REFSITE_PHONE2,
+		rs.PHONE3 REFSITE_PHONE3,
+		rs.EMAIL1 REFSITE_EMAIL1,
+		rs.GST_IDENTIFICATION_NO REFSITE_GSTIN_NO,
+		rs.GST_STATE_CODE REFSITE_GST_STATE_CODE,
+		rs.GST_STATE_NAME REFSITE_GST_STATE_NAME,
+		rs.SHIPPING_COMPANY_NAME
+                  REFSITE_SHIPPING_COMPANY_NAME,
+		rs.SHIPPING_ADDRESS REFSITE_SHIPPING_ADDRESS,
+		rs.SHIPPING_CITY REFSITE_SHIPPING_CITY,
+		rs.SHIPPING_PINCODE REFSITE_SHIPPING_PINCODE,
+		rs.SHIPPING_PHONE1 REFSITE_SHIPPING_PHONE1,
+		rs.SHIPPING_PHONE2 REFSITE_SHIPPING_PHONE2,
+		rs.SHIPPING_PHONE3 REFSITE_SHIPPING_PHONE3,
+		rs.SHIPPING_EMAIL1 REFSITE_SHIPPING_EMAIL1,
+		rs.SHIPPING_GST_IDENTIFICATION_NO REFSITE_SHIP_GSTIN_NO,
+		rs.SHIPPING_GST_STATE_CODE
+                  REFSITE_SHIP_GST_STATE_CODE,
+		rs.SHIPPING_GST_STATE_NAME
+                  REFSITE_SHIP_GST_STATE_NAME
+	from
+		SALINVMAIN A
+	left outer join FINSL AG on
+		(A.AGCODE = AG.SLCODE)
+	left outer join FINSL TRP on
+		(A.TRPCODE = TRP.SLCODE)
+	inner join HRDEMP C on
+		(A.ECODE = C.ECODE)
+	left outer join SALTERMMAIN T
+                  on
+		(A.SALTERMCODE = T.SALTERMCODE)
+	left outer join HRDEMP M on
+		(A.LAST_ACCESS_ECODE = M.ECODE)
+	left outer join HRDEMP U on
+		(AUTHORIZE_ECODE = U.ECODE)
+	left outer join HRDEMP R on
+		(RELEASE_ECODE = R.ECODE)
+	left outer join FINTRADEGRP P on
+		(A.SALTRADEGRP_CODE = P.CODE)
+	left outer join SALPRICELISTMAIN PL
+                  on
+		(A.PRICELISTCODE = PL.PRICELISTCODE)
+	left outer join ADMGSTSTATE GST
+                  on
+		(OWNER_GSTIN_STATE_CODE = GST.CODE)
+	left outer join ADMGSTSTATE CPGST
+                  on
+		(A.CP_GSTIN_STATE_CODE = CPGST.CODE)
+	left outer join INVLGTNOTE L on
+		(A.LGTCODE = L.LGTCODE)
+	left outer join FINSL TR on
+		(L.TRPCODE = TR.SLCODE)
+	left outer join
+               (
+		select
+			TRANSACTION_CODE,
+			IRN E_INVOICE_IRN,
+			ACK_DATETIME E_INVOICE_ACK_DATETIME,
+			ACK_NO E_INVOICE_ACK_NO,
+			SIGNED_QR_DATA E_INVOICE_SIGNED_QR_DATA,
+			( (FNAME || ' [') || ENO) || ']' E_INVOICE_UPDATED_BY,
+			UPDATED_ON E_INVOICE_UPDATED_ON
+		from
+			INVGST_EINVOICE A
+		left outer join HRDEMP E on
+			(UPDATED_BY = ECODE)
+		where
+			TRANSACTION_TABLE = 'SALINVMAIN') EI
+                  on
+		(A.INVCODE::text = EI.TRANSACTION_CODE)
+	left outer join
+               (
+		select
+			S.SLNAME cust_NAME,
+			S.SLCODE,
+			S.BADDR cust_BILLING_ADDRESS,
+			S.BCP cust_BILLING_CONTACT_PERSON,
+			S.BCTNAME cust_BILLING_CITY,
+			BCT.STNAME cust_BILLING_STATE,
+			BCT.DIST cust_BILLING_DISTRICT,
+			BCT.ZONE cust_BILLING_ZONE,
+			S.BEMAIL cust_BILLING_EMAIL1,
+			S.BEMAIL2 cust_BILLING_EMAIL2,
+			S.BFX1 cust_BILLING_FAX,
+			S.BFX2 cust_BILLING_MOBILE,
+			S.BPH1 cust_BILLING_OFFICE_PHONE1,
+			S.BPH2 cust_BILLING_OFFICE_PHONE2,
+			S.BPH3 cust_BILLING_OFFICE_PHONE3,
+			S.BPIN cust_BILLING_PINCODE,
+			S.BWEBSITE cust_BILLING_WEBSITE,
+			S.CP_GSTIN_NO CUST_GSTIN_NO,
+			S.CP_GSTIN_STATE_CODE cust_GST_STATE_CODE,
+			GTE.NAME cust_GST_STATE_NAME
+		from
+			FINSL S
+		left outer join ADMCITY BCT on
+			S.BCTNAME = BCT.CTNAME
+		left outer join ADMGSTSTATE GTE
+                          on
+			S.CP_GSTIN_STATE_CODE = GTE.CODE) CUS
+                  on
+		(A.PCODE = CUS.SLCODE)
+	inner join admou ou on
+		(a.admou_code = ou.code)
+	inner join site_data os
+                  on
+		(a.admsite_code_owner = os.sitecode)
+	inner join site_data rs on
+		(a.admsite_code = Rs.sitecode)
+	where
+		(a.INVCODE in (
+		select
+			unnest(regexp_matches('@DocumentId@',
+		'[^|~|]+',
+		'g'))::bigint as col1)
+			or coalesce (nullif ('@DocumentId@',
+			''),
+			'0')::text = 0::text)) H
+inner join
+       (/*Detail*/
+	select
+		'L2#DETAIL' LVL,
+		1 SEQ,
+		INVCODE,
+		SLNO,
+			ARTICLE_NAME,
+			BRAND,
+			COLOUR,
+			sole_material,
+			TOTAL_QTY,
+			SIZE1,
+			SIZE2,
+			SIZE3,
+			SIZE4,
+			SIZE5,
+			SIZE6,
+			SIZE7,
+			SIZE8,
+			SIZE9,
+			SIZE10,
+			SIZE11,
+			SIZE12,
+			SIZE13,
+			SIZE14,
+			SIZE15,
+		null DISPLAY_SEQUENCE,
+		null SALES_CHARGE_NAME,
+		null CHARGE_RATE,
+		null CHARGE_AMOUNT,
+		null CHARGE_BASIS,
+		null CHARGE_APPLICABLE_ON,
+		null OPERATION_LEVEL,
+		null HSN_INVOICED_QUANTITY,
+		null HSN_CODE,
+		null HSN_SAC_ID,
+		null HSN_DESCRIPTION,
+		null HSN_UOM,
+		null HSN_TAXABLE_AMOUNT,
+		null HSN_CGST_RATE,
+		null HSN_CGST_AMOUNT,
+		null HSN_SGST_RATE,
+		null HSN_SGST_AMOUNT,
+		null HSN_IGST_RATE,
+		null HSN_IGST_AMOUNT,
+		null HSN_CESS_RATE,
+		null HSN_CESS_AMOUNT,
+		null DC_NO,
+		null DC_DATE,
+		null SO_NO,
+		null SO_DATE
+	from
+		(
+		select
+			row_number () over () SLNO,
+			INVCODE,
+			ARTICLE_NAME,
+			BRAND,
+			COLOUR,
+			sole_material,
+			SUM (QTY) TOTAL_QTY,
+			SUM (case
+				when SEQ = 1 then QTY
+				else 0
+			end) SIZE1,
+			SUM (case
+				when SEQ = 2 then QTY
+				else 0
+			end) SIZE2,
+			SUM (case
+				when SEQ = 3 then QTY
+				else 0
+			end) SIZE3,
+			SUM (case
+				when SEQ = 4 then QTY
+				else 0
+			end) SIZE4,
+			SUM (case
+				when SEQ = 5 then QTY
+				else 0
+			end) SIZE5,
+			SUM (case
+				when SEQ = 6 then QTY
+				else 0
+			end) SIZE6,
+			SUM (case
+				when SEQ = 7 then QTY
+				else 0
+			end) SIZE7,
+			SUM (case
+				when SEQ = 8 then QTY
+				else 0
+			end) SIZE8,
+			SUM (case
+				when SEQ = 9 then QTY
+				else 0
+			end) SIZE9,
+			SUM (case
+				when SEQ = 10 then QTY
+				else 0
+			end) SIZE10,
+			SUM (case
+				when SEQ = 11 then QTY
+				else 0
+			end) SIZE11,
+			SUM (case
+				when SEQ = 12 then QTY
+				else 0
+			end) SIZE12,
+			SUM (case
+				when SEQ = 13 then QTY
+				else 0
+			end) SIZE13,
+			SUM (case
+				when SEQ = 14 then QTY
+				else 0
+			end) SIZE14,
+			SUM (case
+				when SEQ = 15 then QTY
+				else 0
+			end) SIZE15
+		from
+			(
+			select
+				D.INVCODE,
+				I.CATEGORY2 ARTICLE_NAME,
+				i.category1 BRAND,
+				i.category4 COLOUR,
+				I.STRING_DESC1 sole_material,
+				dense_rank ()
+                   over (
+                      partition by D.INVCODE
+			order by
+				TRIM (CONCAT (I.INVITEM_UDFSTRING07,
+				I.CATEGORY3)))
+                      SEQ,
+				SUM (coalesce (D.INVQTY,
+				0)) QTY
+			from
+				SALINVDET D
+			inner join GINVIEW.LV_ITEM I on
+				D.ICODE = I.CODE
+			where
+				(INVCODE in (
+				select
+								unnest(regexp_matches('@DocumentId@',
+								'[^|~|]+',
+								'g'))::bigint as col1)
+					or coalesce (nullif ('@DocumentId@',
+								''),
+								'0')::text = 0::text)
+			group by
+				D.INVCODE,
+				i.category2,
+				i.category1,
+				i.category4,
+				I.STRING_DESC1,
+				TRIM (CONCAT (I.INVITEM_UDFSTRING07,
+				I.CATEGORY3)))
+		group by
+			INVCODE,
+			ARTICLE_NAME,
+			BRAND,
+			COLOUR,
+			sole_material
+		order by
+			ARTICLE_NAME) d
+union all
+        /*Charge Part*/
+	select
+		'L3#CHARGE' LVL,
+		2 SEQ,
+		INVCODE INVCODE,
+		null SLNO,
+			null ARTICLE_NAME,
+			null BRAND,
+			null COLOUR,
+			null sole_material,
+			null TOTAL_QTY,
+			null SIZE1,
+			null SIZE2,
+			null SIZE3,
+			null SIZE4,
+			null SIZE5,
+			null SIZE6,
+			null SIZE7,
+			null SIZE8,
+			null SIZE9,
+			null SIZE10,
+			null SIZE11,
+			null SIZE12,
+			null SIZE13,
+			null SIZE14,
+			null SIZE15,
+		SEQ DISPLAY_SEQUENCE,
+		SALCHGNAME SALES_CHARGE_NAME,
+		RATE CHARGE_RATE,
+		CHGAMT CHARGE_AMOUNT,
+		INITCAP (
+                  case
+			when coalesce (A.BASIS,
+			'P') = 'P' then 'PERCENTAGE'
+			when coalesce (A.BASIS,
+			'P') = 'A' then 'AMOUNT'
+		end)
+                  CHARGE_BASIS,
+		APPAMT CHARGE_APPLICABLE_ON,
+		INITCAP (
+                  case
+			when A.OPERATION_LEVEL = 'H' then 'HEADER'
+			when A.OPERATION_LEVEL = 'L' then 'LINE'
+		end)
+                  OPERATION_LEVEL,
+		null::numeric HSN_INVOICED_QUANTITY,
+		null HSN_CODE,
+		null HSN_SAC_ID,
+		null HSN_DESCRIPTION,
+		null HSN_UOM,
+		null::numeric HSN_TAXABLE_AMOUNT,
+		null::numeric HSN_CGST_RATE,
+		null::numeric HSN_CGST_AMOUNT,
+		null::numeric HSN_SGST_RATE,
+		null::numeric HSN_SGST_AMOUNT,
+		null::numeric HSN_IGST_RATE,
+		null::numeric HSN_IGST_AMOUNT,
+		null::numeric HSN_CESS_RATE,
+		null::numeric HSN_CESS_AMOUNT,
+		null DC_NO,
+		null::date DC_DATE,
+		null SO_NO,
+		null::date SO_DATE
+	from
+		SALINVCHG A
+	inner join SALCHG B on
+		(A.SALCHGCODE = B.SALCHGCODE)
+	where
+		(INVCODE in (
+		select
+			unnest(regexp_matches('@DocumentId@',
+		'[^|~|]+',
+		'g'))::bigint as col1)
+			or coalesce (nullif ('@DocumentId@',
+			''),
+			'0')::text = 0::text)
+union all
+          /*HSN PART*/
+	select
+		'L4#HSN' LVL,
+		3 SEQ,
+		INVCODE,
+		null SLNO,
+			null ARTICLE_NAME,
+			null BRAND,
+			null COLOUR,
+			null sole_material,
+			null TOTAL_QTY,
+			null SIZE1,
+			null SIZE2,
+			null SIZE3,
+			null SIZE4,
+			null SIZE5,
+			null SIZE6,
+			null SIZE7,
+			null SIZE8,
+			null SIZE9,
+			null SIZE10,
+			null SIZE11,
+			null SIZE12,
+			null SIZE13,
+			null SIZE14,
+			null SIZE15,
+		null DISPLAY_SEQUENCE,
+		null SALES_CHARGE_NAME,
+		null CHARGE_RATE,
+		null CHARGE_AMOUNT,
+		null CHARGE_BASIS,
+		null CHARGE_APPLICABLE_ON,
+		null OPERATION_LEVEL,
+		SUM (INVQTY) HSN_INVOICED_QUANTITY,
+		D.HSN_SAC_CODE HSN_CODE,
+		H.HSN_SAC_CODE HSN_SAC_ID,
+		DESCRIPTION HSN_DESCRIPTION,
+		UNITNAME HSN_UOM,
+		coalesce (SUM (TAXABLE_AMOUNT),
+		SUM (D.INVAMT))
+                    HSN_TAXABLE_AMOUNT,
+		CGST_RATE HSN_CGST_RATE,
+		SUM (CGST_AMOUNT) HSN_CGST_AMOUNT,
+		SGST_RATE HSN_SGST_RATE,
+		SUM (SGST_AMOUNT) HSN_SGST_AMOUNT,
+		IGST_RATE HSN_IGST_RATE,
+		SUM (IGST_AMOUNT) HSN_IGST_AMOUNT,
+		CESS_RATE HSN_CESS_RATE,
+		SUM (CESS_AMOUNT) HSN_CESS_AMOUNT,
+		null DC_NO,
+		null DC_DATE,
+		null SO_NO,
+		null SO_DATE
+	from
+		(
+		select
+			*
+		from
+			SALINVDET
+		where
+			(INVCODE in (
+			select
+				unnest(regexp_matches('@DocumentId@',
+		'[^|~|]+',
+		'g'))::bigint as col1)
+				or coalesce (nullif ('@DocumentId@',
+				''),
+				'0')::text = 0::text)) D
+	inner join INVITEM I on
+		(D.ICODE = I.ICODE)
+	left outer join
+                 (
+		select
+			SALINVDET_CODE,
+			APPAMT TAXABLE_AMOUNT,
+			SUM (
+                              case
+				when GST_COMPONENT = 'CGST' then RATE
+				else 0
+			end)
+                              CGST_RATE,
+			SUM (
+                              case
+				when GST_COMPONENT = 'CGST' then CHGAMT
+				else 0
+			end)
+                              CGST_AMOUNT,
+			SUM (
+                              case
+				when GST_COMPONENT = 'SGST' then RATE
+				else 0
+			end)
+                              SGST_RATE,
+			SUM (
+                              case
+				when GST_COMPONENT = 'SGST' then CHGAMT
+				else 0
+			end)
+                              SGST_AMOUNT,
+			SUM (
+                              case
+				when GST_COMPONENT = 'IGST' then RATE
+				else 0
+			end)
+                              IGST_RATE,
+			SUM (
+                              case
+				when GST_COMPONENT = 'IGST' then CHGAMT
+				else 0
+			end)
+                              IGST_AMOUNT,
+			SUM (
+                              case
+				when GST_COMPONENT = 'CESS' then RATE
+				else 0
+			end)
+                              CESS_RATE,
+			SUM (
+                              case
+				when GST_COMPONENT = 'CESS' then CHGAMT
+				else 0
+			end)
+                              CESS_AMOUNT
+		from
+			SALINVCHG_ITEM
+		where
+			source = 'G'
+			and (INVCODE in (
+			select
+				unnest(regexp_matches('@DocumentId@',
+		'[^|~|]+',
+		'g'))::bigint as col1)
+				or coalesce (nullif ('@DocumentId@',
+				''),
+				'0')::text = 0::text)
+		group by
+			SALINVDET_CODE,
+			APPAMT) TAX
+                    on
+		(D.CODE = SALINVDET_CODE)
+	inner join INVHSNSACMAIN H on
+		(INVHSNSACMAIN_CODE = H.CODE)
+	where
+		(INVCODE in (
+		select
+			unnest(regexp_matches('@DocumentId@',
+		'[^|~|]+',
+		'g'))::bigint as col1)
+			or coalesce (nullif ('@DocumentId@',
+			''),
+			'0')::text = 0::text)
+	group by
+		INVCODE,
+		D.HSN_SAC_CODE,
+		H.HSN_SAC_CODE,
+		DESCRIPTION,
+		UNITNAME,
+		CGST_RATE,
+		SGST_RATE,
+		IGST_RATE,
+		CESS_RATE
+union all
+          /*REFDOC PART*/
+	select
+		'L5#REFDOCS' LVL,
+		4 SEQ,
+		SI.INVCODE,
+		null SLNO,
+			null ARTICLE_NAME,
+			null BRAND,
+			null COLOUR,
+			null sole_material,
+			null TOTAL_QTY,
+			null SIZE1,
+			null SIZE2,
+			null SIZE3,
+			null SIZE4,
+			null SIZE5,
+			null SIZE6,
+			null SIZE7,
+			null SIZE8,
+			null SIZE9,
+			null SIZE10,
+			null SIZE11,
+			null SIZE12,
+			null SIZE13,
+			null SIZE14,
+			null SIZE15,
+		null DISPLAY_SEQUENCE,
+		null SALES_CHARGE_NAME,
+		null CHARGE_RATE,
+		null CHARGE_AMOUNT,
+		null CHARGE_BASIS,
+		null CHARGE_APPLICABLE_ON,
+		null OPERATION_LEVEL,
+		null HSN_INVOICED_QUANTITY,
+		null HSN_CODE,
+		null HSN_SAC_ID,
+		null HSN_DESCRIPTION,
+		null HSN_UOM,
+		null HSN_TAXABLE_AMOUNT,
+		null HSN_CGST_RATE,
+		null HSN_CGST_AMOUNT,
+		null HSN_SGST_RATE,
+		null HSN_SGST_AMOUNT,
+		null HSN_IGST_RATE,
+		null HSN_IGST_AMOUNT,
+		null HSN_CESS_RATE,
+		null HSN_CESS_AMOUNT,
+		DCM.SCHEME_DOCNO DC_NO,
+		DCDT DC_DATE,
+		ORM.SCHEME_DOCNO SO_NO,
+		ORDDT SO_DATE
+	from
+		(
+		select
+			*
+		from
+			SALINVDET
+		where
+			(INVCODE in (
+			select
+				unnest(regexp_matches('@DocumentId@',
+		'[^|~|]+',
+		'g'))::bigint as col1)
+				or coalesce (nullif ('@DocumentId@',
+				''),
+				'0')::text = 0::text)) SI
+	inner join INVDCMAIN DCM on
+		(SI.DCCODE = DCM.DCCODE)
+	inner join INVDCDET DCD
+                    on
+		(DCD.CODE = INVDCDET_CODE)
+			and (DCM.DCCODE = DCD.DCCODE)
+		left outer join SALORDMAIN ORM on
+			(DCD.ORDCODE = ORM.ORDCODE)
+		where
+			(si.INVCODE in (
+			select
+				unnest(regexp_matches('@DocumentId@',
+		'[^|~|]+',
+		'g'))::bigint as col1)
+				or coalesce (nullif ('@DocumentId@',
+				''),
+				'0')::text = 0::text)
+		group by
+			SI.INVCODE,
+			DCM.SCHEME_DOCNO,
+			DCM.DCDT,
+			ORM.SCHEME_DOCNO,
+			ORM.ORDDT,
+			DCM.REM,
+			DCM.DCBARCODE,
+			ORM.DOCNO,
+			ORM.DOCDT) d
+          on
+	(h.invcode = d.invcode)
