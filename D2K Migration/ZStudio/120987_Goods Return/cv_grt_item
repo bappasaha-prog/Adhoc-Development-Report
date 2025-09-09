@@ -1,0 +1,39 @@
+/* Formatted on 22/04/2021 12:16:39 (QP5 v5.294) */
+CREATE OR REPLACE VIEW ginview.cv_grt_item
+AS
+     SELECT ginview.fnc_uk                    uk,
+            grtcode,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category3
+            || ' '
+            || category4
+            || ' '
+            || category5
+            || ' '
+            || category6
+               Item,
+            HSN_CODE                          HSN,
+            return_rate                       rate,
+            uom                               UNIT,
+            SUM (return_quantity)             qty,
+            SUM (return_quantity * return_rate) Amount
+       FROM ginview.lv_grt_item A, ginview.lv_item B
+      WHERE A.icode = B.code                            --AND grtcode = 529339
+   GROUP BY grtcode,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category3
+            || ' '
+            || category4
+            || ' '
+            || category5
+            || ' '
+            || category6,
+            HSN_CODE,
+            return_rate,
+            uom

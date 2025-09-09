@@ -1,0 +1,11 @@
+create or replace view ginview.cv_dc_item_custom
+as
+select 
+ginview.fnc_uk UK, dccode, category1 Code, Category2 Description, category3 Measurement, sum(challan_quantity) Qty
+from ginview.lv_dc_item A, ginview.lv_item B
+where A.ICODE = B.CODE
+--and dccode = 6600252
+group by
+dccode, category1 , Category2 , category3 
+order by 
+dccode, category1 , Category2 , category3 

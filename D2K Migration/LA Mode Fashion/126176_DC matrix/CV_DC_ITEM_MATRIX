@@ -1,0 +1,62 @@
+/* Formatted on 23/06/2021 18:31:41 (QP5 v5.294) */
+CREATE OR REPLACE FORCE VIEW GINVIEW.CV_DC_ITEM_MATRIX
+AS
+     SELECT GINVIEW.FNC_UK       UK,
+            dccode,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category4
+            || ' '
+            || category5
+            || ' '
+            || category6
+               ITEM,
+            HSN_CODE             HSN,
+            challan_RSP          RSP,
+            TRIM (STRING_DESC6)  ITEM_SIZE,
+            SUM (challan_quantity) qty,
+            SUM (
+               challan_RSP * challan_quantity)
+            OVER (
+               PARTITION BY dccode,
+                               category1
+                            || ' '
+                            || category2
+                            || ' '
+                            || category4
+                            || ' '
+                            || category5
+                            || ' '
+                            || category6,
+                            challan_RSP
+               ORDER BY
+                  dccode,
+                     category1
+                  || ' '
+                  || category2
+                  || ' '
+                  || category4
+                  || ' '
+                  || category5
+                  || ' '
+                  || category6,
+                  challan_RSP)
+               Amount
+       FROM ginview.lv_dc_item A, Ginview.lv_item B
+      WHERE A.icode = B.code                             --AND dccode = 541607
+   GROUP BY dccode,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category4
+            || ' '
+            || category5
+            || ' '
+            || category6,
+            HSN_CODE,
+            challan_RSP,
+            STRING_DESC6,
+            challan_quantity;

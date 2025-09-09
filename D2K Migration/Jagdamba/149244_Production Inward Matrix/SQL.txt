@@ -1,0 +1,24 @@
+/* Formatted on 22/11/2021 15:06:03 (QP5 v5.294) */
+CREATE OR REPLACE FORCE VIEW GINVIEW.CV_PRD_RECEIPT_ITEM_MATRIX
+AS
+   SELECT ginview.fnc_uk   uk,
+          jrccode,
+          receive_stockpoint,
+             category1
+          || ' '
+          || department
+          || ' '
+          || category2
+          || ' '
+          || category3
+          || ' '
+          || category4
+          || ' '
+          || STRING_DESC3
+             Item,
+          TRIM (category5) Item_size,
+          received_quantity,
+          MRP
+     FROM ginview.lv_prd_job_receipt_detail det, ginview.lv_item it
+    WHERE det.ASSEMBLY_ICODE = it.code               --AND det.jrccode = 15765
+;

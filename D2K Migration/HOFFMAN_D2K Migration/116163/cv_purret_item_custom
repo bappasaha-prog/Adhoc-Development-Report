@@ -1,0 +1,27 @@
+create or replace view ginview.cv_purret_item_custom
+as
+select 
+ginview.fnc_uk UK, 
+rtcode, 
+Category1||' '||Category2||' '||Category3||' '||Category4||' '||Category5||' '||Category6 ITEM,
+HSN_CODE HSN,
+Return_Rate Rate,
+UOM Unit,
+sum(Return_quantity) qty,
+sum(Return_Rate*Return_quantity) Amount,
+sum(Item_gross_amount) Basic
+from GINVIEW.LV_PURRET_ITEM A, ginview.lv_item B
+where A.icode  = B.code
+--and rtcode = 5535606
+group by 
+rtcode, 
+Category1||' '||Category2||' '||Category3||' '||Category4||' '||Category5||' '||Category6 ,
+HSN_CODE ,
+Return_Rate ,
+UOM
+order by
+rtcode, 
+Category1||' '||Category2||' '||Category3||' '||Category4||' '||Category5||' '||Category6 ,
+HSN_CODE ,
+Return_Rate ,
+UOM

@@ -1,0 +1,11 @@
+/* Formatted on 27/07/2021 13:03:28 (QP5 v5.294) */
+CREATE OR REPLACE VIEW ginview.cv_SALINV_TROUT_REF_DOC_CUSTOM
+AS
+     SELECT ginview.fnc_uk       Uk,
+            invcode,
+            dc_no,
+            dc_date,
+            SUM (invoice_quantity) invoice_quantity
+       FROM GINVIEW.LV_SALINV_TROUT_REF_DOC
+   --WHERE invcode = 1108545170
+   GROUP BY invcode, dc_no, dc_date

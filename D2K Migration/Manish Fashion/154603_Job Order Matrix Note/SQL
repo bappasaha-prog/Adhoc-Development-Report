@@ -1,0 +1,36 @@
+/* Formatted on 30-12-2021 11:50:52 (QP5 v5.294) */
+create or replace view ginview.cv_job_order_item_matrix
+as
+SELECT 
+        GINVIEW.FNC_UK   uk,
+       Jobcode,
+       item_type,
+       icode,
+       m.item_remarks,
+       division,
+       section,
+       department,
+          category1
+       || ' '
+       || category2
+       || ' '
+       || category4
+       || ' '
+       || category5
+       || ' '
+       || category6
+          Item,
+       TRIM (category3) item_size,
+       uom,
+       quantity
+FROM 
+        (
+            SELECT jobcode,
+           item_type,
+           NVL (assembly_icode, component_icode) icode,
+           item_remarks,
+           quantity
+      FROM GINVIEW.LV_PRD_JOB_ORDER_COMBINED
+        ) M,
+        ginview.lv_item I
+WHERE M.ICODE = I.code

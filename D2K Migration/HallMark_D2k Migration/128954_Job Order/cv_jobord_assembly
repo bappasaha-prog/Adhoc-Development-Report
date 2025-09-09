@@ -1,0 +1,93 @@
+/* Formatted on 7/13/2021 3:15:34 PM (QP5 v5.294) */
+CREATE OR REPLACE VIEW ginview.cv_jobord_assembly
+AS
+     SELECT ginview.fnc_uk                                    Uk,
+            jobcode,
+            division || ' - ' || Section || ' - ' || department G_Item,
+               category1
+            || ' - '
+            || category2
+            || ' - '
+            || category3
+            || ' - '
+            || category4
+            || ' - '
+            || category5
+            || ' - '
+            || category6
+               Item,
+            MRP,
+            WSP,
+            sub_assembly_item,
+            plan_no,
+            SUM (quantity)                                    Qty,
+            UOM
+       FROM GINVIEW.LV_PRD_JOB_ORDER_COMBINED A, ginview.lv_assembly_item B
+      WHERE A.ASSEMBLY_ICODE = B.code                    --AND jobcode = 35898
+   GROUP BY jobcode,
+            division || ' - ' || Section || ' - ' || department,
+               category1
+            || ' - '
+            || category2
+            || ' - '
+            || category3
+            || ' - '
+            || category4
+            || ' - '
+            || category5
+            || ' - '
+            || category6,
+            MRP,
+            WSP,
+            sub_assembly_item,
+            plan_no,
+            UOM
+			
+			
+			
+====================cv_jobord_component
+
+/* Formatted on 7/13/2021 3:37:33 PM (QP5 v5.294) */
+CREATE OR REPLACE VIEW ginview.cv_jobord_component
+AS
+     SELECT ginview.fnc_uk                                    Uk,
+            jobcode,
+            division || ' - ' || Section || ' - ' || department G_Item,
+               category1
+            || ' - '
+            || category2
+            || ' - '
+            || category3
+            || ' - '
+            || category4
+            || ' - '
+            || category5
+            || ' - '
+            || category6
+               Item,
+            MRP,
+            WSP,
+            sub_assembly_item,
+            plan_no,
+            SUM (quantity)                                    Qty,
+            UOM
+       FROM GINVIEW.LV_PRD_JOB_ORDER_COMBINED A, ginview.lv_component_item B
+      WHERE A.COMPONENT_ICODE = B.code                   --AND jobcode = 35898
+   GROUP BY jobcode,
+            division || ' - ' || Section || ' - ' || department,
+               category1
+            || ' - '
+            || category2
+            || ' - '
+            || category3
+            || ' - '
+            || category4
+            || ' - '
+            || category5
+            || ' - '
+            || category6,
+            MRP,
+            WSP,
+            sub_assembly_item,
+            plan_no,
+            UOM			

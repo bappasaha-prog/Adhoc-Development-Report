@@ -1,0 +1,41 @@
+/* Formatted on 26/11/2021 11:58:15 (QP5 v5.294) */
+  SELECT ginview.fnc_uk                                uk,
+         wiptxn_code,
+         det.WIP_STOCKPOINT,
+         division || ' ' || section || ' ' || department item_group,
+            category1
+         || ' '
+         || category2
+         || ' '
+         || category3
+         || ' '
+         || category4
+         || ' '
+         || category5
+         || ' '
+         || category6
+            item,
+         job_order_no,
+         plan_no,
+         uom,
+         SUM (component_quantity)                      qty
+    FROM ginview.LV_PRD_WIP_TRANSACTION_detail det, ginview.lv_item it
+   WHERE det.COMPONENT_ICODE = it.CODE --AND wiptxn_code = 12102
+GROUP BY wiptxn_code,
+         det.WIP_STOCKPOINT,
+         division || ' ' || section || ' ' || department,
+            category1
+         || ' '
+         || category2
+         || ' '
+         || category3
+         || ' '
+         || category4
+         || ' '
+         || category5
+         || ' '
+         || category6,
+         job_order_no,
+         plan_no,
+         uom
+ORDER BY division || ' ' || section || ' ' || department

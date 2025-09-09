@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="19.2.4.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v19.2, Version=19.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Report2" Margins="9, 14, 12, 14" PageWidth="850" PageHeight="1100" Version="19.2" DataMember="CV_INTER_STK_TRANFER_HEADER" DataSource="#Ref-0" Font="Arial, 9.75pt">
+  <Parameters>
+    <Item1 Ref="3" Description="Code" MultiValue="true" Name="Code" Type="#Ref-2" />
+  </Parameters>
+  <CalculatedFields>
+    <Item1 Ref="4" Name="Amount" Expression="[QUANTITY]*[RATE]" DataMember="CV_INTER_STK_TRANFER_HEADER.CV_INTER_STK_TRANFER_HEADERCV_INTER_STK_TRANSFER_MATRIX" />
+  </CalculatedFields>
+  <Bands>
+    <Item1 Ref="5" ControlType="TopMarginBand" Name="TopMargin" HeightF="12.5" />
+    <Item2 Ref="6" ControlType="DetailBand" Name="Detail" HeightF="150">
+      <Controls>
+        <Item1 Ref="7" ControlType="XRCrossTab" Name="crossTab1" GeneralStyleName="crossTabGeneralStyle1" DataAreaStyleName="crossTabDataStyle1" HeaderAreaStyleName="crossTabHeaderStyle1" TotalAreaStyleName="crossTabTotalStyle1" DataSource="#Ref-0" DataMember="CV_INTER_STK_TRANFER_HEADER.CV_INTER_STK_TRANFER_HEADERCV_INTER_STK_TRANSFER_MATRIX" SizeF="496.874878,150" LocationFloat="0, 0">
+          <LayoutOptions Ref="8" />
+          <PrintOptions Ref="9" />
+          <RowFields>
+            <Item1 Ref="10" FieldName="ITEM" />
+            <Item2 Ref="11" FieldName="RSP" />
+            <Item3 Ref="12" FieldName="RATE" />
+          </RowFields>
+          <ColumnFields>
+            <Item1 Ref="13" FieldName="ITEM_SIZE" />
+          </ColumnFields>
+          <DataFields>
+            <Item1 Ref="14" FieldName="QUANTITY" />
+            <Item2 Ref="15" FieldName="Amount" />
+          </DataFields>
+          <ColumnDefinitions>
+            <Item1 Ref="16" Width="223.958344" AutoWidthMode="GrowOnly" />
+            <Item2 Ref="17" Width="56.25" />
+            <Item3 Ref="18" Width="55.208313" />
+            <Item4 Ref="19" Width="36.55402" />
+            <Item5 Ref="20" Width="24.9042625" Visible="false" />
+            <Item6 Ref="21" Width="38.541626" />
+            <Item7 Ref="22" Width="61.458313" />
+          </ColumnDefinitions>
+          <RowDefinitions>
+            <Item1 Ref="23" Height="25" />
+            <Item2 Ref="24" Height="25" />
+            <Item3 Ref="25" Height="25" />
+            <Item4 Ref="26" Height="25" Visible="false" />
+            <Item5 Ref="27" Height="25" Visible="false" />
+            <Item6 Ref="28" Height="25" />
+          </RowDefinitions>
+          <Cells>
+            <Item1 Ref="29" ControlType="XRCrossTabCell" Name="crossTabHeaderCell1" ColumnIndex="0" RowIndex="0" RowSpan="2" Text="ITEM" Font="Calibri, 8pt, style=Bold" />
+            <Item2 Ref="30" ControlType="XRCrossTabCell" Name="crossTabDataCell1" ColumnIndex="3" RowIndex="2" TextAlignment="MiddleCenter" Font="Calibri, 8pt" />
+            <Item3 Ref="31" ControlType="XRCrossTabCell" Name="crossTabHeaderCell2" ColumnIndex="3" RowIndex="0" ColumnSpan="2" TextAlignment="MiddleCenter" Font="Calibri, 8pt, style=Bold" />
+            <Item4 Ref="32" ControlType="XRCrossTabCell" Name="crossTabHeaderCell3" ColumnIndex="0" RowIndex="2" RowSpan="2" Font="Calibri, 8pt" BackColor="White" />
+            <Item5 Ref="33" ControlType="XRCrossTabCell" Name="crossTabHeaderCell4" ColumnIndex="0" RowIndex="5" ColumnSpan="3" Text="Grand Total" TextAlignment="MiddleLeft" Font="Calibri, 8pt, style=Bold" BackColor="WhiteSmoke" />
+            <Item6 Ref="34" ControlType="XRCrossTabCell" Name="crossTabTotalCell1" ColumnIndex="3" RowIndex="5" TextAlignment="MiddleCenter" Font="Calibri, 8pt, style=Bold" BackColor="WhiteSmoke" />
+            <Item7 Ref="35" ControlType="XRCrossTabCell" Name="crossTabHeaderCell5" ColumnIndex="5" RowIndex="0" ColumnSpan="2" Text="Grand Total" TextAlignment="MiddleRight" Font="Calibri, 8pt, style=Bold" />
+            <Item8 Ref="36" ControlType="XRCrossTabCell" Name="crossTabTotalCell2" ColumnIndex="5" RowIndex="2" TextAlignment="MiddleCenter" Font="Calibri, 8pt, style=Bold" />
+            <Item9 Ref="37" ControlType="XRCrossTabCell" Name="crossTabTotalCell3" ColumnIndex="5" RowIndex="5" TextAlignment="MiddleCenter" Font="Calibri, 8pt, style=Bold" BackColor="WhiteSmoke" />
+            <Item10 Ref="38" ControlType="XRCrossTabCell" Name="crossTabHeaderCell6" ColumnIndex="3" RowIndex="1" Text="Qty" TextAlignment="MiddleCenter" Font="Calibri, 8pt, style=Bold" />
+            <Item11 Ref="39" ControlType="XRCrossTabCell" Name="crossTabHeaderCell7" ColumnIndex="4" RowIndex="1" Text="Amount" Font="Calibri, 8pt, style=Bold" />
+            <Item12 Ref="40" ControlType="XRCrossTabCell" Name="crossTabHeaderCell8" ColumnIndex="5" RowIndex="1" Text="Qty" TextAlignment="MiddleCenter" Font="Calibri, 8pt, style=Bold" />
+            <Item13 Ref="41" ControlType="XRCrossTabCell" Name="crossTabHeaderCell9" ColumnIndex="6" RowIndex="1" Text="Amount" TextAlignment="MiddleRight" Font="Calibri, 8pt, style=Bold" />
+            <Item14 Ref="42" ControlType="XRCrossTabCell" Name="crossTabDataCell2" ColumnIndex="4" RowIndex="2" Font="Calibri, 8pt" />
+            <Item15 Ref="43" ControlType="XRCrossTabCell" Name="crossTabTotalCell4" TextFormatString="{0:0.00}" ColumnIndex="6" RowIndex="2" Font="Calibri, 8pt, style=Bold" />
+            <Item16 Ref="44" ControlType="XRCrossTabCell" Name="crossTabTotalCell5" ColumnIndex="4" RowIndex="5" TextAlignment="MiddleRight" Font="Calibri, 8pt, style=Bold" BackColor="WhiteSmoke" />
+            <Item17 Ref="45" ControlType="XRCrossTabCell" Name="crossTabTotalCell6" TextFormatString="{0:0.00}" ColumnIndex="6" RowIndex="5" TextAlignment="MiddleRight" Font="Calibri, 8pt, style=Bold" BackColor="WhiteSmoke" />
+            <Item18 Ref="46" ControlType="XRCrossTabCell" Name="crossTabHeaderCell10" ColumnIndex="1" RowIndex="0" RowSpan="2" Text="RSP" Font="Calibri, 8pt, style=Bold" />
+            <Item19 Ref="47" ControlType="XRCrossTabCell" Name="crossTabHeaderCell11" TextFormatString="{0:0.00}" ColumnIndex="1" RowIndex="2" Font="Calibri, 8pt" BackColor="White" />
+            <Item20 Ref="48" ControlType="XRCrossTabCell" Name="crossTabHeaderCell12" TextFormatString="Total {0}" ColumnIndex="0" RowIndex="4" ColumnSpan="3" />
+            <Item21 Ref="49" ControlType="XRCrossTabCell" Name="crossTabTotalCell7" ColumnIndex="3" RowIndex="4" />
+            <Item22 Ref="50" ControlType="XRCrossTabCell" Name="crossTabTotalCell8" ColumnIndex="4" RowIndex="4" />
+            <Item23 Ref="51" ControlType="XRCrossTabCell" Name="crossTabTotalCell9" ColumnIndex="5" RowIndex="4" />
+            <Item24 Ref="52" ControlType="XRCrossTabCell" Name="crossTabTotalCell10" ColumnIndex="6" RowIndex="4" />
+            <Item25 Ref="53" ControlType="XRCrossTabCell" Name="crossTabHeaderCell13" ColumnIndex="2" RowIndex="0" RowSpan="2" Text="RATE" Font="Calibri, 8pt, style=Bold" />
+            <Item26 Ref="54" ControlType="XRCrossTabCell" Name="crossTabHeaderCell14" TextFormatString="{0:0.00}" ColumnIndex="2" RowIndex="2" Font="Calibri, 8pt" BackColor="White" />
+            <Item27 Ref="55" ControlType="XRCrossTabCell" Name="crossTabHeaderCell15" TextFormatString="Total {0}" ColumnIndex="1" RowIndex="3" ColumnSpan="2" />
+            <Item28 Ref="56" ControlType="XRCrossTabCell" Name="crossTabTotalCell11" ColumnIndex="3" RowIndex="3" />
+            <Item29 Ref="57" ControlType="XRCrossTabCell" Name="crossTabTotalCell12" ColumnIndex="4" RowIndex="3" />
+            <Item30 Ref="58" ControlType="XRCrossTabCell" Name="crossTabTotalCell13" ColumnIndex="5" RowIndex="3" />
+            <Item31 Ref="59" ControlType="XRCrossTabCell" Name="crossTabTotalCell14" ColumnIndex="6" RowIndex="3" />
+          </Cells>
+        </Item1>
+      </Controls>
+    </Item2>
+    <Item3 Ref="60" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="13.541667" />
+    <Item4 Ref="61" ControlType="GroupHeaderBand" Name="GroupHeader1" PageBreak="BeforeBand" HeightF="121.16674">
+      <GroupFields>
+        <Item1 Ref="62" FieldName="STFCODE" />
+      </GroupFields>
+      <Controls>
+        <Item1 Ref="63" ControlType="XRLine" Name="line1" SizeF="827.000061,2.08333588" LocationFloat="0, 119.083405" />
+        <Item2 Ref="64" ControlType="XRLabel" Name="label20" Multiline="true" Text="label20" SizeF="338.541656,37.58335" LocationFloat="100, 81.50005" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="65" EventName="BeforePrint" PropertyName="Text" Expression="[CV_INTER_STK_TRANFER_HEADERCV_INTER_STK_TRANSFER_MATRIX].[IN_STOCKPOINT_ADD]" />
+          </ExpressionBindings>
+          <StylePriority Ref="66" UseFont="false" />
+        </Item2>
+        <Item3 Ref="67" ControlType="XRLabel" Name="label19" Multiline="true" Text="label19" SizeF="338.541534,22.9999962" LocationFloat="100, 58.5000343" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="68" EventName="BeforePrint" PropertyName="Text" Expression="[CV_INTER_STK_TRANFER_HEADERCV_INTER_STK_TRANSFER_MATRIX].[IN_STOCKPOINT_NAME]" />
+          </ExpressionBindings>
+          <StylePriority Ref="69" UseFont="false" />
+        </Item3>
+        <Item4 Ref="70" ControlType="XRLabel" Name="label18" Multiline="true" Text="To :" SizeF="100,23" LocationFloat="0, 58.5000343" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="71" UseFont="false" />
+        </Item4>
+        <Item5 Ref="72" ControlType="XRLabel" Name="label17" Multiline="true" Text="label17" SizeF="288.458374,23" LocationFloat="538.5417, 69.00005" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="73" EventName="BeforePrint" PropertyName="Text" Expression="[CV_INTER_STK_TRANFER_HEADERCV_INTER_STK_TRANSFER_MATRIX].[OUT_LOGISTIC_DECLARED_AMOUNT]" />
+          </ExpressionBindings>
+          <StylePriority Ref="74" UseFont="false" />
+        </Item5>
+        <Item6 Ref="75" ControlType="XRLabel" Name="label16" Multiline="true" Text="label16" SizeF="288.458374,22.9999962" LocationFloat="538.5417, 46.0000343" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="76" EventName="BeforePrint" PropertyName="Text" Expression="[CV_INTER_STK_TRANFER_HEADERCV_INTER_STK_TRANSFER_MATRIX].[OUT_LOGISTIC_DATE]" />
+          </ExpressionBindings>
+          <StylePriority Ref="77" UseFont="false" />
+        </Item6>
+        <Item7 Ref="78" ControlType="XRLabel" Name="label15" Multiline="true" Text="label15" SizeF="288.4583,22.9999981" LocationFloat="538.5417, 23.0000172" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="79" EventName="BeforePrint" PropertyName="Text" Expression="[CV_INTER_STK_TRANFER_HEADERCV_INTER_STK_TRANSFER_MATRIX].[OUT_LOGISTIC_NO]" />
+          </ExpressionBindings>
+          <StylePriority Ref="80" UseFont="false" />
+        </Item7>
+        <Item8 Ref="81" ControlType="XRLabel" Name="label14" Multiline="true" Text="Declared Amt. :" SizeF="100,23" LocationFloat="438.541656, 69.00005" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="82" UseFont="false" />
+        </Item8>
+        <Item9 Ref="83" ControlType="XRLabel" Name="label13" Multiline="true" Text="Logistic Date :" SizeF="100,23" LocationFloat="438.541656, 46.0000153" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="84" UseFont="false" />
+        </Item9>
+        <Item10 Ref="85" ControlType="XRLabel" Name="label12" Multiline="true" Text="Logistic No. :" SizeF="100,23" LocationFloat="438.541656, 23.0000172" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="86" UseFont="false" />
+        </Item10>
+        <Item11 Ref="87" ControlType="XRLabel" Name="label11" Multiline="true" Text="label11" SizeF="288.4583,23" LocationFloat="538.5417, 0" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="88" EventName="BeforePrint" PropertyName="Text" Expression="[CV_INTER_STK_TRANFER_HEADERCV_INTER_STK_TRANSFER_MATRIX].[GATE_ENTRY_NO]" />
+          </ExpressionBindings>
+          <StylePriority Ref="89" UseFont="false" />
+        </Item11>
+        <Item12 Ref="90" ControlType="XRLabel" Name="label10" Multiline="true" Text="Gate Entry No. :" SizeF="100,23" LocationFloat="438.541656, 0" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="91" UseFont="false" />
+        </Item12>
+        <Item13 Ref="92" ControlType="XRLabel" Name="label9" Multiline="true" Text="label9" SizeF="338.541534,35.5000153" LocationFloat="100, 23.0000172" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="93" EventName="BeforePrint" PropertyName="Text" Expression="[CV_INTER_STK_TRANFER_HEADERCV_INTER_STK_TRANSFER_MATRIX].[OUT_STOCKPOINT_ADD]" />
+          </ExpressionBindings>
+          <StylePriority Ref="94" UseFont="false" />
+        </Item13>
+        <Item14 Ref="95" ControlType="XRLabel" Name="label8" Multiline="true" Text="label8" SizeF="338.5416,23" LocationFloat="100, 0" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="96" EventName="BeforePrint" PropertyName="Text" Expression="[CV_INTER_STK_TRANFER_HEADERCV_INTER_STK_TRANSFER_MATRIX].[OUT_STOCKPOINT_NAME]" />
+          </ExpressionBindings>
+          <StylePriority Ref="97" UseFont="false" />
+        </Item14>
+        <Item15 Ref="98" ControlType="XRLabel" Name="label7" Multiline="true" Text="From :" SizeF="100,23" LocationFloat="0, 0" Font="Calibri, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="99" UseFont="false" />
+        </Item15>
+      </Controls>
+    </Item4>
+    <Item5 Ref="100" ControlType="GroupFooterBand" Name="GroupFooter1" HeightF="90.00001">
+      <Controls>
+        <Item1 Ref="101" ControlType="XRLabel" Name="label23" Multiline="true" Text="label23" TextAlignment="TopCenter" SizeF="200.000015,22.9999962" LocationFloat="0, 43.99999" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="102" EventName="BeforePrint" PropertyName="Text" Expression="[CV_INTER_STK_TRANFER_HEADERCV_INTER_STK_TRANSFER_MATRIX].[CREATED_BY]" />
+          </ExpressionBindings>
+          <StylePriority Ref="103" UseFont="false" UseTextAlignment="false" />
+        </Item1>
+        <Item2 Ref="104" ControlType="XRLabel" Name="label22" Multiline="true" Text="Prepared By" TextAlignment="TopCenter" SizeF="200.000015,23" LocationFloat="0, 67.00001" Font="Calibri, 9pt" Padding="2,2,0,0,100" Borders="Top">
+          <StylePriority Ref="105" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="106" ControlType="XRLabel" Name="label21" Multiline="true" Text="label21" SizeF="751.0416,23" LocationFloat="0, 0" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="107" EventName="BeforePrint" PropertyName="Text" Expression="Concat('Remarks : ',[CV_INTER_STK_TRANFER_HEADERCV_INTER_STK_TRANSFER_MATRIX].[REMARKS])" />
+          </ExpressionBindings>
+          <StylePriority Ref="108" UseFont="false" />
+        </Item3>
+      </Controls>
+    </Item5>
+    <Item6 Ref="109" ControlType="PageHeaderBand" Name="PageHeader" HeightF="98.16667">
+      <Controls>
+        <Item1 Ref="110" ControlType="XRLabel" Name="label6" TextFormatString="{0:dd-MM-yyyy}" Multiline="true" Text="label6" SizeF="75.958374,23" LocationFloat="751.0416, 75.16667" Font="Calibri, 9pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="111" EventName="BeforePrint" PropertyName="Text" Expression="[TRANSFER_DATE]" />
+          </ExpressionBindings>
+          <StylePriority Ref="112" UseFont="false" UseBackColor="false" UseBorders="false" />
+        </Item1>
+        <Item2 Ref="113" ControlType="XRLabel" Name="label5" Multiline="true" Text="Document Date : " TextAlignment="TopRight" SizeF="312.500031,23" LocationFloat="438.5416, 75.16667" Font="Calibri, 9pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Bottom">
+          <StylePriority Ref="114" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="115" ControlType="XRLabel" Name="label4" Multiline="true" Text="label4" SizeF="438.541534,23" LocationFloat="0, 75.16667" Font="Calibri, 9pt, style=Bold" BackColor="WhiteSmoke" Padding="2,2,0,0,100" Borders="Top, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="116" EventName="BeforePrint" PropertyName="Text" Expression="Concat('Document No. : ',[TRANSFER_NO] )" />
+          </ExpressionBindings>
+          <StylePriority Ref="117" UseFont="false" UseBackColor="false" UseBorders="false" />
+        </Item3>
+        <Item4 Ref="118" ControlType="XRLabel" Name="label3" Multiline="true" Text="label3" SizeF="438.5416,52.16667" LocationFloat="0, 23.0000019" Font="Calibri, 9pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="119" EventName="BeforePrint" PropertyName="Text" Expression="[ADDR]" />
+          </ExpressionBindings>
+          <StylePriority Ref="120" UseFont="false" />
+        </Item4>
+        <Item5 Ref="121" ControlType="XRLabel" Name="label2" Multiline="true" Text="Inter LocationTransfer Note" TextAlignment="TopRight" SizeF="388.458344,23" LocationFloat="438.541656, 0" Font="Calibri, 12pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="122" UseFont="false" UseTextAlignment="false" />
+        </Item5>
+        <Item6 Ref="123" ControlType="XRLabel" Name="label1" Multiline="true" Text="label1" SizeF="438.541656,23" LocationFloat="0, 0" Font="Calibri, 14pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="124" EventName="BeforePrint" PropertyName="Text" Expression="[NAME]" />
+          </ExpressionBindings>
+          <StylePriority Ref="125" UseFont="false" />
+        </Item6>
+      </Controls>
+    </Item6>
+    <Item7 Ref="126" ControlType="PageFooterBand" Name="PageFooter" HeightF="23">
+      <Controls>
+        <Item1 Ref="127" ControlType="XRPageInfo" Name="pageInfo1" SizeF="42.6251221,22.9584064" LocationFloat="784.374939, 0.0415802" Font="Calibri, 9pt" Padding="2,2,0,0,100" Borders="Top">
+          <StylePriority Ref="128" UseFont="false" UseBorders="false" />
+        </Item1>
+        <Item2 Ref="129" ControlType="XRLabel" Name="label26" Multiline="true" Text="Page No. :" TextAlignment="TopRight" SizeF="322.916718,23" LocationFloat="461.458221, 0" Font="Calibri, 9pt" Padding="2,2,0,0,100" Borders="Top">
+          <StylePriority Ref="130" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="131" ControlType="XRLabel" Name="label25" TextFormatString="{0:dd-MM-yyyy}" Multiline="true" Text="label25" SizeF="399.999878,23" LocationFloat="61.4583321, 0" Font="Calibri, 9pt" Padding="2,2,0,0,100" Borders="Top">
+          <ExpressionBindings>
+            <Item1 Ref="132" EventName="BeforePrint" PropertyName="Text" Expression="Now()" />
+          </ExpressionBindings>
+          <StylePriority Ref="133" UseFont="false" UseBorders="false" />
+        </Item3>
+        <Item4 Ref="134" ControlType="XRLabel" Name="label24" Multiline="true" Text="Print Date :" SizeF="61.4583321,23" LocationFloat="0, 0" Font="Calibri, 9pt" Padding="2,2,0,0,100" Borders="Top">
+          <StylePriority Ref="135" UseFont="false" UseBorders="false" />
+        </Item4>
+      </Controls>
+    </Item7>
+  </Bands>
+  <StyleSheet>
+    <Item1 Ref="136" Name="crossTabGeneralStyle1" BorderStyle="Inset" Padding="2,2,0,0,100" Font="Arial, 9.75pt" ForeColor="Black" BackColor="White" BorderColor="255,160,160,160" Sides="All" StringFormat="Near;Near;0;None;Character;Default" />
+    <Item2 Ref="137" Name="crossTabHeaderStyle1" BorderStyle="Inset" BackColor="255,240,240,240" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" />
+    <Item3 Ref="138" Name="crossTabDataStyle1" BorderStyle="Inset" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+    <Item4 Ref="139" Name="crossTabTotalStyle1" BorderStyle="Inset" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+  </StyleSheet>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v19.2" Name="sqlDataSource1" Base64="PFNxbERhdGFTb3VyY2UgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxDb25uZWN0aW9uIE5hbWU9IkNvbm5lY3Rpb24iIENvbm5lY3Rpb25TdHJpbmc9Inhwb3Byb3ZpZGVyPU9EUE1hbmFnZWQ7ZGF0YSBzb3VyY2U9JnF1b3Q7KERFU0NSSVBUSU9OPShBRERSRVNTPShQUk9UT0NPTD1UQ1ApKEhPU1Q9Vk0tMjApKFBPUlQ9NTUyMTEpKShDT05ORUNUX0RBVEE9KFNFUlZJQ0VfTkFNRT1SRUxFQVNFX1JFUE9SVCkpKSZxdW90OyIgLz48UXVlcnkgVHlwZT0iU2VsZWN0UXVlcnkiIE5hbWU9IkNWX0lOVEVSX1NUS19UUkFORkVSX0hFQURFUiI+PFBhcmFtZXRlciBOYW1lPSJDb2RlIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5JbnQzMikoP0NvZGUpPC9QYXJhbWV0ZXI+PFRhYmxlcz48VGFibGUgTmFtZT0iQ1ZfSU5URVJfU1RLX1RSQU5GRVJfSEVBREVSIiBYPSIzMCIgWT0iMzAiIFdpZHRoPSIxMjUiIEhlaWdodD0iMTY4IiAvPjwvVGFibGVzPjxDb2x1bW5zPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFORkVSX0hFQURFUiIgTmFtZT0iU1RGQ09ERSIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTkZFUl9IRUFERVIiIE5hbWU9IlRSQU5TRkVSX05PIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFORkVSX0hFQURFUiIgTmFtZT0iVFJBTlNGRVJfREFURSIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTkZFUl9IRUFERVIiIE5hbWU9IkFETVNJVEVfQ09ERSIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTkZFUl9IRUFERVIiIE5hbWU9IkFERFIiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5GRVJfSEVBREVSIiBOYW1lPSJOQU1FIiAvPjwvQ29sdW1ucz48RmlsdGVyPltDVl9JTlRFUl9TVEtfVFJBTkZFUl9IRUFERVIuU1RGQ09ERV0gSW4gKD9Db2RlKTwvRmlsdGVyPjxHcm91cEZpbHRlcj48L0dyb3VwRmlsdGVyPjxNZXRhIFg9IjIwIiBZPSIyMCIgV2lkdGg9IjIxNSIgSGVpZ2h0PSIxNDMiIC8+PC9RdWVyeT48UXVlcnkgVHlwZT0iU2VsZWN0UXVlcnkiIE5hbWU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiPjxUYWJsZXM+PFRhYmxlIE5hbWU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIC8+PC9UYWJsZXM+PENvbHVtbnM+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iVUsiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iQURNT1VfQ09ERSIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIiBOYW1lPSJBRE1PVV9DT0RFX0lOIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IkFETVNJVEVfQ09ERSIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIiBOYW1lPSJDUkVBVEVEX0JZIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IkNSRUFUSU9OX1RJTUUiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iRE9DVU1FTlRfQ09ERSIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIiBOYW1lPSJET0NVTUVOVF9EQVRFIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IkRPQ1VNRU5UX05PIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IkVfV0FZX0JJTExfR0VORVJBVEVEX09OIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IkVfV0FZX0JJTExfTk8iIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iRV9XQVlfQklMTF9WQUxJRF9VUFRPIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IkdBVEVfRU5UUllfTk8iIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iSUNPREUiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iSU5MR1RDT0RFIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IklOTE9DQ09ERSIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIiBOYW1lPSJJTlRFUl9TVE9DS1BPSU5UX1RSQU5TRkVSIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IklOVlNURk1BSU5fVURGREFURTAxIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IklOVlNURk1BSU5fVURGREFURTAyIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IklOVlNURk1BSU5fVURGREFURTAzIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IklOVlNURk1BSU5fVURGREFURTA0IiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IklOVlNURk1BSU5fVURGREFURTA1IiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IklOVlNURk1BSU5fVURGTlVNMDEiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iSU5WU1RGTUFJTl9VREZOVU0wMiIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIiBOYW1lPSJJTlZTVEZNQUlOX1VERk5VTTAzIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IklOVlNURk1BSU5fVURGTlVNMDQiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iSU5WU1RGTUFJTl9VREZOVU0wNSIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIiBOYW1lPSJJTlZTVEZNQUlOX1VERlNUUklORzAxIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IklOVlNURk1BSU5fVURGU1RSSU5HMDIiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iSU5WU1RGTUFJTl9VREZTVFJJTkcwMyIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIiBOYW1lPSJJTlZTVEZNQUlOX1VERlNUUklORzA0IiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IklOVlNURk1BSU5fVURGU1RSSU5HMDUiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iSU5WU1RGTUFJTl9VREZTVFJJTkcwNiIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIiBOYW1lPSJJTlZTVEZNQUlOX1VERlNUUklORzA3IiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IklOVlNURk1BSU5fVURGU1RSSU5HMDgiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iSU5WU1RGTUFJTl9VREZTVFJJTkcwOSIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIiBOYW1lPSJJTlZTVEZNQUlOX1VERlNUUklORzEwIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IklOX0xPR0lTVElDX0RBVEUiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iSU5fTE9HSVNUSUNfREVDTEFSRURfQU1PVU5UIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IklOX0xPR0lTVElDX0RPQ1VNRU5UX0RBVEUiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iSU5fTE9HSVNUSUNfRE9DVU1FTlRfTk8iIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iSU5fTE9HSVNUSUNfTk8iIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iSU5fTE9HSVNUSUNfU1RBVElPTl9GUk9NIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IklOX0xPR0lTVElDX1NUQVRJT05fVE8iIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iSU5fTE9HSVNUSUNfVFJBTlNQT1JURVIiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iSU5fU1RPQ0tQT0lOVF9KT0JCRVJfQ09ERSIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIiBOYW1lPSJJTl9TVE9DS1BPSU5UX05BTUUiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iSU5fU1RPQ0tQT0lOVF9BREQiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iSU5fU1RPQ0tQT0lOVF9UWVBFIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IklURU1fUkVNQVJLUyIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIiBOYW1lPSJMQVNUX01PRElGSUVEX0JZIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IkxBU1RfTU9ESUZJRURfT04iIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iT1VUTEdUQ09ERSIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIiBOYW1lPSJPVVRMT0NDT0RFIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9Ik9VVF9MT0dJU1RJQ19EQVRFIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9Ik9VVF9MT0dJU1RJQ19ERUNMQVJFRF9BTU9VTlQiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iT1VUX0xPR0lTVElDX0RPQ1VNRU5UX0RBVEUiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iT1VUX0xPR0lTVElDX0RPQ1VNRU5UX05PIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9Ik9VVF9MT0dJU1RJQ19OTyIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIiBOYW1lPSJPVVRfTE9HSVNUSUNfU1RBVElPTl9GUk9NIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9Ik9VVF9MT0dJU1RJQ19TVEFUSU9OX1RPIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9Ik9VVF9MT0dJU1RJQ19UUkFOU1BPUlRFUiIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIiBOYW1lPSJPVVRfU1RPQ0tQT0lOVF9KT0JCRVJfQ09ERSIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIiBOYW1lPSJPVVRfU1RPQ0tQT0lOVF9OQU1FIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9Ik9VVF9TVE9DS1BPSU5UX0FERCIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIiBOYW1lPSJPVVRfU1RPQ0tQT0lOVF9UWVBFIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9Ik9XTkVSX1NJVEUiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iUFJJQ0VfRkFDVE9SIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IlBSSUNFX1RZUEUiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iUVVBTlRJVFkiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iUkVNQVJLUyIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIiBOYW1lPSJTTENPREUiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iU0xOQU1FIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IlNURkFNVCIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIiBOYW1lPSJTVEZDT0RFIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IlNURlJBVEUiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iU1RPQ0tfVFJBTlNGRVJfVFlQRSIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIiBOYW1lPSJUUkFOU0ZFUl9EQVRFIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IlRSQU5TRkVSX05PIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IllFQVJfTkFNRSIgLz48Q29sdW1uIFRhYmxlPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIiBOYW1lPSJJVEVNIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IlJBVEUiIC8+PENvbHVtbiBUYWJsZT0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCIgTmFtZT0iUlNQIiAvPjxDb2x1bW4gVGFibGU9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IklURU1fU0laRSIgLz48L0NvbHVtbnM+PE1ldGEgWD0iMjU1IiBZPSIyMCIgV2lkdGg9IjIyNyIgSGVpZ2h0PSIxNDY5IiAvPjwvUXVlcnk+PFJlbGF0aW9uIE1hc3Rlcj0iQ1ZfSU5URVJfU1RLX1RSQU5GRVJfSEVBREVSIiBEZXRhaWw9IkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiIE5hbWU9IkNWX0lOVEVSX1NUS19UUkFORkVSX0hFQURFUkNWX0lOVEVSX1NUS19UUkFOU0ZFUl9NQVRSSVgiPjxLZXlDb2x1bW4gTWFzdGVyPSJTVEZDT0RFIiBEZXRhaWw9IlNURkNPREUiIC8+PC9SZWxhdGlvbj48UmVzdWx0U2NoZW1hPjxEYXRhU2V0IE5hbWU9InNxbERhdGFTb3VyY2UxIj48VmlldyBOYW1lPSJDVl9JTlRFUl9TVEtfVFJBTkZFUl9IRUFERVIiPjxGaWVsZCBOYW1lPSJTVEZDT0RFIiBUeXBlPSJJbnQ2NCIgLz48RmllbGQgTmFtZT0iVFJBTlNGRVJfTk8iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVFJBTlNGRVJfREFURSIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IkFETVNJVEVfQ09ERSIgVHlwZT0iSW50NjQiIC8+PEZpZWxkIE5hbWU9IkFERFIiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iTkFNRSIgVHlwZT0iU3RyaW5nIiAvPjwvVmlldz48VmlldyBOYW1lPSJDVl9JTlRFUl9TVEtfVFJBTlNGRVJfTUFUUklYIj48RmllbGQgTmFtZT0iVUsiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IkFETU9VX0NPREUiIFR5cGU9IkludDY0IiAvPjxGaWVsZCBOYW1lPSJBRE1PVV9DT0RFX0lOIiBUeXBlPSJJbnQ2NCIgLz48RmllbGQgTmFtZT0iQURNU0lURV9DT0RFIiBUeXBlPSJJbnQ2NCIgLz48RmllbGQgTmFtZT0iQ1JFQVRFRF9CWSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDUkVBVElPTl9USU1FIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iRE9DVU1FTlRfQ09ERSIgVHlwZT0iSW50NjQiIC8+PEZpZWxkIE5hbWU9IkRPQ1VNRU5UX0RBVEUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJET0NVTUVOVF9OTyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJFX1dBWV9CSUxMX0dFTkVSQVRFRF9PTiIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IkVfV0FZX0JJTExfTk8iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRV9XQVlfQklMTF9WQUxJRF9VUFRPIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iR0FURV9FTlRSWV9OTyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJQ09ERSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJTkxHVENPREUiIFR5cGU9IkludDY0IiAvPjxGaWVsZCBOYW1lPSJJTkxPQ0NPREUiIFR5cGU9IkludDY0IiAvPjxGaWVsZCBOYW1lPSJJTlRFUl9TVE9DS1BPSU5UX1RSQU5TRkVSIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IklOVlNURk1BSU5fVURGREFURTAxIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iSU5WU1RGTUFJTl9VREZEQVRFMDIiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJJTlZTVEZNQUlOX1VERkRBVEUwMyIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IklOVlNURk1BSU5fVURGREFURTA0IiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iSU5WU1RGTUFJTl9VREZEQVRFMDUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJJTlZTVEZNQUlOX1VERk5VTTAxIiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJJTlZTVEZNQUlOX1VERk5VTTAyIiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJJTlZTVEZNQUlOX1VERk5VTTAzIiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJJTlZTVEZNQUlOX1VERk5VTTA0IiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJJTlZTVEZNQUlOX1VERk5VTTA1IiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJJTlZTVEZNQUlOX1VERlNUUklORzAxIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IklOVlNURk1BSU5fVURGU1RSSU5HMDIiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSU5WU1RGTUFJTl9VREZTVFJJTkcwMyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJTlZTVEZNQUlOX1VERlNUUklORzA0IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IklOVlNURk1BSU5fVURGU1RSSU5HMDUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSU5WU1RGTUFJTl9VREZTVFJJTkcwNiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJTlZTVEZNQUlOX1VERlNUUklORzA3IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IklOVlNURk1BSU5fVURGU1RSSU5HMDgiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSU5WU1RGTUFJTl9VREZTVFJJTkcwOSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJTlZTVEZNQUlOX1VERlNUUklORzEwIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IklOX0xPR0lTVElDX0RBVEUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJJTl9MT0dJU1RJQ19ERUNMQVJFRF9BTU9VTlQiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IklOX0xPR0lTVElDX0RPQ1VNRU5UX0RBVEUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJJTl9MT0dJU1RJQ19ET0NVTUVOVF9OTyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJTl9MT0dJU1RJQ19OTyIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IklOX0xPR0lTVElDX1NUQVRJT05fRlJPTSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJTl9MT0dJU1RJQ19TVEFUSU9OX1RPIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IklOX0xPR0lTVElDX1RSQU5TUE9SVEVSIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IklOX1NUT0NLUE9JTlRfSk9CQkVSX0NPREUiIFR5cGU9IkludDY0IiAvPjxGaWVsZCBOYW1lPSJJTl9TVE9DS1BPSU5UX05BTUUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSU5fU1RPQ0tQT0lOVF9BREQiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSU5fU1RPQ0tQT0lOVF9UWVBFIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IklURU1fUkVNQVJLUyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJMQVNUX01PRElGSUVEX0JZIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkxBU1RfTU9ESUZJRURfT04iIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJPVVRMR1RDT0RFIiBUeXBlPSJJbnQ2NCIgLz48RmllbGQgTmFtZT0iT1VUTE9DQ09ERSIgVHlwZT0iSW50NjQiIC8+PEZpZWxkIE5hbWU9Ik9VVF9MT0dJU1RJQ19EQVRFIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iT1VUX0xPR0lTVElDX0RFQ0xBUkVEX0FNT1VOVCIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iT1VUX0xPR0lTVElDX0RPQ1VNRU5UX0RBVEUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJPVVRfTE9HSVNUSUNfRE9DVU1FTlRfTk8iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iT1VUX0xPR0lTVElDX05PIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iT1VUX0xPR0lTVElDX1NUQVRJT05fRlJPTSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJPVVRfTE9HSVNUSUNfU1RBVElPTl9UTyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJPVVRfTE9HSVNUSUNfVFJBTlNQT1JURVIiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iT1VUX1NUT0NLUE9JTlRfSk9CQkVSX0NPREUiIFR5cGU9IkludDY0IiAvPjxGaWVsZCBOYW1lPSJPVVRfU1RPQ0tQT0lOVF9OQU1FIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9VVF9TVE9DS1BPSU5UX0FERCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJPVVRfU1RPQ0tQT0lOVF9UWVBFIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9XTkVSX1NJVEUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iUFJJQ0VfRkFDVE9SIiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJQUklDRV9UWVBFIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlFVQU5USVRZIiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJSRU1BUktTIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlNMQ09ERSIgVHlwZT0iSW50NjQiIC8+PEZpZWxkIE5hbWU9IlNMTkFNRSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJTVEZBTVQiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IlNURkNPREUiIFR5cGU9IkludDY0IiAvPjxGaWVsZCBOYW1lPSJTVEZSQVRFIiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJTVE9DS19UUkFOU0ZFUl9UWVBFIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRSQU5TRkVSX0RBVEUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJUUkFOU0ZFUl9OTyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJZRUFSX05BTUUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSVRFTSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJSQVRFIiBUeXBlPSJEZWNpbWFsIiAvPjxGaWVsZCBOYW1lPSJSU1AiIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IklURU1fU0laRSIgVHlwZT0iU3RyaW5nIiAvPjwvVmlldz48UmVsYXRpb24gTWFzdGVyPSJDVl9JTlRFUl9TVEtfVFJBTkZFUl9IRUFERVIiIERldGFpbD0iQ1ZfSU5URVJfU1RLX1RSQU5TRkVSX01BVFJJWCI+PEtleUNvbHVtbiBNYXN0ZXI9IlNURkNPREUiIERldGFpbD0iU1RGQ09ERSIgLz48L1JlbGF0aW9uPjwvRGF0YVNldD48L1Jlc3VsdFNjaGVtYT48Q29ubmVjdGlvbk9wdGlvbnMgQ2xvc2VDb25uZWN0aW9uPSJ0cnVlIiAvPjwvU3FsRGF0YVNvdXJjZT4=" />
+  </ComponentStorage>
+  <ObjectStorage>
+    <Item1 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v19.2" Ref="2" Content="System.Int32" Type="System.Type" />
+  </ObjectStorage>
+</XtraReportsLayoutSerializer>

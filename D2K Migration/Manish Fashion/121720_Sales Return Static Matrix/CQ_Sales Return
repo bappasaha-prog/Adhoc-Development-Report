@@ -1,0 +1,42 @@
+select rownum uk, 
+       rtcode,
+       item_desc,
+       hsn_code,
+       RETURNED_RATE,
+       uom,      
+       size36,
+       size38,
+       size40,
+       size42,
+       size44,
+       size46,
+       size48,
+       undiff,
+       RETURNED_QUANTITY,
+       ITEM_GROSS_AMOUNT
+from
+(       
+select a.rtcode,
+       b.hsn_code,
+       b.DEPARTMENT||' '||b.category1||' '||b.category2 item_desc,
+       a.RETURNED_RATE,
+       b.uom, 
+       sum(case when b.category3='36"/90CM' then a.RETURNED_QUANTITY else 0 end) size36 ,
+       sum(case when b.category3='38"/95CM' then a.RETURNED_QUANTITY else 0 end) size38 ,
+       sum(case when b.category3='40"/100CM' then a.RETURNED_QUANTITY else 0 end) size40 ,
+       sum(case when b.category3='42"/105CM' then a.RETURNED_QUANTITY else 0 end) size42 ,
+       sum(case when b.category3='44"/110CM' then a.RETURNED_QUANTITY else 0 end) size44 ,
+       sum(case when b.category3='46"/115CM' then a.RETURNED_QUANTITY else 0 end) size46 ,
+       sum(case when b.category3='48"/120CM' then a.RETURNED_QUANTITY else 0 end) size48 ,
+       sum(case when nvl(b.category3,'99999') not in('36"/90CM','38"/95CM','40"/100CM','42"/105CM','44"/110CM','46"/115CM','48"/120CM') then a.RETURNED_QUANTITY else 0 end) undiff,
+       sum(a.RETURNED_QUANTITY) RETURNED_QUANTITY,
+       --SUM(a.INVOICED_QUANTITY*B.RSP) ITEM_GROSS_AMOUNT
+       sum(a.ITEM_GROSS_AMOUNT) ITEM_GROSS_AMOUNT
+from ginview.lv_salrt_item a, GINVIEW.LV_ITEM b
+where a.icode=b.code
+group by a.rtcode,
+         b.hsn_code,
+         b.DEPARTMENT||' '||b.category1||' '||b.category2 ,          
+         a.RETURNED_RATE,
+         b.uom         
+)         

@@ -1,0 +1,24 @@
+create or replace view ginview.cv_dc_item_matrix
+AS
+select 
+GINVIEW.FNC_UK UK, dccode, 
+category1||' '||category2||' '||category4||' '||category5||' '||category6 ITEM,
+challan_net_rate RSP,
+category3 ITEM_SIZE,
+sum(challan_quantity) qty,
+sum(challan_net_rate * challan_quantity) over (partition by dccode,category1||' '||category2||' '||category4||' '||category5||' '||category6 order by dccode, category1||' '||category2||' '||category4||' '||category5||' '||category6) amount
+from ginview.lv_dc_item A, Ginview.lv_item B
+where A.icode = B.code
+and dccode = 5535779
+group by 
+dccode,
+category1||' '||category2||' '||category4||' '||category5||' '||category6,
+challan_net_rate,
+category3,
+challan_quantity
+order by
+dccode,
+category1||' '||category2||' '||category4||' '||category5||' '||category6,
+challan_net_rate,
+category3,
+challan_quantity

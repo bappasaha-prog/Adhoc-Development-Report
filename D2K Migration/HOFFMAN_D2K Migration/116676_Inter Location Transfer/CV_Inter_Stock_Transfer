@@ -1,0 +1,106 @@
+DROP VIEW GINVIEW.CV_INTER_LOC_TRANS_HEADER;
+
+/* Formatted on 19/03/2021 18:05:19 (QP5 v5.294) */
+CREATE OR REPLACE FORCE VIEW GINVIEW.CV_INTER_LOC_TRANS_HEADER
+(
+   UK,
+   STFCODE,
+   STFDT,
+   DOCNO,
+   DOCDT,
+   INLOCCODE,
+   LOCNAME,
+   OUTLOCCODE,
+   OUTLOCNAME,
+   REMARKS,
+   SCHEME_DOCNO,
+   ADMSITE_CODE,
+   SITENAME,
+   CREATED_ON,
+   CREATED_BY,
+   OUTLGTCODE,
+   OUT_LOGISTIC_DOCUMENT_NO,
+   OUT_LOGISTIC_DOCUMENT_DATE,
+   OUT_LOGISTIC_DECLARED_AMOUNT
+)
+   BEQUEATH DEFINER
+AS
+   SELECT M.STFCODE                                             UK,
+          M.STFCODE                                             STFCODE,
+          stfdt,
+          M.DOCNO,
+          M.DOCDT,
+          M.INLOCCODE,
+          INSTK.locname,
+          M.OUTLOCCODE,
+          OUTSTK.LOCNAME                                        OutLOCNAME,
+          M.Rem                                                 Remarks,
+          SCHEME_DOCNO,
+          M.admsite_code,
+          S.name                                                SiteName,
+          TO_DATE (TO_CHAR (M.last_access_time, 'dd-MON-yyyy')) Created_on,
+          MD.FNAME                                              Created_BY,
+          M.OUTLGTCODE,
+          O.DOCNO
+             OUT_Logistic_Document_No,
+          O.DOCDT
+             OUT_Logistic_Document_Date,
+          O.DECAMT
+             OUT_Logistic_Declared_Amount
+     FROM ginssot.DIM$INVSTFMAIN M,
+          ginssot.DIM$INVLOC     INSTK,
+          ginssot.DIM$INVLOC     OUTSTK,
+          ginssot.DIM$HRDEMP     MD,
+          ginssot.DIM$ADMSITE    S,
+          ginssot.DIM$INVLGTNOTE O
+    WHERE     M.INLOCCODE = INSTK.LOCCODE
+          AND M.outloccode = OUTSTK.LOCCODE
+          AND M.LAST_ACCESS_ECODE = MD.ECODE
+          AND M.ADMSITE_CODE = S.CODE
+          AND M.OUTLGTCODE = O.LGTCODE(+)
+--          AND stfcode = 5506292
+;
+
+
+
+/* Formatted on 19/03/2021 11:07:24 (QP5 v5.294) */
+Create or replace view ginview.cv_Inter_Stock_Tans_HSN
+AS
+SELECT ginview.fnc_uk UK,STFCODE,HSN_CODE HSN, UOM Unit, sum(quantity) Qty, sum(stfamt) Amount
+  FROM GINVIEW.LV_INTER_STK_TRANFER A, GINVIEW.LV_ITEM B
+where A.icode = B.code
+and stfcode = 5506292
+group by
+STFCODE,
+HSN_CODE,
+UOM
+order by 
+STFCODE,
+HSN_CODE,
+UOM
+
+
+create or replace view ginview.cv_inter_loc_trans_item
+As
+select 
+ginview.fnc_uk UK, stfcode,Section, Department, category1||' '||category2||' '||category3||' '||category4||' '||category5||' '||category6 Item,
+HSN_CODE HSN, STFRATE RATE, RSP,UOM Unit, sum(quantity) Qty, sum(STFRATE*quantity) Transfer_Amt,sum(RSP*quantity) RSP_AMT
+from GINVIEW.LV_INTER_STK_TRANFER A, Ginview.lv_item B
+where A.icode = B.code
+--and stfcode = 5506292
+group by
+stfcode,
+Section, Department,
+category1||' '||category2||' '||category3||' '||category4||' '||category5||' '||category6,
+HSN_CODE,
+STFRATE,
+RSP,
+UOM
+order by
+stfcode,
+Section, department,
+category1||' '||category2||' '||category3||' '||category4||' '||category5||' '||category6,
+HSN_CODE,
+STFRATE,
+RSP,
+UOM
