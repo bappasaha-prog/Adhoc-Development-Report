@@ -1,0 +1,36 @@
+/* Formatted on 17-05-2022 18:25:18 (QP5 v5.294) */
+SELECT ginview.fnc_uk uk
+            ,ordcode
+            ,category2
+            ,short_name
+            ,category3
+            ,HSN_CODE
+            ,uom
+            ,order_rate
+            ,order_rsp
+            ,sum(order_quantity) qty 
+--            ,sum(case when trim(category4) in ('28','76 CM') then order_quantity else 0 end) S_28
+--            ,sum(case when trim(category4) in ('29','78.5 CM') then order_quantity else 0 end) S_29
+--            ,sum(case when trim(category4) in ('30','81 CM') then order_quantity else 0 end) S_30
+--            ,sum(case when trim(category4) in ('31','83.5 CM') then order_quantity else 0 end) S_31
+--            ,sum(case when trim(category4) in ('32','86 CM') then order_quantity else 0 end) S_32
+--            ,sum(case when trim(category4) in ('33','88.5 CM') then order_quantity else 0 end) S_33
+--            ,sum(case when trim(category4) in ('34','91 CM') then order_quantity else 0 end) S_34
+--            ,sum(case when trim(category4) in ('36','96 CM') then order_quantity else 0 end) S_36
+--            ,sum(case when trim(category4) in ('38','101 CM') then order_quantity else 0 end) S_38
+--            ,sum(case when trim(category4) in ('40','106 CM') then order_quantity else 0 end) S_40
+              ,sum(case when trim(category4) in ('41') then order_quantity else 0 end) S_41
+              ,sum(case when trim(category4) in ('42') then order_quantity else 0 end) S_42
+              ,sum(case when trim(category4) in ('43') then order_quantity else 0 end) S_43
+              ,sum(case when trim(category4) in ('44') then order_quantity else 0 end) S_44
+FROM ginview.lv_po_item d, ginview.lv_item i
+WHERE d.icode = i.code
+/*and ordcode = 3470868*/
+group by ordcode
+            ,category2
+            ,short_name
+            ,category3
+            ,HSN_CODE
+            ,uom
+            ,order_rate
+            ,order_rsp

@@ -1,0 +1,57 @@
+DROP VIEW GINVIEW.CV_PRD_JOBORDER_DETAIL;
+
+/* Formatted on 01/04/2021 16:15:58 (QP5 v5.294) */
+CREATE OR REPLACE FORCE VIEW GINVIEW.CV_PRD_JOBORDER_DETAIL
+(
+   UK,
+   JOBCODE,
+   SECTION,
+   DEPARTMENT,
+   TYPE,
+   DESCP,
+   DESIGN,
+   FABRIC,
+   COLOR,
+   BRAND,
+   HSN,
+   ITEM_SIZE,
+   QTY
+)
+   BEQUEATH DEFINER
+AS
+     SELECT ginview.fnc_uk     UK,
+            jobcode,
+            section,
+            department,
+            category1          TYPE,
+            string_desc4       Descp,
+            category2          Design,
+            category5          Fabric,
+            category6          Color,
+            category3          Brand,
+            hsn_code           HSN,
+            category4          Item_Size,
+            SUM (order_quantity) Qty
+       FROM ginview.lv_prd_job_order_detail A, ginview.lv_assembly_item B
+      WHERE A.assembly_icode = B.CODE                  -- AND jobcode = 366132
+   GROUP BY jobcode,
+            section,
+            department,
+            category1,
+            string_desc4,
+            category2,
+            category5,
+            category6,
+            category3,
+            hsn_code,
+            category4
+   ORDER BY jobcode,
+            section,
+            department,
+            category1,
+            string_desc4,
+            category2,
+            category5,
+            category6,
+            category3,
+            hsn_code;

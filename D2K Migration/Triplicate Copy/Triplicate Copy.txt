@@ -1,0 +1,184 @@
+
+CREATE OR REPLACE FORCE VIEW GINVIEW.CV_SALINV_HEADER_TRIPLICATE
+AS
+   SELECT a.invcode || '-' || level_copy.l1 uk,
+          a.invcode                         invcode,
+          a.invdt                           invoice_date,
+          a.pcode                           pcode,
+          cus.slname                        customer_name,
+          cus.bemail                        customer_billing_email,
+          cus.bemail2                       customer_billing_email2,
+          cus.semail                        customer_shipping_email,
+          cus.semail2                       customer_shipping_email2,
+          a.docno                           document_no,
+          a.duedt                           due_date,
+          a.agcode                          agcode,
+          NVL (ag.slname, 'No Agent')       agent_name,
+          a.agrate                          agent_rate,
+          a.grsamt                          gross_amount,
+          a.chgamt                          charge_amount,
+          a.netamt                          net_amount,
+          tax.tax_charge_amount,
+          tax.other_charge_amount,
+          a.adjamt                          adjustment_amount,
+          g.glname                          sales_ledger,
+          a.REM                             remarks,
+          y.yname                           year_name,
+          c.fname || ' [' || c.eno || ']'   created_by,
+          a.TIME                            created_on,
+          t.saltermname                     sales_term,
+          a.last_access_time                last_accessed_on,
+          m.fname || ' [' || m.eno || ']'   last_accessed_by,
+          l.lgtno                           logistic_no,
+          l.lgtdt                           logistic_date,
+          tr.slname                         logistic_transporter,
+          l.docno                           logistic_document_no,
+          l.docdt                           logistic_document_date,
+          l.stfr                            logistic_station_from,
+          l.stto                            logistic_station_to,
+          l.decamt                          logistic_declared_amount,
+          a.docdt                           document_date,
+          d.docname                         numbering_scheme,
+          a.scheme_docno                    invoice_no,
+          a.trpcode                         trpcode,
+          trp.slname                        transporter_name,
+          g1.glname                         arap_ledger,
+          s.slname                          sales_sub_ledger,
+          a.transitdays                     transit_days,
+          INITCAP (a.issecondary)           secondary_stock,
+          a.admou_code,
+          a.admsite_code                    admsite_code,
+          st.shrtname                       reference_site,
+          u.fname || ' [' || u.eno || ']'   authorized_by,
+          a.authorize_time                  authorized_on,
+          a.transit_due_date                transit_due_date,
+          a.datasendon                      data_synced_on,
+          a.admsite_code_owner              admsite_code_owner,
+          os.shrtname                       owner_site,
+          INITCAP (a.formapp)               form_applicable,
+          a.formno                          form_no,
+          a.formdt                          form_date,
+          a.udfstring01                     salinmain_udfstring01,
+          a.udfstring02                     salinmain_udfstring02,
+          a.udfstring03                     salinmain_udfstring03,
+          a.udfstring04                     salinmain_udfstring04,
+          a.udfstring05                     salinmain_udfstring05,
+          a.udfstring06                     salinmain_udfstring06,
+          a.udfstring07                     salinmain_udfstring07,
+          a.udfstring08                     salinmain_udfstring08,
+          a.udfstring09                     salinmain_udfstring09,
+          a.udfstring10                     salinmain_udfstring10,
+          a.udfnum01                        salinvmain_udfnum01,
+          a.udfnum02                        salinvmain_udfnum02,
+          a.udfnum03                        salinvmain_udfnum03,
+          a.udfnum04                        salinvmain_udfnum04,
+          a.udfnum05                        salinvmain_udfnum05,
+          a.udfdate01                       salinvmain_udfdate01,
+          a.udfdate02                       salinvmain_udfdate02,
+          a.udfdate03                       salinvmain_udfdate03,
+          a.udfdate04                       salinvmain_udfdate04,
+          a.udfdate05                       salinvmain_udfdate05,
+          INITCAP (a.release_status)        release_status,
+          a.release_time                    release_on,
+          r.fname || ' [' || r.eno || ']'   release_by,
+          p.NAME                            trade_group_name,
+          f.formname                        form_name,
+          a.formamt                         form_amount,
+          pl.pricelistname                  price_list_name,
+          a.discount_factor                 discount_factor,
+          a.price_roundoff                  price_round_off,
+          INITCAP (a.roundoff_limit)        price_rounf_off_limit,
+          INITCAP (a.incl_vat_in_dist)      price_inclusion_of_tax,
+          INITCAP (a.discount_mode)         price_mode,
+          INITCAP (a.discount_basis)        price_basis,
+          i.intgname                        third_party_source,
+          a.owner_gstin_no                  owner_gstin_no,
+          a.owner_gstin_state_code          owner_gstin_state_code,
+          gst.NAME                          owner_gstin_state_name,
+          a.cp_gstin_no                     cp_gstin_no,
+          a.cp_gstin_state_code             cp_gstin_state_code,
+          cpgst.NAME                        cp_gstin_state_name,
+          a.gstappl                         is_gst_applicable,
+          a.ewaybillno                      e_way_bill_no,
+          a.ewaybillgeneratedon             e_way_bill_generated_on,
+          a.ewaybillvalidupto               e_way_bill_valid_upto,
+          a.glcode                          glcode,
+          ei.e_invoice_irn,
+          ei.e_invoice_ack_datetime,
+          ei.e_invoice_ack_no,
+          ei.e_invoice_signed_qr_data,
+          ei.e_invoice_updated_by,
+          ei.e_invoice_updated_on,
+          level_copy.l1                     l1
+     FROM ginssot.fact$salinvmain      a,
+          ginssot.dim$finsl            cus,
+          ginssot.dim$finsl            ag,
+          ginssot.dim$finsl            trp,
+          ginssot.dim$fingl            g,
+          ginssot.dim$admyear          y,
+          ginssot.dim$hrdemp           c,
+          ginssot.dim$saltermmain      t,
+          ginssot.dim$hrdemp           m,
+          ginssot.dim$admdocscheme     d,
+          ginssot.dim$fingl            g1,
+          ginssot.dim$finsl            s,
+          ginssot.dim$hrdemp           u,
+          ginssot.dim$hrdemp           r,
+          ginssot.dim$fintradegrp      p,
+          ginssot.dim$finform          f,
+          ginssot.dim$intgmain         i,
+          ginssot.dim$admsite          st,
+          ginssot.dim$admsite          os,
+          ginssot.dim$salpricelistmain pl,
+          ginssot.dim$admgststate      gst,
+          ginssot.dim$admgststate      cpgst,
+          ginssot.dim$invlgtnote       l,
+          ginssot.dim$finsl            tr,
+          (SELECT a.transaction_code,
+                  a.irn                           e_invoice_irn,
+                  a.ack_datetime                  e_invoice_ack_datetime,
+                  a.ack_no                        e_invoice_ack_no,
+                  a.signed_qr_data                e_invoice_signed_qr_data,
+                  e.fname || ' [' || e.eno || ']' e_invoice_updated_by,
+                  a.updated_on                    e_invoice_updated_on
+             FROM invgst_einvoice a, hrdemp e
+            WHERE     a.updated_by = e.ecode(+)
+                  AND a.transaction_table = 'SALINVMAIN') ei,
+          (  SELECT invcode,
+                    SUM (
+                       CASE WHEN istax = 'YES' THEN NVL (chgamt, 0) ELSE 0 END)
+                       tax_charge_amount,
+                    SUM (
+                       CASE WHEN istax = 'NO' THEN NVL (chgamt, 0) ELSE 0 END)
+                       other_charge_amount
+               FROM ginssot.fact$salinvchg
+           GROUP BY invcode) tax,
+          (    SELECT LEVEL l1
+                 FROM DUAL
+           CONNECT BY LEVEL <= 3) level_copy
+    WHERE     a.glcode = g.glcode
+          AND a.pcode = cus.slcode(+)
+          AND a.agcode = ag.slcode(+)
+          AND a.trpcode = trp.slcode(+)
+          AND a.ycode = y.ycode
+          AND a.ecode = c.ecode
+          AND a.saltermcode = t.saltermcode(+)
+          AND a.last_access_ecode = m.ecode(+)
+          AND a.doccode = d.doccode(+)
+          AND a.pglcode = g1.glcode
+          AND a.slcode = s.slcode(+)
+          AND a.authorize_ecode = u.ecode(+)
+          AND a.release_ecode = r.ecode(+)
+          AND a.saltradegrp_code = p.code(+)
+          AND a.formcode = f.formcode(+)
+          AND a.intgcode = i.intgcode(+)
+          AND a.lgtcode = l.lgtcode(+)
+          AND l.trpcode = tr.slcode(+)
+          AND a.admsite_code = st.code(+)
+          AND a.admsite_code_owner = os.code
+          AND a.pricelistcode = pl.pricelistcode(+)
+          AND a.invcode = tax.invcode(+)
+          AND a.saletype = 'OUTRIGHT'
+          AND a.owner_gstin_state_code = gst.code(+)
+          AND a.cp_gstin_state_code = cpgst.code(+)
+          AND TO_CHAR (a.invcode) = ei.transaction_code(+);

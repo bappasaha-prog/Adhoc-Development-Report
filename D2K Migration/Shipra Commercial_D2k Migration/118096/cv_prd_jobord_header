@@ -1,0 +1,114 @@
+/* Formatted on 06-04-2021 15:27:15 (QP5 v5.294) */
+CREATE OR REPLACE VIEW ginview.cv_prd_jobord_header
+AS
+   SELECT A.*,
+          SUBSTR (remarks,
+                    INSTR (remarks,
+                           '#',
+                           1,
+                           1)
+                  + 1,
+                    INSTR (remarks,
+                           '#',
+                           1,
+                           2)
+                  - 2)
+             Knitter,
+          SUBSTR (remarks,
+                    INSTR (remarks,
+                           '#',
+                           1,
+                           2)
+                  + 1,
+                    INSTR (remarks,
+                           '#',
+                           1,
+                           3)
+                  - INSTR (remarks,
+                           '#',
+                           1,
+                           2)
+                  - 1)
+             K_Job_No,
+          SUBSTR (remarks,
+                    INSTR (remarks,
+                           '#',
+                           1,
+                           3)
+                  + 1,
+                    INSTR (remarks,
+                           '#',
+                           1,
+                           4)
+                  - INSTR (remarks,
+                           '#',
+                           1,
+                           3)
+                  - 1)
+             K_Date,
+          SUBSTR (remarks,
+                    INSTR (remarks,
+                           '#',
+                           1,
+                           4)
+                  + 1,
+                    INSTR (remarks,
+                           '#',
+                           1,
+                           5)
+                  - INSTR (remarks,
+                           '#',
+                           1,
+                           4)
+                  - 1)
+             D_Name,
+          SUBSTR (remarks,
+                    INSTR (remarks,
+                           '#',
+                           1,
+                           5)
+                  + 1,
+                    INSTR (remarks,
+                           '#',
+                           1,
+                           6)
+                  - INSTR (remarks,
+                           '#',
+                           1,
+                           5)
+                  - 1)
+             D_Add,
+          SUBSTR (remarks,
+                    INSTR (remarks,
+                           '#',
+                           1,
+                           6)
+                  + 1,
+                    INSTR (remarks,
+                           '#',
+                           1,
+                           7)
+                  - INSTR (remarks,
+                           '#',
+                           1,
+                           6)
+                  - 1)
+             D_Phn,
+          SUBSTR (remarks,
+                    INSTR (remarks,
+                           '#',
+                           1,
+                           7)
+                  + 1,
+                    INSTR (remarks,
+                           '#',
+                           1,
+                           8)
+                  - INSTR (remarks,
+                           '#',
+                           1,
+                           7)
+                  - 1)
+             D_On_ACC
+     FROM ginview.lv_prd_job_order_header A
+    --WHERE code = 366105

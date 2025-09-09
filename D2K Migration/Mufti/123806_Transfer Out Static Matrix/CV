@@ -1,0 +1,21 @@
+DROP VIEW GINVIEW.CV_TROUT_DIVQTY;
+
+/* Formatted on 27-05-2021 17:24:15 (QP5 v5.294) */
+CREATE OR REPLACE FORCE VIEW GINVIEW.CV_TROUT_DIVQTY
+(
+   UK,
+   INVCODE,
+   DIVISION,
+   DIV_QTY
+)
+   BEQUEATH DEFINER
+AS
+     SELECT ginview.fnc_uk        uk,
+            invcode,
+            division,
+            SUM (INVOICED_QUANTITY) div_qty
+       FROM GINVIEW.LV_trout_ITEM A, GINVIEW.LV_ITEM B
+      WHERE a.icode = b.code                         --AND invcode = 121550585
+   GROUP BY invcode, division;
+
+

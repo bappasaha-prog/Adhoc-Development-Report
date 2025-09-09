@@ -1,0 +1,152 @@
+DROP VIEW GINVIEW.LV_SALINV_ITEM;
+
+/* Formatted on 23/08/2021 13:22:58 (QP5 v5.294) */
+CREATE OR REPLACE FORCE VIEW GINVIEW.LV_SALINV_ITEM
+(
+   INVCODE,
+   ICODE,
+   INVOICE_QUANTITY,
+   DC_DISCOUNT_AMOUNT,
+   DC_BASIC_RATE,
+   DC_ROUND_OFF_AMOUNT,
+   INVOICE_RATE,
+   RETURNED_QUANTITY,
+   INVOICE_RSP,
+   ITEM_REMARKS,
+   ITEM_GROSS_AMOUNT,
+   UK,
+   ITEM_CHARGE_AMOUNT,
+   ITEM_NET_AMOUNT,
+   ITEM_TAX_AMOUNT,
+   TAXABLE_AMOUNT,
+   CGST_RATE,
+   CGST_AMOUNT,
+   SGST_RATE,
+   SGST_AMOUNT,
+   IGST_RATE,
+   IGST_AMOUNT,
+   CESS_RATE,
+   CESS_AMOUNT
+)
+   BEQUEATH DEFINER
+AS
+   SELECT INVCODE,
+          ICODE,
+          INVOICE_QUANTITY,
+          DC_Discount_Amount,
+          DC_Basic_Rate,
+          DC_Round_Off_Amount,
+          INVOICE_RATE,
+          RETURNED_QUANTITY,
+          INVOICE_RSP,
+          ITEM_REMARKS,
+          ITEM_GROSS_AMOUNT,
+          --GINVIEW.fnc_uk UK,
+          DENSE_RANK () OVER (ORDER BY ROWNUM) uk,
+          ITEM_CHARGE_AMOUNT,
+          ITEM_NET_AMOUNT,
+          ITEM_TAX_AMOUNT,
+          Taxable_Amount,
+          CGST_Rate,
+          CGST_Amount,
+          SGST_Rate,
+          SGST_Amount,
+          IGST_Rate,
+          IGST_Amount,
+          CESS_Rate,
+          CESS_Amount
+     FROM (  SELECT M.INVCODE                INVCODE,
+                    M.ICODE                  ICODE,
+                    SUM (M.INVQTY)           INVOICE_QUANTITY,
+                    SUM (NVL (DC.DISCOUNT, 0)) DC_Discount_Amount,
+                    NVL (DC.BASIC_RATE, 0)   DC_Basic_Rate,
+                    SUM (NVL (DC.ROUNDOFF, 0)) DC_Round_Off_Amount,
+                    M.RATE                   INVOICE_RATE,
+                    SUM (M.RTQTY)            RETURNED_QUANTITY,
+                    M.MRP                    INVOICE_RSP,
+                    M.REM                    ITEM_REMARKS,
+                    SUM (M.INVAMT)           ITEM_GROSS_AMOUNT,
+                    SUM (M.CHGAMT)           ITEM_CHARGE_AMOUNT,
+                    SUM (
+                         NVL (M.INVAMT, 0)
+                       + NVL (M.CHGAMT, 0)
+                       + NVL (M.TAXAMT, 0))
+                       ITEM_NET_AMOUNT,
+                    SUM (M.TAXAMT)           ITEM_TAX_AMOUNT,
+                    SUM (Taxable_Amount)     Taxable_Amount,
+                    CGST_Rate,
+                    SUM (CGST_Amount)        CGST_Amount,
+                    SGST_Rate,
+                    SUM (SGST_Amount)        SGST_Amount,
+                    IGST_Rate,
+                    SUM (IGST_Amount)        IGST_Amount,
+                    CESS_Rate,
+                    SUM (CESS_Amount)        CESS_Amount
+               FROM ginssot.FACT$SALINVDET M,
+                    ginssot.FACT$INVDCDET DC,
+                    (  SELECT SALINVDET_CODE,
+                              APPAMT            TAXABLE_AMOUNT,
+                              SUM (NVL (CHGAMT, 0)) TAX_CHARGE_AMOUNT,
+                              SUM (
+                                 CASE
+                                    WHEN GST_COMPONENT = 'CGST' THEN RATE
+                                    ELSE 0
+                                 END)
+                                 CGST_RATE,
+                              SUM (
+                                 CASE
+                                    WHEN GST_COMPONENT = 'CGST' THEN CHGAMT
+                                    ELSE 0
+                                 END)
+                                 CGST_AMOUNT,
+                              SUM (
+                                 CASE
+                                    WHEN GST_COMPONENT = 'SGST' THEN RATE
+                                    ELSE 0
+                                 END)
+                                 SGST_RATE,
+                              SUM (
+                                 CASE
+                                    WHEN GST_COMPONENT = 'SGST' THEN CHGAMT
+                                    ELSE 0
+                                 END)
+                                 SGST_AMOUNT,
+                              SUM (
+                                 CASE
+                                    WHEN GST_COMPONENT = 'IGST' THEN RATE
+                                    ELSE 0
+                                 END)
+                                 IGST_RATE,
+                              SUM (
+                                 CASE
+                                    WHEN GST_COMPONENT = 'IGST' THEN CHGAMT
+                                    ELSE 0
+                                 END)
+                                 IGST_AMOUNT,
+                              SUM (
+                                 CASE
+                                    WHEN GST_COMPONENT = 'CESS' THEN RATE
+                                    ELSE 0
+                                 END)
+                                 CESS_Rate,
+                              SUM (
+                                 CASE
+                                    WHEN GST_COMPONENT = 'CESS' THEN CHGAMT
+                                    ELSE 0
+                                 END)
+                                 CESS_AMOUNT
+                         FROM ginssot.FACT$SALINVCHG_ITEM
+                        WHERE SOURCE = 'GST'
+                     GROUP BY SALINVDET_CODE, APPAMT) TAX
+              WHERE     M.CODE = TAX.SALINVDET_CODE(+)
+                    AND M.INVDCDET_CODE = DC.CODE(+)
+           GROUP BY M.INVCODE,
+                    M.ICODE,
+                    M.RATE,
+                    M.MRP,
+                    M.REM,
+                    CGST_Rate,
+                    SGST_Rate,
+                    IGST_Rate,
+                    CESS_Rate,
+                    DC.BASIC_RATE);

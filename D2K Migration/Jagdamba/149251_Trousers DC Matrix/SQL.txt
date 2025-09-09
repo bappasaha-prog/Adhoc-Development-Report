@@ -1,0 +1,51 @@
+/* Formatted on 22/11/2021 14:56:00 (QP5 v5.294) */
+DROP VIEW GINVIEW.CV_DC_MATRIX;
+
+
+CREATE OR REPLACE FORCE VIEW GINVIEW.CV_DC_MATRIX
+AS
+     SELECT ginview.fnc_uk                         UK,
+            dccode,
+            invarticle_code || ' : ' || article_name article,
+            division,
+            section,
+            department,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category3
+            || ' '
+            || category4
+            || ' '
+            || category6
+            || ' '
+            || string_desc3
+               item,
+            hsn_code,
+            challan_rsp,
+            challan_net_rate,
+            TRIM (category5)                       Item_size,
+            SUM (challan_quantity)                 qty
+       FROM ginview.lv_dc_item A, ginview.lv_item B
+      WHERE A.icode = B.code                               --AND dccode = 3135
+   GROUP BY dccode,
+            invarticle_code || ' : ' || article_name,
+            division,
+            section,
+            department,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category3
+            || ' '
+            || category4
+            || ' '
+            || category6
+            || ' '
+            || string_desc3,
+            hsn_code,
+            challan_rsp,
+            challan_net_rate,
+            TRIM (category5);

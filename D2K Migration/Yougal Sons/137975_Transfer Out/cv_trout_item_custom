@@ -1,0 +1,18 @@
+/* Formatted on 9/7/2021 1:20:19 PM (QP5 v5.294) */
+CREATE OR REPLACE VIEW ginview.cv_trout_item_custom
+AS
+     SELECT GINVIEW.FNC_UK                                UK,
+            invcode,
+            division || ' ' || section || ' ' || department Item,
+            HSN_CODE                                      HSN,
+            UOM                                           Unit,
+            invoiced_RATE                                 RATE,
+            SUM (invoiced_quantity)                       Qty,
+            SUM (invoiced_RATE * invoiced_quantity)       Amount
+       FROM GINVIEW.LV_TROUT_item A, ginview.lv_item B
+      WHERE A.icode = B.code                            --AND invcode = 440496
+   GROUP BY invcode,
+            division || ' ' || section || ' ' || department,
+            HSN_code,
+            UOM,
+            invoiced_RATE

@@ -1,0 +1,26 @@
+/* Formatted on 27/06/2022 10:09:16 (QP5 v5.294) */
+  SELECT ginview.fnc_uk       uk,
+         invcode,
+         department,
+         category1,
+         category2,
+         TRIM (category3)     item_size,
+         DENSE_RANK () OVER (PARTITION BY invcode ORDER BY TRIM (category3))
+            seq,
+         SUM (invoice_quantity) qty,
+         invoice_rate,
+         invoice_rsp,
+         d.HSN_SAC_CODE       HSN,
+         UOM                  UNIT
+    FROM ginview.lv_salinv_item d, ginview.lv_item i
+   WHERE d.icode = i.code
+/*and invcode in(1703,3668)*/
+GROUP BY invcode,
+         department,
+         category1,
+         category2,
+         invoice_rate,
+         invoice_rsp,
+         TRIM (category3),
+         d.HSN_SAC_CODE  ,
+         UOM

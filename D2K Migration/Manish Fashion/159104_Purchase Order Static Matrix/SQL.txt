@@ -1,0 +1,91 @@
+/* Formatted on 02/02/2022 12:12:09 (QP5 v5.294) */
+SELECT ginview.fnc_uk uk,
+       ordcode,
+       division,
+       item_desc,
+       hsn_code,
+       order_rate,
+       uom,
+       size36,
+       size38,
+       size40,
+       size42,
+       size44,
+       size46,
+       size48,
+       undiff,
+       INVOICED_QUANTITY,
+       ITEM_GROSS_AMOUNT
+  FROM (  SELECT a.ordcode,
+                 division,
+                 b.hsn_code,
+                 string_desc5 || '/' || category2  item_desc,
+                 a.order_rate,
+                 b.uom,
+                 SUM (
+                    CASE
+                       WHEN b.category3 = '36"/90CM' THEN a.order_quantity
+                       ELSE 0
+                    END)
+                    size36,
+                 SUM (
+                    CASE
+                       WHEN b.category3 = '38"/95CM' THEN a.order_quantity
+                       ELSE 0
+                    END)
+                    size38,
+                 SUM (
+                    CASE
+                       WHEN b.category3 = '40"/100CM' THEN a.order_quantity
+                       ELSE 0
+                    END)
+                    size40,
+                 SUM (
+                    CASE
+                       WHEN b.category3 = '42"/105CM' THEN a.order_quantity
+                       ELSE 0
+                    END)
+                    size42,
+                 SUM (
+                    CASE
+                       WHEN b.category3 = '44"/110CM' THEN a.order_quantity
+                       ELSE 0
+                    END)
+                    size44,
+                 SUM (
+                    CASE
+                       WHEN b.category3 = '46"/115CM' THEN a.order_quantity
+                       ELSE 0
+                    END)
+                    size46,
+                 SUM (
+                    CASE
+                       WHEN b.category3 = '48"/120CM' THEN a.order_quantity
+                       ELSE 0
+                    END)
+                    size48,
+                 SUM (CASE
+                         WHEN NVL (b.category3, '99999') NOT IN ('36"/90CM',
+                                                                 '38"/95CM',
+                                                                 '40"/100CM',
+                                                                 '42"/105CM',
+                                                                 '44"/110CM',
+                                                                 '46"/115CM',
+                                                                 '48"/120CM')
+                         THEN
+                            a.order_quantity
+                         ELSE
+                            0
+                      END)
+                    undiff,
+                 SUM (a.order_quantity)            INVOICED_QUANTITY,
+                 SUM (a.order_quantity * order_rate) ITEM_GROSS_AMOUNT
+            --sum(a.ITEM_GROSS_AMOUNT) ITEM_GROSS_AMOUNT
+            FROM ginview.lv_po_item a, GINVIEW.LV_ITEM b
+           WHERE a.icode = b.code --AND ordcode = 1161984
+        GROUP BY a.ordcode,
+                 division,
+                 b.hsn_code,
+                 string_desc5 || '/' || category2,
+                 a.order_rate,
+                 b.uom)

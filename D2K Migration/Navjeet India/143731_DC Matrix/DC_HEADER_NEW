@@ -1,0 +1,160 @@
+/* Formatted on 10/9/2021 11:05:09 AM (QP5 v5.294) */
+CREATE OR REPLACE FORCE VIEW GINVIEW.LV_DC_HEADER
+AS
+   SELECT DC.DCCODE                      UK,
+          DC.DCCODE                      DCCODE,
+          DC.DCDT                        CHALLAN_DATE,
+          DC.PCODE                       PCODE,
+          CU.SLNAME                      CUSTOMER_NAME,
+          INV.SCHEME_DOCNO               INVOICE_NO,
+          INV.INVDT                      INVOICE_DATE,
+          --INV.DOCNO                      Invoice_doc_no,
+          --INV.DOCDT                      Invoice_doc_date,
+          LOC.LOCNAME                    OUT_STOCKPOINT,
+          DC.REM                         REMARKS,
+          YR.YNAME                       YEAR_NAME,
+          CR.FNAME || ' ' || CR.ENO      CREATED_BY,
+          DC.TIME                        CREATED_ON,
+          DC.DOCNO                       REFERENCE_NO,
+          DC.AGCODE                      AGCODE,
+          AG.SLNAME                      AGENT_NAME,
+          DC.TRPCODE                     TRPCODE,
+          TR.SLNAME                      TRANSPORTER_NAME,
+          INITCAP (DC.SALETYPE)          SALE_TYPE,
+          CN.FNAME || ' ' || CN.ENO      CANCELLED_BY,
+          INITCAP (DC.STATUS)            STATUS,
+          DC.CNLDT                       CANCELLED_ON,
+          INITCAP (DC.AGAINST_SO)        AGAINST_ORDER,
+          DC.DCBARCODE                   CHALLAN_BARCODE,
+          DOC.DOCNAME                    NUMBERING_SCHEME,
+          DC.SCHEME_DOCNO                CHALLAN_NO,
+          DC.ADMOU_CODE                  ADMOU_CODE,
+          DC.ADMSITE_CODE                ADMSITE_CODE,
+          RF.SHRTNAME                    REFERENCE_SITE,
+          INITCAP (DC.PRICETYPE)         PRICE_TYPE,
+          PR.PRICELISTNAME               PRICE_LIST_NAME,
+          DC.DISCOUNT_FACTOR             DISCOUNT_FACTOR,
+          DC.PRICE_ROUNDOFF              PRICE_ROUND_OFF,
+          INITCAP (DC.ROUNDOFF_LIMIT)    PRICE_ROUND_OFF_LIMIT,
+          DC.ADMSITE_CODE_OWNER          ADMSITE_CODE_OWNER,
+          OW.SHRTNAME                    OWNER_SITE,
+          RT.SCHEME_DOCNO                TRANSFER_IN_NO,
+          INITCAP (DC.INCL_VAT_IN_DIST)  PRICE_INCLUSION_OF_TAX,
+          INITCAP (DC.DISCOUNT_MODE)     PRICE_MODE,
+          INITCAP (DC.DISCOUNT_BASIS)    PRICE_BASIS,
+          LNK.SCHEME_DOCNO               LINKED_CHALLAN_NO,
+          GR.NAME                        TRADE_GROUP_NAME,
+          FR.FORMNAME                    FORM_NAME,
+          PK.PACKETNO                    LINKED_STORE_PACKET_NO,
+          INITCAP (DC.CMPTAX_CODE_BASIS) TAX_BASED_ON,
+          INITCAP (DC.DOC_STATUS)        DOCUMENT_STATUS,
+          INTG.INTGNAME                  THIRD_PARTY_SOURCE,
+          CASE
+             WHEN DC.STATUS = 'INVOICED' AND INV.RELEASE_STATUS = 'UNPOSTED'
+             THEN
+                'Invoiced'
+             WHEN     DC.STATUS = 'INVOICED'
+                  AND INV.RELEASE_STATUS = 'POSTED'
+                  AND (   (    UPPER (RF.SITETYPE) LIKE 'MS%'
+                           AND NOT EXISTS
+                                  (SELECT 1
+                                     FROM ginssot.FACT$PSITE_GRCITEM P
+                                    WHERE DC.DCCODE = P.DCCODE))
+                       OR (    UPPER (RF.SITETYPE) LIKE 'OS%'
+                           AND NOT EXISTS
+                                  (SELECT 1
+                                     FROM ginssot.FACT$SALINVDET SALINVDET
+                                    WHERE SALINVDET.INVCODE =
+                                             RT.TRANSFEROUT_INVCODE)))
+             THEN
+                'Transit'
+             WHEN     DC.STATUS = 'INVOICED'
+                  AND INV.RELEASE_STATUS = 'POSTED'
+                  AND (   UPPER (RF.SITETYPE) LIKE 'US%'
+                       OR (    UPPER (RF.SITETYPE) LIKE 'MS%'
+                           AND EXISTS
+                                  (SELECT 1
+                                     FROM ginssot.FACT$PSITE_GRCITEM P
+                                    WHERE DC.DCCODE = P.DCCODE))
+                       OR (    UPPER (RF.SITETYPE) LIKE 'OS%'
+                           AND EXISTS
+                                  (SELECT 1
+                                     FROM ginssot.FACT$SALINVDET SALINVDET
+                                    WHERE     SALINVDET.INVCODE =
+                                                 RT.TRANSFEROUT_INVCODE
+                                          AND DC.DCCODE = SALINVDET.DCCODE)))
+             THEN
+                'Received'
+             ELSE
+                INITCAP (DC.STATUS)
+          END
+             DC_STATUS,
+          DC.OUTLOCCODE,
+          DC.ENTRY_MODE,
+          DC.ENTRY_SOURCE,
+          CASE
+             WHEN DC.LAST_ACCESS_ECODE IS NOT NULL
+             THEN
+                LM.FNAME || ' [' || LM.ENO || ']'
+          END
+             LAST_MODIFIED_BY,
+          DC.LAST_ACCESS_TIME            LAST_MODIFIED_ON,
+          DC.UDFSTRING01                 INVDCMAIN_UDFSTRING01,
+          DC.UDFSTRING02                 INVDCMAIN_UDFSTRING02,
+          DC.UDFSTRING03                 INVDCMAIN_UDFSTRING03,
+          DC.UDFSTRING04                 INVDCMAIN_UDFSTRING04,
+          DC.UDFSTRING05                 INVDCMAIN_UDFSTRING05,
+          DC.UDFSTRING06                 INVDCMAIN_UDFSTRING06,
+          DC.UDFSTRING07                 INVDCMAIN_UDFSTRING07,
+          DC.UDFSTRING08                 INVDCMAIN_UDFSTRING08,
+          DC.UDFSTRING09                 INVDCMAIN_UDFSTRING09,
+          DC.UDFSTRING10                 INVDCMAIN_UDFSTRING10,
+          DC.UDFNUM01                    INVDCMAIN_UDFNUM01,
+          DC.UDFNUM02                    INVDCMAIN_UDFNUM02,
+          DC.UDFNUM03                    INVDCMAIN_UDFNUM03,
+          DC.UDFNUM04                    INVDCMAIN_UDFNUM04,
+          DC.UDFNUM05                    INVDCMAIN_UDFNUM05,
+          DC.UDFDATE01                   INVDCMAIN_UDFDATE01,
+          DC.UDFDATE02                   INVDCMAIN_UDFDATE02,
+          DC.UDFDATE03                   INVDCMAIN_UDFDATE03,
+          DC.UDFDATE04                   INVDCMAIN_UDFDATE04,
+          DC.UDFDATE05                   INVDCMAIN_UDFDATE05
+     FROM ginssot.DIM$INVDCMAIN        DC,
+          ginssot.DIM$HRDEMP           CR,
+          ginssot.DIM$HRDEMP           CN,
+          ginssot.DIM$HRDEMP           LM,
+          ginssot.DIM$FINSL            CU,
+          ginssot.DIM$FINSL            AG,
+          ginssot.DIM$FINSL            TR,
+          ginssot.FACT$SALINVMAIN      INV,
+          ginssot.DIM$INVLOC           LOC,
+          ginssot.DIM$ADMSITE          OW,
+          ginssot.DIM$ADMSITE          RF,
+          ginssot.DIM$SALPRICELISTMAIN PR,
+          ginssot.FACT$SALRTMAIN       RT,
+          ginssot.DIM$INVDCMAIN        LNK,
+          ginssot.DIM$FINTRADEGRP      GR,
+          ginssot.DIM$FINFORM          FR,
+          ginssot.DIM$PSITE_PACKET     PK,
+          ginssot.DIM$INTGMAIN         INTG,
+          ginssot.DIM$ADMDOCSCHEME     DOC,
+          ginssot.DIM$ADMYEAR          YR
+    WHERE     DC.ECODE = CR.ECODE
+          AND DC.CNLECODE = CN.ECODE(+)
+          AND DC.PCODE = CU.SLCODE(+)
+          AND DC.AGCODE = AG.SLCODE(+)
+          AND DC.TRPCODE = TR.SLCODE(+)
+          AND DC.INVCODE = INV.INVCODE(+)
+          AND DC.OUTLOCCODE = LOC.LOCCODE
+          AND DC.ADMSITE_CODE_OWNER = OW.CODE
+          AND DC.ADMSITE_CODE = RF.CODE
+          AND DC.PRICELISTCODE = PR.PRICELISTCODE(+)
+          AND DC.TRANSFERIN_RTCODE = RT.RTCODE(+)
+          AND DC.LINKED_DCCODE = LNK.DCCODE(+)
+          AND DC.SALTRADEGRP_CODE = GR.CODE(+)
+          AND DC.FORMCODE = FR.FORMCODE(+)
+          AND DC.LINKED_PSITE_PACKET_ID = PK.ID(+)
+          AND DC.INTGCODE = INTG.INTGCODE(+)
+          AND DC.DOCCODE = DOC.DOCCODE(+)
+          AND DC.YCODE = YR.YCODE
+          AND DC.LAST_ACCESS_ECODE = LM.ECODE(+);

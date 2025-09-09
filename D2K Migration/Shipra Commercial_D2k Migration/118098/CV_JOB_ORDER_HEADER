@@ -1,0 +1,214 @@
+/* Formatted on 05/07/2021 15:11:05 (QP5 v5.294) */
+CREATE OR REPLACE FORCE VIEW GINVIEW.CV_JOB_ORDER_HEADER
+AS
+   SELECT M.CODE                                UK,
+          M.CODE                                CODE,
+          M.JOBNO                               Job_Order_No,
+          DOC.DOCNAME                           Numbering_Scheme,
+          M.JOB_DATE                            Job_Order_Date,
+          M.REF_NO                              Reference_No,
+          M.PCODE                               PCODE,
+          S.SLNAME                              Jobber_Name,
+          M.PRCODE,
+          P.PRNAME                              Process_Name,
+          INITCAP (M.JOBTYPE)                   Job_Order_Type,
+          M.REMARKS,
+          M.ADMOU_CODE,
+          INITCAP (M.IS_CLOSED)                 IS_CLOSED,
+          M.TIME                                Created_On,
+          C.FNAME || ' ' || '[' || C.ENO || ']' Created_By,
+          M.LAST_ACCESS_TIME                    Last_Modified_On,
+          CASE
+             WHEN LAST_ACCESS_ECODE IS NOT NULL
+             THEN
+                L.FNAME || ' ' || '[' || L.ENO || ']'
+             ELSE
+                NULL
+          END
+             Last_Modified_BY,
+          M.ADMSITE_CODE                        ADMSITE_CODE,
+          ST.NAME                               Owner_Site,
+          ST.SHRTNAME                           OWNER_SITE_SHORTNAME,
+          M.JOBBER_LOCCODE                      JOBBER_LOCCODE,
+          L.LOCNAME                             Jobber_WIP_Stockpoint,
+          M.REF_DT                              Reference_Date,
+          M.YCODE,
+          Y.YNAME,
+          SUBSTR (M.remarks,
+                    INSTR (M.remarks,
+                           '#',
+                           1,
+                           1)
+                  + 1,
+                    INSTR (M.remarks,
+                           '#',
+                           1,
+                           2)
+                  - INSTR (M.remarks,
+                           '#',
+                           1,
+                           1)
+                  - 1)
+             Buyer,
+          SUBSTR (M.remarks,
+                    INSTR (M.remarks,
+                           '#',
+                           1,
+                           2)
+                  + 1,
+                    INSTR (M.remarks,
+                           '#',
+                           1,
+                           3)
+                  - INSTR (M.remarks,
+                           '#',
+                           1,
+                           2)
+                  - 1)
+             FAB_SUP,
+          SUBSTR (M.remarks,
+                    INSTR (M.remarks,
+                           '#',
+                           1,
+                           3)
+                  + 1,
+                    INSTR (M.remarks,
+                           '#',
+                           1,
+                           4)
+                  - INSTR (M.remarks,
+                           '#',
+                           1,
+                           3)
+                  - 1)
+             GRC_NO,
+          SUBSTR (M.remarks,
+                    INSTR (M.remarks,
+                           '#',
+                           1,
+                           4)
+                  + 1,
+                    INSTR (M.remarks,
+                           '#',
+                           1,
+                           5)
+                  - INSTR (M.remarks,
+                           '#',
+                           1,
+                           4)
+                  - 1)
+             PLAN_NO,
+          SUBSTR (M.remarks,
+                    INSTR (M.remarks,
+                           '#',
+                           1,
+                           5)
+                  + 1,
+                    INSTR (M.remarks,
+                           '#',
+                           1,
+                           6)
+                  - INSTR (M.remarks,
+                           '#',
+                           1,
+                           5)
+                  - 1)
+             Rem1,
+          SUBSTR (M.remarks,
+                    INSTR (M.remarks,
+                           '#',
+                           1,
+                           6)
+                  + 1,
+                    INSTR (M.remarks,
+                           '#',
+                           1,
+                           7)
+                  - INSTR (M.remarks,
+                           '#',
+                           1,
+                           6)
+                  - 1)
+             Rem2,
+          SUBSTR (M.remarks,
+                    INSTR (M.remarks,
+                           '#',
+                           1,
+                           7)
+                  + 1,
+                    INSTR (M.remarks,
+                           '#',
+                           1,
+                           8)
+                  - INSTR (M.remarks,
+                           '#',
+                           1,
+                           7)
+                  - 1)
+             Rem3,
+          SUBSTR (M.remarks,
+                    INSTR (M.remarks,
+                           '#',
+                           1,
+                           8)
+                  + 1,
+                    INSTR (M.remarks,
+                           '#',
+                           1,
+                           9)
+                  - INSTR (M.remarks,
+                           '#',
+                           1,
+                           8)
+                  - 1)
+             Rem4,
+          SUBSTR (M.remarks,
+                    INSTR (M.remarks,
+                           '#',
+                           1,
+                           9)
+                  + 1,
+                    INSTR (M.remarks,
+                           '#',
+                           1,
+                           10)
+                  - INSTR (M.remarks,
+                           '#',
+                           1,
+                           9)
+                  - 1)
+             Rem5,
+          SUBSTR (M.remarks,
+                    INSTR (M.remarks,
+                           '#',
+                           1,
+                           10)
+                  + 1,
+                    INSTR (M.remarks,
+                           '#',
+                           1,
+                           11)
+                  - INSTR (M.remarks,
+                           '#',
+                           1,
+                           10)
+                  - 1)
+             Rem6
+     FROM ginssot.DIM$PRDJOBMAIN   M,
+          ginssot.DIM$HRDEMP       C,
+          ginssot.DIM$HRDEMP       L,
+          ginssot.DIM$FINSL        S,
+          ginssot.DIM$PRDPR        P,
+          ginssot.DIM$ADMDOCSCHEME DOC,
+          ginssot.DIM$ADMSITE      ST,
+          ginssot.DIM$INVLOC       L,
+          ginssot.DIM$ADMYEAR      Y
+    WHERE     M.ECODE = C.ECODE
+          AND M.LAST_ACCESS_ECODE = L.ECODE(+)
+          AND M.PCODE = S.SLCODE
+          AND M.PRCODE = P.PRCODE
+          AND M.DOCCODE = DOC.DOCCODE(+)
+          AND M.ADMSITE_CODE = ST.CODE
+          AND M.JOBBER_LOCCODE = L.LOCCODE(+)
+          AND M.YCODE = Y.YCODE
+--AND M.code = 366132;

@@ -1,0 +1,43 @@
+/* Formatted on 16/11/2021 13:17:03 (QP5 v5.294) */
+SELECT ginview.fnc_uk uk,
+       X.invcode,
+       SL,
+       X.item,
+       X.hsn_code,
+       X.uom,
+       X.invoiced_rate,
+       X.qty
+  FROM (  SELECT invcode,
+                 division || ' ' || section || ' ' || department item,
+                 hsn_code,
+                 invoiced_rate,
+                 uom,
+                 SUM (invoiced_quantity)                        qty
+            FROM ginview.lv_trout_item i, ginview.lv_item l
+           WHERE i.icode = l.code
+        GROUP BY invcode,
+                 division || ' ' || section || ' ' || department,
+                 hsn_code,
+                 invoiced_rate,
+                 uom) X,
+       (SELECT ROW_NUMBER ()
+               OVER (PARTITION BY invcode ORDER BY invcode, item, hsn_code)
+                  AS sl,
+               invcode,
+               item,
+               hsn_code,
+               uom
+          FROM (  SELECT DISTINCT
+                         invcode,
+                         division || ' ' || section || ' ' || department item,
+                         hsn_code,
+                         uom
+                    FROM ginview.lv_trout_item A, ginview.lv_item B
+                   WHERE A.ICODE = b.code
+                GROUP BY a.invcode,
+                         division || ' ' || section || ' ' || department,
+                         hsn_code,
+                         uom
+                ORDER BY a.invcode,
+                         division || ' ' || section || ' ' || department)) Y
+ WHERE X.INVCODE = Y.INVCODE AND X.ITEM = Y.ITEM /*AND X.invcode = 66868*/

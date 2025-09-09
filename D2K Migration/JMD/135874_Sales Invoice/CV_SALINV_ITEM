@@ -1,0 +1,24 @@
+/* Formatted on 23/08/2021 11:21:44 (QP5 v5.294) */
+CREATE OR REPLACE FORCE VIEW GINVIEW.CV_SALINV_ITEM
+AS
+     SELECT ginview.fnc_uk        UK,
+            INVCODE,
+            B.division,
+            B.SECTION,
+            B.department,
+            B.HSN_CODE            HSN,
+            INVOICE_RSP           MRP,
+            invoice_rate          Rate,
+            B.UOM                 Unit,
+            SUM (invoice_quantity) qty,
+            SUM (ITEM_GROSS_AMOUNT) Amount
+       FROM ginview.lv_salinv_item A, ginview.lv_item B
+      WHERE A.ICODE = B.code                           --AND invcode = 1079149
+   GROUP BY INVCODE,
+            B.division,
+            B.SECTION,
+            B.department,
+            B.HSN_CODE,
+            INVOICE_RSP,
+            invoice_rate,
+            B.UOM

@@ -1,0 +1,74 @@
+/* Formatted on 3/22/2021 4:28:31 PM (QP5 v5.294) */
+CREATE OR REPLACE VIEW ginview.cv_po_item_matrix
+AS
+     SELECT ginview.fnc_uk                         UK,
+            ordcode,
+            INVarticle_code || ' : ' || article_name Item_GRP,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category3
+            || ' '
+            || category5
+            || ' '
+            || category6
+               Item,
+            category4                              Item_Size,
+            order_rate                             Rate,
+            RSP,
+            SUM (order_quantity)                   Qty,
+            SUM (order_rate * order_quantity)      Amount,
+            SUM (
+               order_rate * order_quantity)
+            OVER (
+               PARTITION BY ordcode,
+                               category1
+                            || ' '
+                            || category2
+                            || ' '
+                            || category3
+                            || ' '
+                            || category5
+                            || ' '
+                            || category6
+               ORDER BY
+                  ordcode,
+                     category1
+                  || ' '
+                  || category2
+                  || ' '
+                  || category3
+                  || ' '
+                  || category5
+                  || ' '
+                  || category6)
+               Total_amt
+       FROM ginview.lv_po_item A, ginview.lv_item B
+      WHERE A.icode = B.code --AND ordcode = 4196403
+   GROUP BY ordcode,
+            INVarticle_code || ' : ' || article_name,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category3
+            || ' '
+            || category5
+            || ' '
+            || category6,
+            category4,
+            order_rate,
+            RSP,
+            order_quantity
+   ORDER BY ordcode,
+            INVarticle_code || ' : ' || article_name,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category3
+            || ' '
+            || category5
+            || ' '
+            || category6

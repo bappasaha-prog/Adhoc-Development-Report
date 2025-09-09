@@ -1,0 +1,11 @@
+SELECT ginview.fnc_uk uk,dccode,department,
+         category1,
+         wsp,
+         challan_rsp          mrp,
+         SUM (challan_quantity) qty
+    FROM ginview.lv_dc_item d, ginview.lv_item i
+   WHERE d.icode = i.code /*AND dccode = 324604*/
+GROUP BY dccode,department,
+         category1,
+         wsp,
+         challan_rsp
