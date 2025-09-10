@@ -1,0 +1,27 @@
+Create or replace view ginview.CV_SALINV_ITEM
+AS
+select ginview.fnc_uk UK,
+INVCODE,
+B.SECTION||' '||B.department||' '||STRING_DESC4||' '||B.category4 ITEM,
+B.HSN_CODE HSN,
+INVOICE_RSP MRP,
+invoice_rate Rate,
+B.UOM Unit,
+sum(invoice_quantity) qty,
+sum(ITEM_GROSS_AMOUNT) Amount
+from ginview.lv_salinv_item A, ginview.lv_item B
+where A.ICODE = B.code
+group by
+INVCODE,
+B.SECTION||' '||B.department||' '||STRING_DESC4||' '||B.category4 ,
+B.HSN_CODE ,
+INVOICE_RSP ,
+invoice_rate ,
+B.UOM 
+order by
+INVCODE,
+B.SECTION||' '||B.department||' '||STRING_DESC4||' '||B.category4 ,
+B.HSN_CODE ,
+INVOICE_RSP ,
+invoice_rate ,
+B.UOM 

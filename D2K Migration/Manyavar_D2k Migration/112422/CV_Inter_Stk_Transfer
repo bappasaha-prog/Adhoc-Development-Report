@@ -1,0 +1,483 @@
+/* Formatted on 22/03/2021 14:44:46 (QP5 v5.294) */
+CREATE OR REPLACE VIEW ginview.CV_inter_stk_trans_HSN
+AS
+     SELECT 'SGST' || ' @ ' || SGST_GST_RATE SGST_CHGNAME,
+            'CGST' || ' @ ' || CGST_GST_RATE CGST_CHGNAME,
+            'IGST' || ' @ ' || IGST_GST_RATE IGST_CHGNAME,
+            'CESS' || ' @ ' || CESS_GST_RATE CESS_CHGNAME,
+            SUM (NVL (NETAMT, 0))          NETAMT,
+            SGST_GST_RATE                  SGST_RATE,
+            CGST_GST_RATE                  CGST_RATE,
+            IGST_GST_RATE                  IGST_RATE,
+            CESS_GST_RATE                  CESS_RATE,
+            SUM (NVL (MISC_QTY, 0))        MISC_QTY,
+            INVCODE,
+            SUM (NVL (SGST_CHGAMT, 0))     SGST_CHGAMT,
+            SUM (NVL (IGST_CHGAMT, 0))     IGST_CHGAMT,
+            SUM (NVL (CGST_CHGAMT, 0))     CGST_CHGAMT,
+            SUM (NVL (CESS_CHGAMT, 0))     CESS_CHGAMT,
+            HSN_SAC_CODE,
+            UOM
+       FROM (  SELECT vfpl.cus_fun_rep_gst_rate_loc (
+                         D.ICODE,
+                         NULL,
+                         NULL,
+                         NULL,
+                         M.STFDT,
+                         SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, WSP)),
+                         V_ITEM.MRP,
+                         SUM (NVL (D.QTY, 0)),
+                         'S',
+                         M.OUTLOCCODE,
+                         M.INLOCCODE)
+                         SGST_GST_RATE,
+                      vfpl.cus_fun_rep_gst_rate_loc (
+                         D.ICODE,
+                         NULL,
+                         NULL,
+                         NULL,
+                         M.STFDT,
+                         SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, WSP)),
+                         V_ITEM.MRP,
+                         SUM (NVL (D.QTY, 0)),
+                         'I',
+                         M.OUTLOCCODE,
+                         M.INLOCCODE)
+                         IGST_GST_RATE,
+                      vfpl.cus_fun_rep_gst_rate_loc (
+                         D.ICODE,
+                         NULL,
+                         NULL,
+                         NULL,
+                         M.STFDT,
+                         SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, WSP)),
+                         V_ITEM.MRP,
+                         SUM (NVL (D.QTY, 0)),
+                         'C',
+                         M.OUTLOCCODE,
+                         M.INLOCCODE)
+                         CGST_GST_RATE,
+                      vfpl.cus_fun_rep_gst_rate_loc (
+                         D.ICODE,
+                         NULL,
+                         NULL,
+                         NULL,
+                         M.STFDT,
+                         SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, WSP)),
+                         V_ITEM.MRP,
+                         SUM (NVL (D.QTY, 0)),
+                         'E',
+                         M.OUTLOCCODE,
+                         M.INLOCCODE)
+                         CESS_GST_RATE,
+                      M.STFCODE                                     INVCODE,
+                      SUM (NVL (D.QTY, 0))                          MISC_QTY,
+                      SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, WSP)) NETAMT,
+                      (  (SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, WSP)))
+                       * (  VFPL.cus_fun_rep_gst_rate_loc (
+                               D.ICODE,
+                               NULL,
+                               NULL,
+                               NULL,
+                               M.STFDT,
+                               SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, WSP)),
+                               V_ITEM.MRP,
+                               SUM (NVL (D.QTY, 0)),
+                               'S',
+                               M.OUTLOCCODE,
+                               M.INLOCCODE)
+                          / 100))
+                         SGST_CHGAMT,
+                      (  (SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, WSP)))
+                       * (  VFPL.cus_fun_rep_gst_rate_loc (
+                               D.ICODE,
+                               NULL,
+                               NULL,
+                               NULL,
+                               M.STFDT,
+                               SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, WSP)),
+                               V_ITEM.MRP,
+                               SUM (NVL (D.QTY, 0)),
+                               'C',
+                               M.OUTLOCCODE,
+                               M.INLOCCODE)
+                          / 100))
+                         CGST_CHGAMT,
+                      (  (SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, WSP)))
+                       * (  VFPL.cus_fun_rep_gst_rate_loc (
+                               D.ICODE,
+                               NULL,
+                               NULL,
+                               NULL,
+                               M.STFDT,
+                               SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, WSP)),
+                               V_ITEM.MRP,
+                               SUM (NVL (D.QTY, 0)),
+                               'I',
+                               M.OUTLOCCODE,
+                               M.INLOCCODE)
+                          / 100))
+                         IGST_CHGAMT,
+                      (  (SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, WSP)))
+                       * (  VFPL.cus_fun_rep_gst_rate_loc (
+                               D.ICODE,
+                               NULL,
+                               NULL,
+                               NULL,
+                               M.STFDT,
+                               SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, WSP)),
+                               V_ITEM.MRP,
+                               SUM (NVL (D.QTY, 0)),
+                               'E',
+                               M.OUTLOCCODE,
+                               M.INLOCCODE)
+                          / 100))
+                         CESS_CHGAMT,
+                      HSN_SAC_CODE,
+                      V_ITEM.UNITNAME                               UOM
+                 FROM INVSTFDET D, V_ITEM, INVSTFMAIN M
+                WHERE D.ICODE = V_ITEM.ICODE AND D.STFCODE = M.STFCODE
+             --and d.stfcode = 138623745
+             GROUP BY D.ICODE,
+                      M.STFDT,
+                      V_ITEM.MRP,
+                      M.STFCODE,
+                      HSN_SAC_CODE,
+                      V_ITEM.UNITNAME,
+                      M.OUTLOCCODE,
+                      M.INLOCCODE)
+   GROUP BY INVCODE,
+            'SGST' || ' @ ' || SGST_GST_RATE,
+            'CGST' || ' @ ' || CGST_GST_RATE,
+            'IGST' || ' @ ' || IGST_GST_RATE,
+            'CESS' || ' @ ' || CESS_GST_RATE,
+            SGST_GST_RATE,
+            CGST_GST_RATE,
+            IGST_GST_RATE,
+            CESS_GST_RATE,
+            HSN_SAC_CODE,
+            UOM
+   ORDER BY HSN_SAC_CODE
+   
+   
+   
+   
+/* Formatted on 22/03/2021 13:52:53 (QP5 v5.294) */
+CREATE OR REPLACE VIEW ginview.cv_inter_loc_trans_item
+AS
+     SELECT ginview.fnc_uk                               UK,
+            stfcode,
+            division || ' ' || Section || ' ' || category1 Item,
+            HSN_CODE                                     HSN,
+            NVL (Standard_rate, WSP)                     RATE,
+            RSP,
+            UOM                                          Unit,
+            SUM (quantity)                               Qty,
+            SUM (NVL (Standard_rate, WSP) * quantity)    Transfer_Amt
+       FROM GINVIEW.LV_INTER_STK_TRANFER A, Ginview.lv_item B
+      WHERE A.icode = B.code 
+--      AND stfcode = 138623745
+   GROUP BY stfcode,
+            division || ' ' || Section || ' ' || category1,
+            HSN_CODE,
+            Standard_rate,
+            WSP,
+            RSP,
+            UOM
+   ORDER BY stfcode,
+            division || ' ' || Section || ' ' || category1,
+            HSN_CODE,
+            Standard_rate,
+            WSP,
+            RSP,
+            UOM
+			
+			
+			
+DROP VIEW GINVIEW.CV_INTER_LOC_TRANS_HEADER;
+
+/* Formatted on 22/03/2021 14:56:28 (QP5 v5.294) */
+CREATE OR REPLACE FORCE VIEW GINVIEW.CV_INTER_LOC_TRANS_HEADER
+(
+   UK,
+   STFCODE,
+   STFDT,
+   DOCNO,
+   DOCDT,
+   INLOCCODE,
+   LOCNAME,
+   OUTLOCCODE,
+   OUTLOCNAME,
+   REMARKS,
+   SCHEME_DOCNO,
+   ADMSITE_CODE,
+   SITENAME,
+   CREATED_ON,
+   CREATED_BY,
+   OUTLGTCODE,
+   OUT_LOGISTIC_DOCUMENT_NO,
+   OUT_LOGISTIC_DOCUMENT_DATE,
+   OUT_LOGISTIC_DECLARED_AMOUNT
+)
+   BEQUEATH DEFINER
+AS
+   SELECT M.STFCODE                                             UK,
+          M.STFCODE                                             STFCODE,
+          stfdt,
+          M.DOCNO,
+          M.DOCDT,
+          M.INLOCCODE,
+          INSTK.locname,
+          M.OUTLOCCODE,
+          OUTSTK.LOCNAME                                        OutLOCNAME,
+          M.Rem                                                 Remarks,
+          SCHEME_DOCNO,
+          M.admsite_code,
+          S.name                                                SiteName,
+          TO_DATE (TO_CHAR (M.last_access_time, 'dd-MON-yyyy')) Created_on,
+          MD.FNAME                                              Created_BY,
+          M.OUTLGTCODE,
+          O.DOCNO
+             OUT_Logistic_Document_No,
+          O.DOCDT
+             OUT_Logistic_Document_Date,
+          O.DECAMT
+             OUT_Logistic_Declared_Amount
+     FROM ginssot.DIM$INVSTFMAIN M,
+          ginssot.DIM$INVLOC     INSTK,
+          ginssot.DIM$INVLOC     OUTSTK,
+          ginssot.DIM$HRDEMP     MD,
+          ginssot.DIM$ADMSITE    S,
+          ginssot.DIM$INVLGTNOTE O
+    WHERE     M.INLOCCODE = INSTK.LOCCODE
+          AND M.outloccode = OUTSTK.LOCCODE
+          AND M.LAST_ACCESS_ECODE = MD.ECODE(+)
+          AND M.ADMSITE_CODE = S.CODE
+          AND M.OUTLGTCODE = O.LGTCODE(+)
+--          AND stfcode = 138623745
+;
+
+
+
+
+/* Formatted on 23/03/2021 10:21:47 (QP5 v5.294) */
+DROP VIEW GINVIEW.CV_INV_STK_TRANS_CHARGE;
+
+
+CREATE OR REPLACE FORCE VIEW GINVIEW.CV_INV_STK_TRANS_CHARGE
+AS
+     SELECT ginview.fnc_uk                          uk,
+            'SGST' || ' @ ' || SGST_GST_RATE || ' % ' SGST_CHGNAME,
+            SUM (NVL (NETAMT, 0))                   NETAMT,
+            SGST_GST_RATE                           GST_RATE,
+            SUM (NVL (MISC_QTY, 0))                 MISC_QTY,
+            INVCODE,
+            SUM (NVL (SGST_CHGAMT, 0))              CHGAMT
+       FROM (  SELECT vfpl.cus_fun_rep_gst_rate_loc (
+                         D.ICODE,
+                         NULL,
+                         NULL,
+                         NULL,
+                         M.STFDT,
+                         SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, V_ITEM.WSP)),
+                         V_ITEM.MRP,
+                         SUM (NVL (D.QTY, 0)),
+                         'S',
+                         M.OUTLOCCODE,
+                         M.INLOCCODE)
+                         SGST_GST_RATE,
+                      M.STFCODE        INVCODE,
+                      SUM (NVL (D.QTY, 0)) MISC_QTY,
+                      SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, V_ITEM.WSP))
+                         NETAMT,
+                      (  (SUM (
+                             NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, V_ITEM.WSP)))
+                       * (  vfpl.cus_fun_rep_gst_rate_loc (
+                               D.ICODE,
+                               NULL,
+                               NULL,
+                               NULL,
+                               M.STFDT,
+                               SUM (
+                                    NVL (D.QTY, 0)
+                                  * NVL (V_ITEM.COSTRATE, V_ITEM.WSP)),
+                               V_ITEM.MRP,
+                               SUM (NVL (D.QTY, 0)),
+                               'S',
+                               M.OUTLOCCODE,
+                               M.INLOCCODE)
+                          / 100))
+                         SGST_CHGAMT
+                 FROM INVSTFDET D, V_ITEM, INVSTFMAIN M
+                WHERE D.ICODE = V_ITEM.ICODE AND D.STFCODE = M.STFCODE
+             GROUP BY D.ICODE,
+                      M.STFDT,
+                      V_ITEM.MRP,
+                      M.STFCODE,
+                      M.OUTLOCCODE,
+                      M.INLOCCODE)
+      WHERE NVL (SGST_GST_RATE, 0) <> 0
+   --   and invcode = 138623745
+   GROUP BY INVCODE, 'SGST' || ' @ ' || SGST_GST_RATE, SGST_GST_RATE
+   UNION ALL
+     SELECT ginview.fnc_uk                          uk,
+            'CGST' || ' @ ' || SGST_GST_RATE || ' % ' SGST_CHGNAME,
+            SUM (NVL (NETAMT, 0))                   NETAMT,
+            SGST_GST_RATE                           GST_RATE,
+            SUM (NVL (MISC_QTY, 0))                 MISC_QTY,
+            INVCODE,
+            SUM (NVL (SGST_CHGAMT, 0))              CHGAMT
+       FROM (  SELECT vfpl.cus_fun_rep_gst_rate_loc (
+                         D.ICODE,
+                         NULL,
+                         NULL,
+                         NULL,
+                         M.STFDT,
+                         SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, V_ITEM.WSP)),
+                         V_ITEM.MRP,
+                         SUM (NVL (D.QTY, 0)),
+                         'C',
+                         M.OUTLOCCODE,
+                         M.INLOCCODE)
+                         SGST_GST_RATE,
+                      M.STFCODE        INVCODE,
+                      SUM (NVL (D.QTY, 0)) MISC_QTY,
+                      SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, V_ITEM.WSP))
+                         NETAMT,
+                      (  (SUM (
+                             NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, V_ITEM.WSP)))
+                       * (  vfpl.cus_fun_rep_gst_rate_loc (
+                               D.ICODE,
+                               NULL,
+                               NULL,
+                               NULL,
+                               M.STFDT,
+                               SUM (
+                                    NVL (D.QTY, 0)
+                                  * NVL (V_ITEM.COSTRATE, V_ITEM.WSP)),
+                               V_ITEM.MRP,
+                               SUM (NVL (D.QTY, 0)),
+                               'C',
+                               M.OUTLOCCODE,
+                               M.INLOCCODE)
+                          / 100))
+                         SGST_CHGAMT
+                 FROM INVSTFDET D, V_ITEM, INVSTFMAIN M
+                WHERE D.ICODE = V_ITEM.ICODE AND D.STFCODE = M.STFCODE
+             GROUP BY D.ICODE,
+                      M.STFDT,
+                      V_ITEM.MRP,
+                      M.STFCODE,
+                      M.OUTLOCCODE,
+                      M.INLOCCODE)
+      WHERE NVL (SGST_GST_RATE, 0) <> 0
+   --   and invcode = 138623745
+   GROUP BY INVCODE, 'CGST' || ' @ ' || SGST_GST_RATE, SGST_GST_RATE
+   UNION ALL
+     SELECT ginview.fnc_uk                          uk,
+            'IGST' || ' @ ' || SGST_GST_RATE || ' % ' SGST_CHGNAME,
+            SUM (NVL (NETAMT, 0))                   NETAMT,
+            SGST_GST_RATE                           GST_RATE,
+            SUM (NVL (MISC_QTY, 0))                 MISC_QTY,
+            INVCODE,
+            SUM (NVL (SGST_CHGAMT, 0))              CHGAMT
+       FROM (  SELECT vfpl.cus_fun_rep_gst_rate_loc (
+                         D.ICODE,
+                         NULL,
+                         NULL,
+                         NULL,
+                         M.STFDT,
+                         SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, V_ITEM.WSP)),
+                         V_ITEM.MRP,
+                         SUM (NVL (D.QTY, 0)),
+                         'I',
+                         M.OUTLOCCODE,
+                         M.INLOCCODE)
+                         SGST_GST_RATE,
+                      M.STFCODE        INVCODE,
+                      SUM (NVL (D.QTY, 0)) MISC_QTY,
+                      SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, V_ITEM.WSP))
+                         NETAMT,
+                      (  (SUM (
+                             NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, V_ITEM.WSP)))
+                       * (  vfpl.cus_fun_rep_gst_rate_loc (
+                               D.ICODE,
+                               NULL,
+                               NULL,
+                               NULL,
+                               M.STFDT,
+                               SUM (
+                                    NVL (D.QTY, 0)
+                                  * NVL (V_ITEM.COSTRATE, V_ITEM.WSP)),
+                               V_ITEM.MRP,
+                               SUM (NVL (D.QTY, 0)),
+                               'I',
+                               M.OUTLOCCODE,
+                               M.INLOCCODE)
+                          / 100))
+                         SGST_CHGAMT
+                 FROM INVSTFDET D, V_ITEM, INVSTFMAIN M
+                WHERE D.ICODE = V_ITEM.ICODE AND D.STFCODE = M.STFCODE
+             GROUP BY D.ICODE,
+                      M.STFDT,
+                      V_ITEM.MRP,
+                      M.STFCODE,
+                      M.OUTLOCCODE,
+                      M.INLOCCODE)
+      WHERE NVL (SGST_GST_RATE, 0) <> 0
+   --   and invcode = 138623745
+   GROUP BY INVCODE, 'IGST' || ' @ ' || SGST_GST_RATE, SGST_GST_RATE
+   UNION ALL
+     SELECT ginview.fnc_uk                          uk,
+            'CESS' || ' @ ' || SGST_GST_RATE || ' % ' SGST_CHGNAME,
+            SUM (NVL (NETAMT, 0))                   NETAMT,
+            SGST_GST_RATE                           GST_RATE,
+            SUM (NVL (MISC_QTY, 0))                 MISC_QTY,
+            INVCODE,
+            SUM (NVL (SGST_CHGAMT, 0))              CHGAMT
+       FROM (  SELECT vfpl.cus_fun_rep_gst_rate_loc (
+                         D.ICODE,
+                         NULL,
+                         NULL,
+                         NULL,
+                         M.STFDT,
+                         SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, V_ITEM.WSP)),
+                         V_ITEM.MRP,
+                         SUM (NVL (D.QTY, 0)),
+                         'E',
+                         M.OUTLOCCODE,
+                         M.INLOCCODE)
+                         SGST_GST_RATE,
+                      M.STFCODE        INVCODE,
+                      SUM (NVL (D.QTY, 0)) MISC_QTY,
+                      SUM (NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, V_ITEM.WSP))
+                         NETAMT,
+                      (  (SUM (
+                             NVL (D.QTY, 0) * NVL (V_ITEM.COSTRATE, V_ITEM.WSP)))
+                       * (  vfpl.cus_fun_rep_gst_rate_loc (
+                               D.ICODE,
+                               NULL,
+                               NULL,
+                               NULL,
+                               M.STFDT,
+                               SUM (
+                                    NVL (D.QTY, 0)
+                                  * NVL (V_ITEM.COSTRATE, V_ITEM.WSP)),
+                               V_ITEM.MRP,
+                               SUM (NVL (D.QTY, 0)),
+                               'E',
+                               M.OUTLOCCODE,
+                               M.INLOCCODE)
+                          / 100))
+                         SGST_CHGAMT
+                 FROM INVSTFDET D, V_ITEM, INVSTFMAIN M
+                WHERE D.ICODE = V_ITEM.ICODE AND D.STFCODE = M.STFCODE
+             GROUP BY D.ICODE,
+                      M.STFDT,
+                      V_ITEM.MRP,
+                      M.STFCODE,
+                      M.OUTLOCCODE,
+                      M.INLOCCODE)
+      WHERE NVL (SGST_GST_RATE, 0) <> 0
+   --   and invcode = 138623745
+   GROUP BY INVCODE, 'CESS' || ' @ ' || SGST_GST_RATE, SGST_GST_RATE;

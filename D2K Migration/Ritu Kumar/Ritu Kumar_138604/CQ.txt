@@ -1,0 +1,583 @@
+=========CQ_EXP_LOT_ACC_DET
+
+
+   /* Formatted on 16/09/2021 10:33:03 (QP5 v5.294) */
+SELECT ginview.fnc_uk UK,
+       HD.DOCCODE,
+       HD.LOTNO,
+       HD.SITECODE,
+       HD.SCHEDULE_DATE,
+       HD.REMARKS,
+       HD.A_CNAME1,
+       HD.A_CNAME24,
+       HD.DOMPRN_ACC,
+       HD.EXPPRN_ACC,
+       HD.EXPPRN_FAB,
+       HD.KEY_1,
+       HD.DOMACC_KEY_1,
+       HD.EXPACC_KEY_1,
+       HD.EXPFAB_KEY_1,
+       HD.D_QTY,
+       HD.LEV2GRPNAME,
+       DT.D_DOCCODE,
+       DT.GRPNAME,
+       DT.KEY_2,
+       DT.DOMEXP_ACC_KEY_2,
+       DT.B_CAT1,
+       DT.B_CAT2,
+       DT.B_CAT3,
+       DT.B_CAT4,
+       DT.B_UNITNAME,
+       DT.TOLERANCE,
+       DT.SHRINKAGE,
+       DT.COMPONENT_ICODE,
+       DT.BOM_QTY,
+       DT.B_QTY,
+       DT.ACT_BOM_QTY
+  FROM (  SELECT M.CODE                                       DOCCODE,
+                 M.LOTNO                                      LOTNO,
+                 M.ADMSITE_CODE                               Sitecode,
+                 M.SCHEDULE_DATE                              SCHEDULE_DATE,
+                 M.REMARKS                                    REMARKS,
+                 I.CNAME1                                     A_CNAME1,
+                 I.CNAME2 || ' ' || I.CNAME3 || ' ' || I.CNAME4 A_CNAME24,
+                 I.CNAME4                                     DomPrn_Acc,
+                 I.CNAME3                                     ExpPrn_Acc,
+                 I.CNAME2                                     ExpPrn_Fab,
+                    I.CNAME1
+                 || ' '
+                 || I.CNAME2
+                 || ' - '
+                 || I.CNAME3
+                 || ' - '
+                 || I.CNAME4
+                    key_1,
+                 I.DESC4 || ' ' || I.CNAME1                   DomFab_key_1,
+                 I.DESC4 || ' ' || I.CNAME1 || ' ' || I.CNAME3 DomAcc_key_1,
+                 I.CNAME1 || ' ' || I.CNAME5 || ' ' || I.CNAME4 ExpAcc_key_1,
+                 I.CNAME1 || ' ' || I.CNAME5 || ' ' || I.CNAME4 ExpFab_key_1,
+                 SUM (NVL (D.QTY, 0))                         D_QTY,
+                 IV.LEV2GRPNAME
+            FROM PRDLOTMAIN M,
+                 PRDLOTDET D,
+                 INVITEM  I,
+                 V_ITEM   IV
+           WHERE     M.CODE = D.LOTCODE
+                 AND D.ASSEMBLY_ICODE = I.ICODE
+                 AND I.ICODE = IV.ICODE
+        GROUP BY M.CODE,
+                 M.LOTNO,
+                 M.ADMSITE_CODE,
+                 M.SCHEDULE_DATE,
+                 M.REMARKS,
+                 I.CNAME1,
+                 I.CNAME2 || ' ' || I.CNAME3 || ' ' || I.CNAME4,
+                 I.CNAME4,
+                 I.CNAME3,
+                 I.CNAME2,
+                    I.CNAME1
+                 || ' '
+                 || I.CNAME2
+                 || ' - '
+                 || I.CNAME3
+                 || ' - '
+                 || I.CNAME4,
+                 I.DESC4 || ' ' || I.CNAME1,
+                 I.DESC4 || ' ' || I.CNAME1 || ' ' || I.CNAME3,
+                 I.CNAME1 || ' ' || I.CNAME5 || ' ' || I.CNAME4,
+                 I.CNAME1 || ' ' || I.CNAME5 || ' ' || I.CNAME4,
+                 IV.LEV2GRPNAME) HD,
+       (  SELECT B.LOTCODE                                      D_DOCCODE,
+                 V.LEV2GRPNAME                                  GRPNAME,
+                    a.CNAME1
+                 || ' '
+                 || a.CNAME2
+                 || ' - '
+                 || a.CNAME3
+                 || ' - '
+                 || a.CNAME4
+                    key_2,
+                    A.CNAME1
+                 || ' '
+                 || A.CNAME5
+                 || ' '
+                 || A.CNAME6
+                 || ' '
+                 || A.DESC2
+                    Itemkey_2,
+                 A.CNAME1 || ' ' || A.CNAME5                    DomExp_Acc_key_2,
+                 V.CNAME1 || '  ' || V.CNAME5 || '  ' || V.CNAME6 B_CAT1,
+                 V.CNAME2                                       B_CAT2,
+                 V.CNAME3                                       B_CAT3,
+                 V.CNAME4                                       B_CAT4,
+                 V.UNITNAME                                     B_UNITNAME,
+                 NVL (B.TOLERANCE, 0)                           TOLERANCE,
+                 NVL (B.SHRINKAGE, 0)                           SHRINKAGE,
+                 B.COMPONENT_ICODE,
+                 NVL (B.BOM_QTY, 0)                             BOM_QTY,
+                 SUM (NVL (B.QTY, 0))                           B_QTY,
+                 ROUND (
+                      (NVL (B.BOM_QTY, 0) * 100) / (100 - NVL (B.SHRINKAGE, 0))
+                    + (NVL (B.BOM_QTY, 0) * NVL (B.TOLERANCE, 0) / 100),
+                    3)
+                    ACT_BOM_QTY,
+                 'N'
+                    ALLOW_BOM_FROM_MASTER
+            FROM PRDLOTBOM B,
+                 V_ITEM   V,
+                 v_item   a,
+                 prdlotmain L
+           WHERE     B.ASSEMBLY_ICODE != B.COMPONENT_ICODE
+                 AND B.COMPONENT_ICODE = V.ICODE
+                 AND b.assembly_icode = a.icode
+                 AND V.LEV2GRPNAME IN ('ACCESSORIES', ' LEATHER')
+                 AND B.lotcode = L.code
+                 AND L.POPULATE_MASTER_BOM_IN_ORDER = 'N'
+        GROUP BY B.LOTCODE,
+                 V.LEV2GRPNAME,
+                    a.CNAME1
+                 || ' '
+                 || a.CNAME2
+                 || ' - '
+                 || a.CNAME3
+                 || ' - '
+                 || a.CNAME4,
+                    A.CNAME1
+                 || ' '
+                 || A.CNAME5
+                 || ' '
+                 || A.CNAME6
+                 || ' '
+                 || A.DESC2,
+                 A.CNAME1 || ' ' || A.CNAME5,
+                 V.CNAME1 || '  ' || V.CNAME5 || '  ' || V.CNAME6,
+                 V.CNAME2,
+                 V.CNAME3,
+                 V.CNAME4,
+                 V.UNITNAME,
+                 NVL (B.TOLERANCE, 0),
+                 NVL (B.SHRINKAGE, 0),
+                 B.COMPONENT_ICODE,
+                 B.BOM_QTY
+        UNION ALL
+          SELECT LOTCODE                                        D_DOCCODE,
+                 V.LEV2GRPNAME                                  GRPNAME,
+                    a.CNAME1
+                 || ' '
+                 || a.CNAME2
+                 || ' - '
+                 || a.CNAME3
+                 || ' - '
+                 || a.CNAME4
+                    key_2,
+                    A.CNAME1
+                 || ' '
+                 || A.CNAME5
+                 || ' '
+                 || A.CNAME6
+                 || ' '
+                 || A.DESC2
+                    Itemkey_2,
+                 A.CNAME1 || ' ' || A.CNAME5                    DomExp_Acc_key_2,
+                 V.CNAME1 || '  ' || V.CNAME5 || '  ' || V.CNAME6 B_CAT1,
+                 V.CNAME2                                       B_CAT2,
+                 V.CNAME3                                       B_CAT3,
+                 V.CNAME4                                       B_CAT4,
+                 V.UNITNAME                                     B_UNITNAME,
+                 NVL (BD.TOLERANCE, 0)                          TOLERANCE,
+                 NVL (BD.SHRINKAGE, 0)                          SHRINKAGE,
+                 BD.COMPONENT_ICODE,
+                 NVL (BD.QTY, 0)                                BOM_QTY,
+                 NVL (BD.QTY, 0)                                B_QTY,
+                 ROUND (
+                      (NVL (BD.QTY, 0) * 100) / (100 - NVL (BD.SHRINKAGE, 0))
+                    + (NVL (BD.QTY, 0) * NVL (BD.TOLERANCE, 0) / 100),
+                    3)
+                    ACT_BOM_QTY,
+                 'Y'
+                    ALLOW_BOM_FROM_MASTER
+            FROM V_ITEM   V,
+                 v_item   a,
+                 prdlotmain LOT,
+                 PRDLOTDET LOTDET,
+                 PRDbommain BM,
+                 prdbomdet BD,
+                 (SELECT code, bomcode
+                    FROM prdbomver
+                   WHERE (approv_time, bomcode) IN
+                            (  SELECT MAX (approv_time) approv_time, bomcode
+                                 FROM prdbomver
+                             GROUP BY bomcode)) BOMVER
+           WHERE     LOT.CODE = LOTDET.LOTCODE
+                 AND LOTDET.ASSEMBLY_ICODE = BM.ASSEMBLY_ICODE
+                 AND LOTDET.ROUTECODE = BM.ROUTECODE
+                 AND BD.ASSEMBLY_ICODE != BD.COMPONENT_ICODE
+                 AND BD.COMPONENT_ICODE = V.ICODE
+                 AND BM.CODE = BD.BOMCODE
+                 AND BD.assembly_icode = a.icode
+                 AND BD.BOMVER_CODE = BOMVER.CODE
+                 AND BD.BOMCODE = BOMVER.bomCODE
+                 AND V.LEV2GRPNAME IN ('ACCESSORIES', ' LEATHER')
+                 AND LOT.POPULATE_MASTER_BOM_IN_ORDER = 'Y'
+        GROUP BY LOTCODE,
+                 V.LEV2GRPNAME,
+                    a.CNAME1
+                 || ' '
+                 || a.CNAME2
+                 || ' - '
+                 || a.CNAME3
+                 || ' - '
+                 || a.CNAME4,
+                    A.CNAME1
+                 || ' '
+                 || A.CNAME5
+                 || ' '
+                 || A.CNAME6
+                 || ' '
+                 || A.DESC2,
+                 A.CNAME1 || ' ' || A.CNAME5,
+                 V.CNAME1 || '  ' || V.CNAME5 || '  ' || V.CNAME6,
+                 V.CNAME2,
+                 V.CNAME3,
+                 V.CNAME4,
+                 V.UNITNAME,
+                 NVL (BD.TOLERANCE, 0),
+                 NVL (BD.SHRINKAGE, 0),
+                 BD.COMPONENT_ICODE,
+                 NVL (BD.QTY, 0),
+                 NVL (BD.QTY, 0)) DT
+ WHERE HD.DOCCODE = DT.D_DOCCODE AND HD.key_1 = DT.key_2
+
+
+==========CQ_EXP_LOT_ACC_SUM
+
+/* Formatted on 16/09/2021 10:38:01 (QP5 v5.294) */
+SELECT ginview.fnc_uk UK,
+       SUM_LOTCODE,
+       LEV2GRPNAME,
+       C_ICode,
+       SUM_COMP_ICODE,
+       Item_Desc,
+       Print_Color,
+       UNIT,
+       Tot_Reqrd,
+       Stock_QTY
+  FROM (  SELECT A.doccode                        SUM_LOTCODE,
+                 A.grpname                        LEV2GRPNAME,
+                 A.component_icode                C_ICode,
+                 C.CATEGORY1 || '  ' || C.CODE    SUM_COMP_ICODE,
+                 C.CATEGORY5 || '  ' || C.CATEGORY6 || '  ' || C.CATEGORY4
+                    Item_Desc,
+                 C.CATEGORY2 || '  ' || C.CATEGORY3 Print_Color,
+                 C.UOM                            UNIT,
+                 SUM (d_qty * act_bom_qty)        Tot_Reqrd,
+                 NVL (
+                    (SELECT SUM (qty)
+                       FROM invstock
+                      WHERE     icode = A.COMPONENT_ICODE
+                            AND admsite_code = A.Sitecode),
+                    0)
+                    Stock_QTY
+            FROM (SELECT ginview.fnc_uk UK,
+                         HD.DOCCODE,
+                         HD.LOTNO,
+                         HD.SITECODE,
+                         HD.SCHEDULE_DATE,
+                         HD.REMARKS,
+                         HD.A_CNAME1,
+                         HD.A_CNAME24,
+                         HD.DOMPRN_ACC,
+                         HD.EXPPRN_ACC,
+                         HD.EXPPRN_FAB,
+                         HD.KEY_1,
+                         HD.DOMACC_KEY_1,
+                         HD.EXPACC_KEY_1,
+                         HD.EXPFAB_KEY_1,
+                         HD.D_QTY,
+                         HD.LEV2GRPNAME,
+                         DT.D_DOCCODE,
+                         DT.GRPNAME,
+                         DT.KEY_2,
+                         DT.DOMEXP_ACC_KEY_2,
+                         DT.B_CAT1,
+                         DT.B_CAT2,
+                         DT.B_CAT3,
+                         DT.B_CAT4,
+                         DT.B_UNITNAME,
+                         DT.TOLERANCE,
+                         DT.SHRINKAGE,
+                         DT.COMPONENT_ICODE,
+                         DT.BOM_QTY,
+                         DT.B_QTY,
+                         DT.ACT_BOM_QTY
+                    FROM (  SELECT M.CODE                 DOCCODE,
+                                   M.LOTNO                LOTNO,
+                                   M.ADMSITE_CODE         Sitecode,
+                                   M.SCHEDULE_DATE        SCHEDULE_DATE,
+                                   M.REMARKS              REMARKS,
+                                   I.CNAME1               A_CNAME1,
+                                   I.CNAME2 || ' ' || I.CNAME3 || ' ' || I.CNAME4
+                                      A_CNAME24,
+                                   I.CNAME4               DomPrn_Acc,
+                                   I.CNAME3               ExpPrn_Acc,
+                                   I.CNAME2               ExpPrn_Fab,
+                                      I.CNAME1
+                                   || ' '
+                                   || I.CNAME2
+                                   || ' - '
+                                   || I.CNAME3
+                                   || ' - '
+                                   || I.CNAME4
+                                      key_1,
+                                   I.DESC4 || ' ' || I.CNAME1 DomFab_key_1,
+                                   I.DESC4 || ' ' || I.CNAME1 || ' ' || I.CNAME3
+                                      DomAcc_key_1,
+                                   I.CNAME1 || ' ' || I.CNAME5 || ' ' || I.CNAME4
+                                      ExpAcc_key_1,
+                                   I.CNAME1 || ' ' || I.CNAME5 || ' ' || I.CNAME4
+                                      ExpFab_key_1,
+                                   SUM (NVL (D.QTY, 0))   D_QTY,
+                                   IV.LEV2GRPNAME
+                              FROM PRDLOTMAIN M,
+                                   PRDLOTDET D,
+                                   INVITEM I,
+                                   V_ITEM IV
+                             WHERE     M.CODE = D.LOTCODE
+                                   AND D.ASSEMBLY_ICODE = I.ICODE
+                                   AND I.ICODE = IV.ICODE
+                          GROUP BY M.CODE,
+                                   M.LOTNO,
+                                   M.ADMSITE_CODE,
+                                   M.SCHEDULE_DATE,
+                                   M.REMARKS,
+                                   I.CNAME1,
+                                      I.CNAME2
+                                   || ' '
+                                   || I.CNAME3
+                                   || ' '
+                                   || I.CNAME4,
+                                   I.CNAME4,
+                                   I.CNAME3,
+                                   I.CNAME2,
+                                      I.CNAME1
+                                   || ' '
+                                   || I.CNAME2
+                                   || ' - '
+                                   || I.CNAME3
+                                   || ' - '
+                                   || I.CNAME4,
+                                   I.DESC4 || ' ' || I.CNAME1,
+                                      I.DESC4
+                                   || ' '
+                                   || I.CNAME1
+                                   || ' '
+                                   || I.CNAME3,
+                                      I.CNAME1
+                                   || ' '
+                                   || I.CNAME5
+                                   || ' '
+                                   || I.CNAME4,
+                                      I.CNAME1
+                                   || ' '
+                                   || I.CNAME5
+                                   || ' '
+                                   || I.CNAME4,
+                                   IV.LEV2GRPNAME) HD,
+                         (  SELECT B.LOTCODE               D_DOCCODE,
+                                   V.LEV2GRPNAME           GRPNAME,
+                                      a.CNAME1
+                                   || ' '
+                                   || a.CNAME2
+                                   || ' - '
+                                   || a.CNAME3
+                                   || ' - '
+                                   || a.CNAME4
+                                      key_2,
+                                      A.CNAME1
+                                   || ' '
+                                   || A.CNAME5
+                                   || ' '
+                                   || A.CNAME6
+                                   || ' '
+                                   || A.DESC2
+                                      Itemkey_2,
+                                   A.CNAME1 || ' ' || A.CNAME5 DomExp_Acc_key_2,
+                                      V.CNAME1
+                                   || '  '
+                                   || V.CNAME5
+                                   || '  '
+                                   || V.CNAME6
+                                      B_CAT1,
+                                   V.CNAME2                B_CAT2,
+                                   V.CNAME3                B_CAT3,
+                                   V.CNAME4                B_CAT4,
+                                   V.UNITNAME              B_UNITNAME,
+                                   NVL (B.TOLERANCE, 0)    TOLERANCE,
+                                   NVL (B.SHRINKAGE, 0)    SHRINKAGE,
+                                   B.COMPONENT_ICODE,
+                                   NVL (B.BOM_QTY, 0)      BOM_QTY,
+                                   SUM (NVL (B.QTY, 0))    B_QTY,
+                                   ROUND (
+                                          (NVL (B.BOM_QTY, 0) * 100)
+                                        / (100 - NVL (B.SHRINKAGE, 0))
+                                      + (  NVL (B.BOM_QTY, 0)
+                                         * NVL (B.TOLERANCE, 0)
+                                         / 100),
+                                      3)
+                                      ACT_BOM_QTY,
+                                   'N'
+                                      ALLOW_BOM_FROM_MASTER
+                              FROM PRDLOTBOM B,
+                                   V_ITEM V,
+                                   v_item a,
+                                   prdlotmain L
+                             WHERE     B.ASSEMBLY_ICODE != B.COMPONENT_ICODE
+                                   AND B.COMPONENT_ICODE = V.ICODE
+                                   AND b.assembly_icode = a.icode
+                                   AND V.LEV2GRPNAME IN
+                                          ('ACCESSORIES', ' LEATHER')
+                                   AND B.lotcode = L.code
+                                   AND L.POPULATE_MASTER_BOM_IN_ORDER = 'N'
+                          GROUP BY B.LOTCODE,
+                                   V.LEV2GRPNAME,
+                                      a.CNAME1
+                                   || ' '
+                                   || a.CNAME2
+                                   || ' - '
+                                   || a.CNAME3
+                                   || ' - '
+                                   || a.CNAME4,
+                                      A.CNAME1
+                                   || ' '
+                                   || A.CNAME5
+                                   || ' '
+                                   || A.CNAME6
+                                   || ' '
+                                   || A.DESC2,
+                                   A.CNAME1 || ' ' || A.CNAME5,
+                                      V.CNAME1
+                                   || '  '
+                                   || V.CNAME5
+                                   || '  '
+                                   || V.CNAME6,
+                                   V.CNAME2,
+                                   V.CNAME3,
+                                   V.CNAME4,
+                                   V.UNITNAME,
+                                   NVL (B.TOLERANCE, 0),
+                                   NVL (B.SHRINKAGE, 0),
+                                   B.COMPONENT_ICODE,
+                                   B.BOM_QTY
+                          UNION ALL
+                            SELECT LOTCODE                 D_DOCCODE,
+                                   V.LEV2GRPNAME           GRPNAME,
+                                      a.CNAME1
+                                   || ' '
+                                   || a.CNAME2
+                                   || ' - '
+                                   || a.CNAME3
+                                   || ' - '
+                                   || a.CNAME4
+                                      key_2,
+                                      A.CNAME1
+                                   || ' '
+                                   || A.CNAME5
+                                   || ' '
+                                   || A.CNAME6
+                                   || ' '
+                                   || A.DESC2
+                                      Itemkey_2,
+                                   A.CNAME1 || ' ' || A.CNAME5 DomExp_Acc_key_2,
+                                      V.CNAME1
+                                   || '  '
+                                   || V.CNAME5
+                                   || '  '
+                                   || V.CNAME6
+                                      B_CAT1,
+                                   V.CNAME2                B_CAT2,
+                                   V.CNAME3                B_CAT3,
+                                   V.CNAME4                B_CAT4,
+                                   V.UNITNAME              B_UNITNAME,
+                                   NVL (BD.TOLERANCE, 0)   TOLERANCE,
+                                   NVL (BD.SHRINKAGE, 0)   SHRINKAGE,
+                                   BD.COMPONENT_ICODE,
+                                   NVL (BD.QTY, 0)         BOM_QTY,
+                                   NVL (BD.QTY, 0)         B_QTY,
+                                   ROUND (
+                                          (NVL (BD.QTY, 0) * 100)
+                                        / (100 - NVL (BD.SHRINKAGE, 0))
+                                      + (  NVL (BD.QTY, 0)
+                                         * NVL (BD.TOLERANCE, 0)
+                                         / 100),
+                                      3)
+                                      ACT_BOM_QTY,
+                                   'Y'
+                                      ALLOW_BOM_FROM_MASTER
+                              FROM V_ITEM V,
+                                   v_item a,
+                                   prdlotmain LOT,
+                                   PRDLOTDET LOTDET,
+                                   PRDbommain BM,
+                                   prdbomdet BD,
+                                   (SELECT code, bomcode
+                                      FROM prdbomver
+                                     WHERE (approv_time, bomcode) IN
+                                              (  SELECT MAX (approv_time)
+                                                           approv_time,
+                                                        bomcode
+                                                   FROM prdbomver
+                                               GROUP BY bomcode)) BOMVER
+                             WHERE     LOT.CODE = LOTDET.LOTCODE
+                                   AND LOTDET.ASSEMBLY_ICODE = BM.ASSEMBLY_ICODE
+                                   AND LOTDET.ROUTECODE = BM.ROUTECODE
+                                   AND BD.ASSEMBLY_ICODE != BD.COMPONENT_ICODE
+                                   AND BD.COMPONENT_ICODE = V.ICODE
+                                   AND BM.CODE = BD.BOMCODE
+                                   AND BD.assembly_icode = a.icode
+                                   AND BD.BOMVER_CODE = BOMVER.CODE
+                                   AND BD.BOMCODE = BOMVER.bomCODE
+                                   AND V.LEV2GRPNAME IN
+                                          ('ACCESSORIES', ' LEATHER')
+                                   AND LOT.POPULATE_MASTER_BOM_IN_ORDER = 'Y'
+                          GROUP BY LOTCODE,
+                                   V.LEV2GRPNAME,
+                                      a.CNAME1
+                                   || ' '
+                                   || a.CNAME2
+                                   || ' - '
+                                   || a.CNAME3
+                                   || ' - '
+                                   || a.CNAME4,
+                                      A.CNAME1
+                                   || ' '
+                                   || A.CNAME5
+                                   || ' '
+                                   || A.CNAME6
+                                   || ' '
+                                   || A.DESC2,
+                                   A.CNAME1 || ' ' || A.CNAME5,
+                                      V.CNAME1
+                                   || '  '
+                                   || V.CNAME5
+                                   || '  '
+                                   || V.CNAME6,
+                                   V.CNAME2,
+                                   V.CNAME3,
+                                   V.CNAME4,
+                                   V.UNITNAME,
+                                   NVL (BD.TOLERANCE, 0),
+                                   NVL (BD.SHRINKAGE, 0),
+                                   BD.COMPONENT_ICODE,
+                                   NVL (BD.QTY, 0),
+                                   NVL (BD.QTY, 0)) DT
+                   WHERE HD.DOCCODE = DT.D_DOCCODE AND HD.key_1 = DT.key_2) A,
+                 GINVIEW.LV_COMPONENT_ITEM C
+           WHERE A.COMPONENT_ICODE = C.CODE
+        GROUP BY A.doccode,
+                 A.grpname,
+                 A.component_icode,
+                 C.CATEGORY1 || '  ' || C.CODE,
+                 C.CATEGORY5 || '  ' || C.CATEGORY6 || '  ' || C.CATEGORY4,
+                 C.CATEGORY2 || '  ' || C.CATEGORY3,
+                 C.UOM,
+                 A.Sitecode) A

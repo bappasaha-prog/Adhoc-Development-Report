@@ -1,0 +1,73 @@
+CREATE OR REPLACE FORCE VIEW GINVIEW.CV_DC_ITEM_MATRIX_RSP
+AS
+     SELECT GINVIEW.FNC_UK       UK,
+            dccode,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category3
+            || ' '
+            || category5
+            || ' '
+            || category6
+               ITEM,
+            CHALLAN_NET_RATE     Rate,
+            category4            ITEM_SIZE,
+            SUM (challan_quantity) qty,
+            SUM (
+               challan_quantity * CHALLAN_NET_RATE)
+            OVER (
+               PARTITION BY dccode,
+                               category1
+                            || ' '
+                            || category2
+                            || ' '
+                            || category3
+                            || ' '
+                            || category5
+                            || ' '
+                            || category6
+               ORDER BY
+                  dccode,
+                     category1
+                  || ' '
+                  || category2
+                  || ' '
+                  || category3
+                  || ' '
+                  || category5
+                  || ' '
+                  || category6)
+               Amount,
+            SUM (challan_quantity * CHALLAN_NET_RATE)
+               OVER (PARTITION BY dccode ORDER BY dccode)
+               Challan_Amount
+       FROM ginview.lv_dc_item A, Ginview.lv_item B
+      WHERE A.icode = B.code                             --AND dccode = 619503
+   GROUP BY dccode,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category3
+            || ' '
+            || category5
+            || ' '
+            || category6,
+            CHALLAN_NET_RATE,
+            category4,
+            challan_quantity
+   ORDER BY dccode,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category3
+            || ' '
+            || category5
+            || ' '
+            || category6,
+            CHALLAN_NET_RATE,
+            category4,
+            challan_quantity;

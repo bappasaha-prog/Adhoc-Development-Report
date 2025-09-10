@@ -1,0 +1,69 @@
+/* Formatted on 19-04-2021 13:10:11 (QP5 v5.294) */
+CREATE OR REPLACE VIEW ginview.cv_trout_item_matrix
+AS
+     SELECT ginview.fnc_uk        UK,
+            invcode,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category3
+            || ' '
+            || category5
+            || ' '
+            || category6
+               Item,
+            category4             Item_Size,
+            SUM (invoiced_quantity) qty,
+            SUM (
+               invoiced_quantity * INVOICED_RATE)
+            OVER (
+               PARTITION BY invcode,
+                               category1
+                            || ' '
+                            || category2
+                            || ' '
+                            || category3
+                            || ' '
+                            || category5
+                            || ' '
+                            || category6
+               ORDER BY
+                  invcode,
+                     category1
+                  || ' '
+                  || category2
+                  || ' '
+                  || category3
+                  || ' '
+                  || category5
+                  || ' '
+                  || category6)
+               Amount
+       FROM ginview.lv_trout_item A, ginview.lv_item B
+      WHERE a.icode = b.code                            --AND invcode = 590199
+   GROUP BY invcode,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category3
+            || ' '
+            || category5
+            || ' '
+            || category6,
+            category4,
+            INVOICED_RATE,
+            invoiced_quantity
+   ORDER BY invcode,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category3
+            || ' '
+            || category5
+            || ' '
+            || category6,
+            category4,
+            INVOICED_RATE

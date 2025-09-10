@@ -1,0 +1,95 @@
+/* Formatted on 4-29-2021 12:17:03 PM (QP5 v5.294) */
+CREATE OR REPLACE FORCE VIEW GINVIEW.CV_DC_ITEM_MATRIX
+(
+   UK,
+   DCCODE,
+   DEPARTMENT,
+   ITEM,
+   MRP,
+   RATE,
+   ITEM_SIZE,
+   QTY,
+   MD,
+   DEPT_AMOUNT,
+   AMOUNT
+)
+   BEQUEATH DEFINER
+AS
+     SELECT GINVIEW.FNC_UK                                    UK,
+            dccode,
+            department,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category4
+            || ' '
+            || category5
+            || ' '
+            || category6
+               ITEM,
+            MRP,
+            CHALLAN_NET_RATE                                  Rate,
+            category3                                         ITEM_SIZE,
+            SUM (challan_quantity)                            qty,
+            ROUND ( ( (MRP - CHALLAN_NET_RATE) / MRP) * 100, 2) MD,
+            SUM (CHALLAN_NET_RATE * challan_quantity)
+            OVER (PARTITION BY dccode, Department ORDER BY dccode, Department)
+               Dept_amount,
+            SUM (
+               CHALLAN_NET_RATE * challan_quantity)
+            OVER (
+               PARTITION BY dccode,
+                               category1
+                            || ' '
+                            || category2
+                            || ' '
+                            || category4
+                            || ' '
+                            || category5
+                            || ' '
+                            || category6
+               ORDER BY
+                  dccode,
+                     category1
+                  || ' '
+                  || category2
+                  || ' '
+                  || category4
+                  || ' '
+                  || category5
+                  || ' '
+                  || category6)
+               amount
+       FROM ginview.lv_dc_item A, Ginview.lv_item B
+      WHERE A.icode = B.code                             --AND dccode = 439416
+   GROUP BY dccode,
+            department,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category4
+            || ' '
+            || category5
+            || ' '
+            || category6,
+            MRP,
+            CHALLAN_NET_RATE,
+            category3,
+            challan_quantity
+   ORDER BY dccode,
+            department,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category4
+            || ' '
+            || category5
+            || ' '
+            || category6,
+            MRP,
+            CHALLAN_NET_RATE,
+            category3,
+            challan_quantity;

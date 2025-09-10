@@ -1,0 +1,76 @@
+/* Formatted on 4/12/2021 1:31:22 PM (QP5 v5.294) */
+DROP VIEW GINVIEW.CV_DC_ITEM_MATRIX;
+
+
+CREATE OR REPLACE FORCE VIEW GINVIEW.CV_DC_ITEM_MATRIX
+AS
+     SELECT GINVIEW.FNC_UK       UK,
+            dccode,
+            department           Dept,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category3
+            || ' '
+            || category5
+               ITEM,
+            challan_RSP          RSP,
+            challan_net_rate     Rate,
+            category4            ITEM_SIZE,
+            SUM (challan_quantity) qty,
+            SUM (
+               challan_net_rate * challan_quantity)
+            OVER (
+               PARTITION BY dccode,
+                               category1
+                            || ' '
+                            || category2
+                            || ' '
+                            || category3
+                            || ' '
+                            || category5
+               ORDER BY
+                  dccode,
+                     category1
+                  || ' '
+                  || category2
+                  || ' '
+                  || category3
+                  || ' '
+                  || category5)
+               amount,
+            SUM (challan_net_rate * challan_quantity)
+            OVER (PARTITION BY dccode, department ORDER BY dccode, department)
+               DPT_AMT,
+            SUM (challan_net_rate * challan_quantity)
+               OVER (PARTITION BY dccode ORDER BY dccode)
+               DC_AMT
+       FROM ginview.lv_dc_item A, Ginview.lv_item B
+      WHERE A.icode = B.code                            --AND dccode = 4574232
+   GROUP BY dccode,
+            department,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category3
+            || ' '
+            || category5,
+            challan_RSP,
+            challan_net_rate,
+            category4,
+            challan_quantity
+   ORDER BY dccode,
+            department,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category3
+            || ' '
+            || category5,
+            challan_RSP,
+            challan_net_rate,
+            category4,
+            challan_quantity;

@@ -1,0 +1,55 @@
+CREATE OR REPLACE FORCE VIEW GINVIEW.CV_DC_MATRIX
+AS
+     SELECT ginview.fnc_uk                         UK,
+            dccode,
+            invarticle_code || ' : ' || article_name article,
+            division,
+            section,
+            department,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category4
+            || ' '
+            || category5
+            || ' '
+            || category6
+               item,
+            hsn_code,
+            challan_rsp,
+            challan_net_rate,
+            TRIM (category3)                       Item_size,
+            SUM (challan_quantity)                 qty
+       FROM ginview.lv_dc_item A, ginview.lv_item B
+      WHERE A.icode = B.code                               --AND dccode = 3135
+   GROUP BY dccode,
+            invarticle_code || ' : ' || article_name,
+            division,
+            section,
+            department,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category4
+            || ' '
+            || category5
+            || ' '
+            || category6,
+            hsn_code,
+            challan_rsp,
+            challan_net_rate,
+            TRIM (category3);
+
+
+
+
+/* Formatted on 28-12-2021 16:21:02 (QP5 v5.294) */
+CREATE OR REPLACE VIEW ginview.cv_DC_REF_DOCS
+AS
+     SELECT dccode,
+            LISTAGG (order_no, ', ') WITHIN GROUP (ORDER BY dccode) ordno
+       FROM GINVIEW.LV_DC_REF_DOCS
+   --where dccode= 1858
+   GROUP BY dccode;

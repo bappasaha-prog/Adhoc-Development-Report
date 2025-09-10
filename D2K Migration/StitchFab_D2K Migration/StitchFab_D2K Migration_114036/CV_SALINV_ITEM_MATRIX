@@ -1,0 +1,47 @@
+DROP VIEW GINVIEW.CV_SALINV_ITEM_MATRIX;
+
+/* Formatted on 02/03/2021 11:10:24 AM (QP5 v5.294) */
+CREATE OR REPLACE FORCE VIEW GINVIEW.CV_SALINV_ITEM_MATRIX
+(
+   UK,
+   INVCODE,
+   ITEM,
+   HSN,
+   ITEM_SIZE,
+   QTY,
+   UNIT,
+   RATE,
+   AMOUNT
+)
+   BEQUEATH DEFINER
+AS
+     SELECT ginview.fnc_uk                   UK,
+            invcode,
+            B.Department || ' ' || B.Category1 Item,
+            B.HSN_CODE                       HSN,
+            B.CATEGORY4                      Item_Size,
+            Invoice_quantity                 Qty,
+            B.UOM                            Unit,
+            Invoice_rate                     Rate,
+            SUM (
+               item_gross_amount)
+            OVER (PARTITION BY invcode, B.Department || ' ' || B.Category1
+                  ORDER BY invcode)
+               Amount
+       FROM GINVIEW.LV_SALINV_ITEM A, ginview.lv_item B
+      WHERE A.ICODE = B.Code
+   GROUP BY invcode,
+            B.Department || ' ' || B.Category1,
+            B.HSN_CODE,
+            B.CATEGORY4,
+            Invoice_quantity,
+            B.UOM,
+            Invoice_rate,
+            item_gross_amount
+   ORDER BY invcode,
+            B.Department || ' ' || B.Category1,
+            B.HSN_CODE,
+            B.CATEGORY4,
+            Invoice_quantity,
+            B.UOM,
+            Invoice_rate;

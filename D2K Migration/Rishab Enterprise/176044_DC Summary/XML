@@ -1,0 +1,84 @@
+<entity>
+    <id>DC_ITEM_CUSTOM_01</id>
+    <entity_name>DC Item Custom</entity_name>
+    <affinity>Global</affinity>
+    <db_name>DC_ITEM_CUSTOM</db_name>
+    <object_description>Against  Ticket Id 176044</object_description>
+    <sql_stmt>/* Formatted on 12/05/2022 11:20:46 (QP5 v5.294) */
+  SELECT ginview.fnc_uk uk,dccode,department,
+         category1,
+         wsp,
+         challan_rsp          mrp,
+         SUM (challan_quantity) qty
+    FROM ginview.lv_dc_item d, ginview.lv_item i
+   WHERE d.icode = i.code /*AND dccode = 324604*/
+GROUP BY dccode,department,
+         category1,
+         wsp,
+         challan_rsp</sql_stmt>
+    <category>05-Sales and Distribution|*{*}*|02-Transaction|*{*}*|Delivery Challan</category>
+    <datasource_id>0</datasource_id>
+    <object_type>sql</object_type>
+    <schema_access_type>Metadata</schema_access_type>
+    <key>
+      <col_name>UK</col_name>
+    </key>
+    <column_metadata>
+      <col_name>CATEGORY1</col_name>
+      <col_type>string</col_type>
+      <filterable>All</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>DEPARTMENT</col_name>
+      <col_type>string</col_type>
+      <filterable>All</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>MRP</col_name>
+      <col_type>decimal</col_type>
+      <filterable>All</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>QTY</col_name>
+      <col_type>decimal</col_type>
+      <filterable>All</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>UK</col_name>
+      <col_type>decimal</col_type>
+      <filterable>All</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>WSP</col_name>
+      <col_type>decimal</col_type>
+      <filterable>All</filterable>
+    </column_metadata>
+    <column_metadata>
+      <col_name>DCCODE</col_name>
+      <col_type>int</col_type>
+      <filterable>Default</filterable>
+    </column_metadata>
+  </entity>
+  <join>
+    <affinity>Global</affinity>
+    <entity_from_name>LV_DC_HEADER_01</entity_from_name>
+    <entity_to_name>DC_ITEM_CUSTOM_01</entity_to_name>
+    <entity_from_id>LV_DC_HEADER_01</entity_from_id>
+    <entity_to_id>DC_ITEM_CUSTOM_01</entity_to_id>
+    <join_type>inner</join_type>
+    <relation_type>1M</relation_type>
+    <weight>0</weight>
+    <joincol>
+      <col_from_name>DCCODE</col_from_name>
+      <col_to_name>DCCODE</col_to_name>
+    </joincol>
+    <clause>
+      <left_side>DCCODE</left_side>
+      <left_side_type>Column</left_side_type>
+      <comparison>EQ</comparison>
+      <right_side>DCCODE</right_side>
+      <right_side_type>Column</right_side_type>
+      <conjunction>AND</conjunction>
+      <level>0</level>
+    </clause>
+  </join>

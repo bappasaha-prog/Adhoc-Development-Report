@@ -1,0 +1,45 @@
+/* Formatted on 25/06/2021 12:56:00 (QP5 v5.294) */
+CREATE OR REPLACE VIEW ginview.cv_wiptxn_det
+AS
+     SELECT ginview.fnc_uk         UK,
+            wiptxn_code,
+            job_order_no,
+            job_order_date,
+            plan_no,
+            plan_date,
+            barcode,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category3
+            || ' '
+            || category4
+            || ' '
+            || category5
+            || ' '
+            || category6
+               Item,
+            uom,
+            SUM (component_quantity) qty
+       FROM GINVIEW.LV_PRD_WIP_TRANSACTION_DETAIL A,
+            GINVIEW.LV_COMPONENT_ITEM           B
+      WHERE A.COMPONENT_ICODE = B.CODE              --AND wiptxn_code = 115572
+   GROUP BY wiptxn_code,
+            job_order_no,
+            job_order_date,
+            plan_no,
+            plan_date,
+            barcode,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category3
+            || ' '
+            || category4
+            || ' '
+            || category5
+            || ' '
+            || category6,
+            uom

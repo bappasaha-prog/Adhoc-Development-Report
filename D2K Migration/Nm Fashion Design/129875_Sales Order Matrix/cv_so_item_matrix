@@ -1,0 +1,60 @@
+/* Formatted on 7/15/2021 5:03:49 PM (QP5 v5.294) */
+CREATE OR REPLACE FORCE VIEW GINVIEW.CV_SO_ITEM_MATRIX
+AS
+     SELECT ginview.fnc_uk             UK,
+            ordcode,
+            Section || ' ' || department Article,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category3
+            || ' '
+            || STRING_DESC1
+               Item,
+            item_remarks,
+            order_rate,
+            MRP,
+            TRIM (category4)           Item_size,
+            SUM (ordered_quantity)     Qty,
+            SUM (
+               order_rate * ordered_quantity)
+            OVER (
+               PARTITION BY ordcode,
+                            Section || ' ' || department,
+                               category1
+                            || ' '
+                            || category2
+                            || ' '
+                            || category3
+                            || ' '
+                            || STRING_DESC1,
+                            order_rate
+               ORDER BY
+                  ordcode,
+                  Section || ' ' || department,
+                     category1
+                  || ' '
+                  || category2
+                  || ' '
+                  || category3
+                  || ' '
+                  || STRING_DESC1,
+                  order_rate)
+               Amount
+       FROM ginview.lv_so_item A, ginview.lv_item B
+      WHERE A.icode = B.code                           --AND ordcode = 1751599
+   GROUP BY ordcode,
+            Section || ' ' || department,
+               category1
+            || ' '
+            || category2
+            || ' '
+            || category3
+            || ' '
+            || STRING_DESC1,
+            item_remarks,
+            order_rate,
+            MRP,
+            TRIM (category4),
+            ordered_quantity
