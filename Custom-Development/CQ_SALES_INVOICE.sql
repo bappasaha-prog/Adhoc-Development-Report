@@ -1199,4 +1199,4 @@ SELECT ginview.fnc_uk()                  uk,
                  DCM.DCBARCODE,
                  ORM.DOCNO,
                  ORM.DOCDT) d
-          ON (h.invcode = d.invcode)
+          ON (h.invcode = d.invcode) jyotirmoy
