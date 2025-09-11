@@ -10,7 +10,6 @@ This script automates the following tasks:
 
 It helps in batch-processing multiple reports and collecting their SQL execution results automatically.
 
----
 
 ## What You Need Before Running
 
@@ -28,13 +27,12 @@ It helps in batch-processing multiple reports and collecting their SQL execution
    - A SQL file (e.g., `sql_report.sql`) containing the query with `@@` placeholder.
 
    Example structure:
-   ```
+
    C:\Project\
        sql_report.sql
        pg_scheduler_jsons\
            scheduler1.json
            scheduler2.json
-   ```
 
 3. **SQL File**  
    Your SQL file (e.g., `sql_report.sql`) must contain a query with `@@` placeholder.  
@@ -49,11 +47,11 @@ It helps in batch-processing multiple reports and collecting their SQL execution
 
 1. Open a terminal/command prompt.  
 2. Run the script:
-   ```bash
+   bash
    python report_executor.py
-   ```
+   
 3. Enter required details when prompted:
-   ```
+ 
    Enter PostgreSQL host: localhost
    Enter database name: mydb
    Enter database user: myuser
@@ -127,17 +125,17 @@ SELECT COUNT(*) FROM sales WHERE report_name = '@@';
   Report: SalesReport
   Result: [(42,)]
   ==================================================
-  ```
+ 
 - **log.txt**
-  ```
+  
   Found ReportName: SalesReport in scheduler1.json
-  ```
+ 
 - **reportresult.log**
-  ```
+ 
   Executing query for: SalesReport
   Query: SELECT COUNT(*) FROM sales WHERE report_name = 'SalesReport';
   Success: [(42,)]
-  ```
+ 
 
 ---
 

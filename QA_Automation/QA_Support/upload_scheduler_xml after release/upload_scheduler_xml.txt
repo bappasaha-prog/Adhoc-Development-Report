@@ -44,25 +44,25 @@ It ensures that all scheduler services share the same updated XML files.
 
 ### Example Input
 - Parent XML files:
-  ```
+  
   C:\Files\202500103.xml
   C:\Files\202500104.xml
-  ```
+  
 - Exago base folder:
-  ```
+  
   C:\Program Files\Exago
-  ```
+
 
 ### Example Folder Structure Before
-```
+
 C:\Program Files\Exago\
     Client1-Scheduler\Config\
     Client2-Scheduler\Config\
     ExagoScheduler\Config\
-```
+
 
 ### Example Folder Structure After
-```
+
 C:\Program Files\Exago\
     Client1-Scheduler\Config\202500103.xml
     Client1-Scheduler\Config\202500104.xml
@@ -70,16 +70,11 @@ C:\Program Files\Exago\
     Client2-Scheduler\Config\202500104.xml
     ExagoScheduler\Config\202500103.xml
     ExagoScheduler\Config\202500104.xml
-```
-
----
 
 ## Notes
 - If a `Config` folder does not exist → that scheduler is skipped.  
 - Existing files with the same name will be overwritten (`copy /Y`).  
 - The script prints **SUCCESS** or **ERROR** for each copy attempt.  
-
----
 
 ✅ In short:  
 This script takes parent XML files and **deploys them across all Exago Scheduler Config folders** in one go.
