@@ -1,0 +1,32 @@
+@echo off
+net start Scheduler_AHHO_21053
+net start Scheduler_ARPL_21094
+net start Scheduler_BERR_21015
+net start Scheduler_BIZO_21123
+net start Scheduler_CLPL_20237
+net start Scheduler_CSPL_21041
+net start Scheduler_DCSM_20700
+net start Scheduler_ELAH_20476
+net start Scheduler_GSPL_21138
+net start Scheduler_GSPL_21250
+net start Scheduler_HGPL_21025
+net start Scheduler_KGEX_21202
+net start Scheduler_KORA_20362
+net start Scheduler_MRPL_21206
+net start Scheduler_OPUS_21074
+net start Scheduler_OSMS_20820
+net start Scheduler_PAPL_20805
+net start Scheduler_PAWS_20803
+net start Scheduler_PGHO_20334
+net start Scheduler_RFOR_20797
+net start Scheduler_RGLS_20354
+net start Scheduler_RIPL_20414
+net start Scheduler_SAAA_21058
+net start Scheduler_SCS1_20453
+net start Scheduler_SHAE_20836
+net start Scheduler_SKPL_20821
+net start Scheduler_SSPL_21245
+net start Scheduler_TDCL_21252
+net start Scheduler_VSHO_20181
+net start Scheduler_WHAP_20712
+pause
