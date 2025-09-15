@@ -1,0 +1,75 @@
+
+README – Report Repository Data Migration Script
+
+Overview
+--------
+This Python script migrates report content and access rights from the Source Database (RELEASE_REPORT) 
+to the Target Database (report_repository). It is designed for Ginesys report repositories to update 
+release-specific data.
+
+The script uses PostgreSQL connections via psycopg2 and logs all actions to D://updaterepository.txt.
+
+Use Case
+--------
+When a new release version of reports is created, the content and access data from development tables 
+(ex_content_dev, ex_content_access_dev) must be moved to release tables (ex_content_release, ex_content_access_release). 
+This script automates that migration process.
+
+Typical Scenario:
+- A new release version (e.g., v2.5.0) is ready.
+- Reports and their access configurations need to be promoted to the release repository.
+- This script ensures the data is copied correctly with logging and rollback handling.
+
+Prerequisites
+-------------
+1. Python 3.x installed
+2. Install required library: 
+   pip install psycopg2
+3. Network access to both source and target PostgreSQL databases.
+4. Update credentials in the script if necessary.
+
+Inputs Required
+---------------
+When running the script, it will prompt for:
+1. Release Version – Example: 2.5.0
+2. Party ID – The party (client/organization) for which access data is migrated.
+
+How to Run
+----------
+1. Open a terminal/command prompt.
+2. Navigate to the folder containing the script.
+3. Run: 
+   python migrate_reports.py
+4. Enter the required values when prompted:
+   Please enter the release version: 2.5.0
+   Please enter the party ID: 1001
+
+Script Actions
+--------------
+1. Connects to Databases
+   - Source: RELEASE_REPORT (10.14.4.33)
+   - Target: report_repository (172.28.8.9)
+
+2. Migrates Report Content
+   - Fetches data from ginview.ex_content_dev where release_version = input.
+   - Inserts into ginview.ex_content_release in the target DB.
+
+3. Migrates Report Access
+   - Fetches data from ginview.ex_content_access_dev where release_version = input and party_id = input OR NULL.
+   - Inserts into ginview.ex_content_access_release in the target DB.
+
+4. Transaction Handling
+   - Commits changes if all inserts succeed.
+   - Rolls back changes for failed inserts.
+
+5. Logging
+   - Logs success and failure messages in D://updaterepository.txt.
+
+6. Cleanup
+   - Closes all DB connections.
+
+Error Handling
+--------------
+- If the script cannot connect to a database → logs error and stops.
+- If an insert fails → logs the row and error, rolls back that transaction.
+- If any major failure occurs → ensures connections are closed gracefully.
