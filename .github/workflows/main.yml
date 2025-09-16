@@ -1,0 +1,24 @@
+name: Build Python EXE on self-hosted runner
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: Copy EXE and additional file to target folder
+      run: |
+        $target = "C:\deployment"
+        New-Item -ItemType Directory -Force -Path $target
+        Copy-Item -Path dist\bulkreportclientupdater.exe -Destination $target -Force
+        Copy-Item -Path config.txt -Destination $target -Force
+      shell: powershell
+
+
+
